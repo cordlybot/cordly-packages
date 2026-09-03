@@ -1,0 +1,34 @@
+.ssr-header {
+  display: flex;
+  align-items: center;
+  gap: var(--cordly-space-sm);
+  padding: var(--cordly-space-sm) var(--cordly-space-md);
+}
+
+.ssr-brand {
+  font-weight: var(--cordly-font-weight-semibold);
+}
+
+.ssr-account {
+  margin-inline-start: auto;
+}
+
+.ssr-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-lg);
+  max-inline-size: 64rem;
+  margin-inline: auto;
+  padding: var(--cordly-space-lg) var(--cordly-space-md) var(--cordly-space-2xl);
+}
+
+.ssr-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+  gap: var(--cordly-space-sm);
+}
+
+.ssr-prose {
+  margin: 0;
+  color: var(--cordly-color-text-muted);
+}

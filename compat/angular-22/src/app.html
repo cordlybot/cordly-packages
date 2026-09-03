@@ -1,0 +1,95 @@
+<cordly-app-frame skipLabel="Skip" navigationLabel="Sections" [(navigationOpen)]="open">
+  <div cordly-frame-header>
+    <cordly-menu [items]="menuItems" triggerLabel="Menu"
+      ><span aria-hidden="true">M</span></cordly-menu
+    >
+  </div>
+
+  <cordly-side-nav cordly-frame-navigation [groups]="navGroups" />
+
+  <div [id]="probeId">
+    <p>{{ tokenSummary }} / reduced motion: {{ reducedMotion() }}</p>
+
+    <cordly-stat-row [stats]="stats" label="Stats" />
+
+    <cordly-entity-tile name="Thing" state="ready" stateLabel="Ready" actionLabel="Open" />
+
+    <cordly-catalogue
+      [total]="12"
+      [resultCount]="1"
+      [filters]="filters"
+      searchLabel="Search"
+      countLabel="1 result"
+      filtersLabel="Filters"
+      [(query)]="query"
+      [(activeFilterId)]="filterId"
+    >
+      <cordly-card>
+        <span cordly-card-header>Card</span>
+        <cordly-badge tone="success">Enabled</cordly-badge>
+      </cordly-card>
+      <cordly-empty-state cordly-catalogue-empty heading="Empty">
+        Nothing yet.
+        <button cordly-empty-state-action cordlyButton type="button">Do something</button>
+      </cordly-empty-state>
+    </cordly-catalogue>
+
+    <cordly-settings-section heading="Section" advancedLabel="Advanced" [(advancedOpen)]="advanced">
+      <cordly-switch cordly-section-aside label="Enabled" [(ngModel)]="enabled" />
+      <cordly-status cordly-section-notice tone="info" heading="Notice">Something.</cordly-status>
+      <cordly-select-field label="Choice" [options]="options" [(ngModel)]="value" />
+      <cordly-text-field cordly-section-advanced label="Text" [(ngModel)]="text" />
+    </cordly-settings-section>
+
+    <cordly-preference-group label="Theme" [options]="preferences" [(value)]="theme" />
+
+    <cordly-review-list
+      [groups]="groups"
+      [statusLabels]="statusLabels"
+      [originLabels]="originLabels"
+      [riskLabels]="riskLabels"
+      beforeLabel="Was"
+      afterLabel="Becomes"
+      discardLabel="Discard"
+    />
+
+    <cordly-skeleton [count]="2" />
+
+    <p>
+      <a cordlyLink href="#a">Link</a>
+      <a cordlyLink external href="https://example.com/">External</a>
+      <button cordlyIconButton type="button" aria-label="Icon" cordlyTooltip="Tip">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" /></svg>
+      </button>
+      <button cordlyButton variant="primary" size="lg" type="button" (click)="open.set(true)">
+        Open
+      </button>
+    </p>
+
+    <cordly-tooltip-panel text="Rendered directly, to prove it is exported." />
+
+    <cordly-dialog
+      [open]="open()"
+      heading="Dialog"
+      dismissLabel="Close"
+      placement="end"
+      (closed)="open.set(false)"
+    >
+      <p>Body.</p>
+      <button cordly-dialog-actions cordlyButton type="button">Action</button>
+    </cordly-dialog>
+  </div>
+
+  <cordly-change-bar
+    cordly-frame-footer
+    [count]="1"
+    label="1 change"
+    regionLabel="Changes"
+    discardLabel="Discard"
+    reviewLabel="Review"
+  />
+</cordly-app-frame>
+
+<cordly-toast-region dismissLabel="Dismiss" />
+
+<span cordlyVisuallyHidden>Compatibility harness</span>

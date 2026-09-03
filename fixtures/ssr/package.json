@@ -1,0 +1,36 @@
+{
+  "name": "cordly-fixture-ssr",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A representative server-rendered consumer of the packed @cordly packages. Proves the components render without a browser and hydrate without a warning.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "packageManager": "npm@11.6.2",
+  "scripts": {
+    "build": "ng build",
+    "serve": "node dist/server/server.mjs"
+  },
+  "dependencies": {
+    "@angular/common": "22.1.4",
+    "@angular/compiler": "22.1.4",
+    "@angular/core": "22.1.4",
+    "@angular/forms": "22.1.4",
+    "@angular/platform-browser": "22.1.4",
+    "@angular/platform-server": "22.1.4",
+    "@angular/router": "22.1.4",
+    "@angular/ssr": "22.1.6",
+    "express": "5.1.0",
+    "rxjs": "7.8.2",
+    "tslib": "2.8.1"
+  },
+  "devDependencies": {
+    "@angular/build": "22.1.6",
+    "@angular/cli": "22.1.6",
+    "@angular/compiler-cli": "22.1.4",
+    "@types/express": "5.0.1",
+    "@types/node": "24.13.3",
+    "typescript": "6.0.3"
+  }
+}

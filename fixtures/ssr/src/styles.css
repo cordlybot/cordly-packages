@@ -1,0 +1,14 @@
+/*
+ * The tokens are a stylesheet with no JavaScript behind them, which is what
+ * makes them work here at all: a server can send this in the first response,
+ * so a dark-mode visitor never sees the white page that corrects itself once
+ * hydration runs.
+ */
+@import '@cordly/tokens/css';
+
+body {
+  margin: 0;
+  background-color: var(--cordly-color-canvas);
+  color: var(--cordly-color-text);
+  font-family: var(--cordly-font-sans);
+}

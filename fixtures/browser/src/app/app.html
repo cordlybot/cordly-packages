@@ -1,0 +1,230 @@
+<cordly-app-frame
+  skipLabel="Skip to main content"
+  navigationLabel="Server sections"
+  [(navigationOpen)]="drawerOpen"
+>
+  <div cordly-frame-header class="fixture-header">
+    <button
+      cordlyIconButton
+      type="button"
+      class="fixture-drawer-toggle"
+      aria-label="Show server sections"
+      (click)="drawerOpen.set(!drawerOpen())"
+    >
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor">
+        <path d="M2 4h12M2 8h12M2 12h12" stroke-width="1.5" />
+      </svg>
+    </button>
+
+    <span class="fixture-brand">Cordly</span>
+
+    <cordly-menu
+      class="fixture-account"
+      [items]="accountMenu"
+      triggerLabel="Account menu"
+      (selected)="toasts.show({ message: $event.label + ' chosen.' })"
+    >
+      <span aria-hidden="true">AB</span>
+    </cordly-menu>
+  </div>
+
+  <cordly-side-nav cordly-frame-navigation [groups]="navigation" />
+
+  <div class="fixture-page">
+    <h1 class="fixture-title">Night Library</h1>
+
+    <cordly-stat-row
+      [stats]="stats"
+      label="Server health"
+      (activate)="toasts.show({ message: $event.label + ' opened.' })"
+    />
+
+    <section class="fixture-section" aria-labelledby="servers-heading">
+      <h2 id="servers-heading" class="fixture-heading">Your servers</h2>
+      <div class="fixture-tiles">
+        <cordly-entity-tile
+          name="Night Library"
+          detail="1,204 members"
+          state="ready"
+          stateLabel="Set up"
+          actionLabel="Open"
+          href="#night-library"
+        />
+        <cordly-entity-tile
+          name="Studio Commons"
+          detail="318 members"
+          state="attention"
+          stateLabel="Needs attention"
+          actionLabel="Fix permissions"
+          href="#studio-commons"
+        />
+        <cordly-entity-tile
+          name="Archive Guild"
+          detail="No access"
+          state="inaccessible"
+          stateLabel="No access"
+          actionLabel="Unavailable"
+        />
+      </div>
+    </section>
+
+    <section class="fixture-section" aria-labelledby="modules-heading">
+      <h2 id="modules-heading" class="fixture-heading">Modules</h2>
+
+      <cordly-catalogue
+        [total]="totalModules"
+        [resultCount]="visibleModules().length"
+        [filters]="filters"
+        searchLabel="Search modules"
+        searchPlaceholder="Try welcome, levels, tickets"
+        [countLabel]="resultLabel()"
+        filtersLabel="Categories"
+        [(query)]="query"
+        [(activeFilterId)]="activeFilterId"
+      >
+        @if (loading()) {
+          <cordly-card>
+            <cordly-skeleton [count]="3" />
+          </cordly-card>
+        } @else {
+          @for (module of visibleModules(); track module.id) {
+            <a cordlyCard interactive [href]="'#' + module.id">
+              <span cordly-card-header class="fixture-module-name">{{ module.name }}</span>
+              <cordly-badge [tone]="module.enabled ? 'success' : 'neutral'">
+                {{ module.enabled ? 'Enabled' : 'Not enabled' }}
+              </cordly-badge>
+            </a>
+          }
+        }
+
+        <cordly-empty-state cordly-catalogue-empty heading="No modules match that search">
+          Try a different word, or clear the category filter.
+          <button
+            cordly-empty-state-action
+            cordlyButton
+            variant="neutral"
+            type="button"
+            (click)="query.set(''); activeFilterId.set(null)"
+          >
+            Clear search and filters
+          </button>
+        </cordly-empty-state>
+      </cordly-catalogue>
+    </section>
+
+    <section class="fixture-section" aria-labelledby="welcome-heading">
+      <h2 id="welcome-heading" class="fixture-heading">Welcome messages</h2>
+
+      <cordly-settings-section
+        heading="Greeting"
+        description="Cordly greets a member the first time they post."
+        advancedLabel="Advanced options"
+        [(advancedOpen)]="advancedOpen"
+      >
+        <cordly-switch
+          cordly-section-aside
+          label="Enabled"
+          description="Turn the module on for this server."
+          [(ngModel)]="welcomeEnabled"
+        />
+
+        <cordly-status cordly-section-notice tone="warning" heading="Missing permission">
+          Cordly cannot post in #archive.
+          <button cordly-status-actions cordlyButton size="sm" type="button">
+            Recheck permissions
+          </button>
+        </cordly-status>
+
+        <cordly-select-field
+          label="Announcement channel"
+          hint="Only channels Cordly can see are listed."
+          [options]="channels"
+          [(ngModel)]="welcomeChannel"
+        />
+
+        <cordly-text-field
+          cordly-section-advanced
+          label="Message text"
+          hint="Use {member} for the person who joined."
+          [error]="templateError()"
+          [(ngModel)]="welcomeTemplate"
+        />
+      </cordly-settings-section>
+    </section>
+
+    <section class="fixture-section" aria-labelledby="preferences-heading">
+      <h2 id="preferences-heading" class="fixture-heading">Display</h2>
+
+      <cordly-preference-group
+        label="Theme"
+        description="Applies to this browser only in the fixture."
+        [options]="themeOptions"
+        [value]="theme()"
+        (valueChange)="applyTheme($event)"
+      />
+
+      <p class="fixture-prose">
+        Read the
+        <a cordlyLink href="#docs">contribution guide</a>, or the
+        <a cordlyLink external href="https://example.com/status">status page</a>.
+        <button
+          cordlyIconButton
+          type="button"
+          aria-label="What is this?"
+          cordlyTooltip="The fixture proves the packed tarballs install and behave."
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor">
+            <circle cx="8" cy="8" r="6" stroke-width="1.5" />
+            <path d="M8 7.5v3.5M8 5v.5" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
+      </p>
+
+      <button cordlyButton type="button" variant="neutral" (click)="toggleLoading()">
+        {{ loading() ? 'Show modules' : 'Show loading state' }}
+      </button>
+    </section>
+  </div>
+
+  <cordly-change-bar
+    cordly-frame-footer
+    [count]="changeCount()"
+    [label]="changeLabel()"
+    regionLabel="Staged changes"
+    discardLabel="Discard"
+    reviewLabel="Review"
+    (discard)="discard()"
+    (review)="reviewOpen.set(true)"
+  />
+</cordly-app-frame>
+
+<cordly-dialog
+  [open]="reviewOpen()"
+  heading="Review staged changes"
+  description="Nothing is applied until you choose Apply."
+  dismissLabel="Close review"
+  placement="end"
+  (closed)="reviewOpen.set(false)"
+>
+  <cordly-review-list
+    [groups]="changeGroups()"
+    [statusLabels]="statusLabels"
+    [originLabels]="originLabels"
+    [riskLabels]="riskLabels"
+    beforeLabel="Was"
+    afterLabel="Becomes"
+    discardLabel="Discard"
+    (discardRow)="toasts.show({ message: $event.summary + ' discarded.' })"
+  />
+
+  <button cordly-dialog-actions cordlyButton type="button" (click)="reviewOpen.set(false)">
+    Keep editing
+  </button>
+  <button cordly-dialog-actions cordlyButton variant="primary" type="button" (click)="apply()">
+    Apply {{ changeCount() }} changes
+  </button>
+</cordly-dialog>
+
+<cordly-toast-region dismissLabel="Dismiss notification" />
+
+<h2 cordlyVisuallyHidden>End of fixture</h2>

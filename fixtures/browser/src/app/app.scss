@@ -1,0 +1,74 @@
+/*
+ * Layout only.
+ *
+ * Everything visual — colour, spacing, radius, type — comes from the tokens the
+ * packages already resolve. A consumer stylesheet that restated any of them
+ * would be the beginning of the drift the shared repository exists to prevent.
+ */
+.fixture-header {
+  display: flex;
+  align-items: center;
+  gap: var(--cordly-space-sm);
+  padding: var(--cordly-space-sm) var(--cordly-space-md);
+}
+
+.fixture-brand {
+  font-weight: var(--cordly-font-weight-semibold);
+}
+
+.fixture-account {
+  margin-inline-start: auto;
+}
+
+.fixture-drawer-toggle {
+  display: none;
+}
+
+@media (max-width: 47.999rem) {
+  .fixture-drawer-toggle {
+    display: inline-flex;
+  }
+}
+
+.fixture-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-xl);
+  max-inline-size: 72rem;
+  margin-inline: auto;
+  padding: var(--cordly-space-lg) var(--cordly-space-md) var(--cordly-space-2xl);
+}
+
+.fixture-title {
+  margin: 0;
+  font-size: var(--cordly-font-size-3xl);
+  line-height: var(--cordly-line-height-tight);
+}
+
+.fixture-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-md);
+}
+
+.fixture-heading {
+  margin: 0;
+  font-size: var(--cordly-font-size-xl);
+}
+
+.fixture-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+  gap: var(--cordly-space-sm);
+}
+
+.fixture-module-name {
+  font-weight: var(--cordly-font-weight-medium);
+}
+
+.fixture-prose {
+  margin: 0;
+  max-inline-size: var(--cordly-measure-prose);
+  line-height: var(--cordly-line-height-normal);
+  color: var(--cordly-color-text-muted);
+}

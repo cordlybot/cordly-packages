@@ -1,0 +1,15 @@
+/*
+ * The only stylesheet a consumer has to import.
+ *
+ * Everything visible below comes from the tokens: the components resolve their
+ * own colours from these custom properties and ship their own compiled CSS, so
+ * a consumer needs no Tailwind, no preprocessor, and no theme configuration.
+ */
+@import '@cordly/tokens/css';
+
+body {
+  margin: 0;
+  background-color: var(--cordly-color-canvas);
+  color: var(--cordly-color-text);
+  font-family: var(--cordly-font-sans);
+}

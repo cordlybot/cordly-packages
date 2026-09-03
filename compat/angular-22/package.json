@@ -1,0 +1,29 @@
+{
+  "name": "cordly-compat-angular-22",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A throwaway consumer on the lowest Angular version the packages claim. It imports every public export and compiles ahead of time, so a claimed compatibility is proved rather than asserted.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "packageManager": "npm@11.6.2",
+  "scripts": {
+    "build": "ng build"
+  },
+  "dependencies": {
+    "@angular/common": "22.0.0",
+    "@angular/compiler": "22.0.0",
+    "@angular/core": "22.0.0",
+    "@angular/forms": "22.0.0",
+    "@angular/platform-browser": "22.0.0",
+    "rxjs": "7.8.2",
+    "tslib": "2.8.1"
+  },
+  "devDependencies": {
+    "@angular/build": "22.0.0",
+    "@angular/cli": "22.0.0",
+    "@angular/compiler-cli": "22.0.0",
+    "typescript": "6.0.3"
+  }
+}

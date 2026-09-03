@@ -1,0 +1,133 @@
+<cordly-app-frame
+  skipLabel="Skip to main content"
+  navigationLabel="Server sections"
+  [(navigationOpen)]="drawerOpen"
+>
+  <div cordly-frame-header class="ssr-header">
+    <span class="ssr-brand">Cordly</span>
+    <cordly-menu class="ssr-account" [items]="menuItems" triggerLabel="Account menu">
+      <span aria-hidden="true">AB</span>
+    </cordly-menu>
+  </div>
+
+  <cordly-side-nav cordly-frame-navigation [groups]="navigation" />
+
+  <div class="ssr-page">
+    <h1 id="ssr-title">Server-rendered fixture</h1>
+
+    <cordly-stat-row [stats]="stats" label="Server health" />
+
+    <div class="ssr-tiles">
+      <cordly-entity-tile
+        name="Night Library"
+        detail="1,204 members"
+        state="ready"
+        stateLabel="Set up"
+        actionLabel="Open"
+        href="#night-library"
+      />
+      <cordly-entity-tile
+        name="Studio Commons"
+        detail="318 members"
+        state="attention"
+        stateLabel="Needs attention"
+        actionLabel="Fix permissions"
+      />
+    </div>
+
+    <cordly-catalogue
+      [total]="12"
+      [resultCount]="1"
+      [filters]="filters"
+      searchLabel="Search modules"
+      countLabel="1 module"
+      filtersLabel="Categories"
+      [(query)]="query"
+      [(activeFilterId)]="activeFilterId"
+    >
+      <cordly-card>
+        <span cordly-card-header>Welcome messages</span>
+        <cordly-badge tone="success">Enabled</cordly-badge>
+      </cordly-card>
+      <cordly-empty-state cordly-catalogue-empty heading="Nothing here">
+        Try another search.
+        <button cordly-empty-state-action cordlyButton type="button">Clear</button>
+      </cordly-empty-state>
+    </cordly-catalogue>
+
+    <cordly-settings-section
+      heading="Greeting"
+      description="Cordly greets a member the first time they post."
+      advancedLabel="Advanced options"
+      [(advancedOpen)]="advancedOpen"
+    >
+      <cordly-switch cordly-section-aside label="Enabled" [(ngModel)]="enabled" />
+      <cordly-status cordly-section-notice tone="warning" heading="Missing permission">
+        Cordly cannot post in #archive.
+      </cordly-status>
+      <cordly-select-field
+        label="Announcement channel"
+        [options]="channels"
+        [(ngModel)]="channel"
+      />
+      <cordly-text-field
+        cordly-section-advanced
+        label="Message text"
+        hint="Use {member} for the person who joined."
+        [(ngModel)]="template"
+      />
+    </cordly-settings-section>
+
+    <cordly-preference-group label="Theme" [options]="themeOptions" [(value)]="theme" />
+
+    <cordly-review-list
+      [groups]="changeGroups"
+      [statusLabels]="statusLabels"
+      [originLabels]="originLabels"
+      [riskLabels]="riskLabels"
+      beforeLabel="Was"
+      afterLabel="Becomes"
+    />
+
+    <cordly-skeleton [count]="2" />
+
+    <p class="ssr-prose">
+      <a cordlyLink href="#docs">Contribution guide</a>,
+      <a cordlyLink external href="https://example.com/status">status page</a>.
+      <span cordlyTooltip="Rendered on the server, described on hover.">Hover me</span>
+    </p>
+
+    <!--
+      The replay probe. It is rendered by the server and pressed before Angular
+      has finished booting in the browser; if the count does not reach one, event
+      replay is not working and every server-rendered control on a real page has
+      the same silent dead zone.
+    -->
+    <button cordlyButton id="replay-probe" type="button" (click)="press()">
+      {{ pressLabel() }}
+    </button>
+
+    <cordly-dialog
+      [open]="reviewOpen()"
+      heading="Review staged changes"
+      dismissLabel="Close review"
+      (closed)="reviewOpen.set(false)"
+    >
+      <p>Nothing is applied until you choose Apply.</p>
+    </cordly-dialog>
+  </div>
+
+  <cordly-change-bar
+    cordly-frame-footer
+    [count]="1"
+    label="1 change staged"
+    regionLabel="Staged changes"
+    discardLabel="Discard"
+    reviewLabel="Review"
+    (review)="reviewOpen.set(true)"
+  />
+</cordly-app-frame>
+
+<cordly-toast-region dismissLabel="Dismiss notification" />
+
+<h2 cordlyVisuallyHidden>End of fixture</h2>
