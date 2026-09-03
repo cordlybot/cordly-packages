@@ -1,0 +1,11 @@
+<div class="cordly-empty-state__art" aria-hidden="true">
+  <ng-content select="[cordly-empty-state-art]" />
+</div>
+
+<h3 class="cordly-empty-state__heading">{{ heading() }}</h3>
+
+<p class="cordly-empty-state__body"><ng-content /></p>
+
+<div class="cordly-empty-state__actions">
+  <ng-content select="[cordly-empty-state-action]" />
+</div>

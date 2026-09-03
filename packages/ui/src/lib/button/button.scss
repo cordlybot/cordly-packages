@@ -1,0 +1,134 @@
+@use 'control';
+@use 'motion';
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  @include control.base;
+  @include control.disabled;
+  @include control.touch-target;
+  @include motion.transition(background-color, border-color, color, box-shadow);
+  @include motion.press;
+
+  justify-content: center;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+
+  // A link rendered as a button is still a link; it must not pick up the
+  // underline the prose treatment gives anchors.
+  &:is(a) {
+    text-decoration: none;
+  }
+
+  &[data-block] {
+    display: flex;
+    inline-size: 100%;
+  }
+
+  &[aria-busy='true'] {
+    cursor: progress;
+  }
+}
+
+:host([data-size='sm']) {
+  block-size: var(--cordly-control-height-sm);
+  padding-inline: var(--cordly-space-sm);
+  font-size: var(--cordly-font-size-xs);
+}
+
+:host([data-size='md']) {
+  block-size: var(--cordly-control-height-md);
+  padding-inline: var(--cordly-space-md);
+}
+
+:host([data-size='lg']) {
+  block-size: var(--cordly-control-height-lg);
+  padding-inline: var(--cordly-space-lg);
+  font-size: var(--cordly-font-size-md);
+}
+
+:host([data-variant='primary']) {
+  background-color: var(--cordly-color-accent);
+  color: var(--cordly-color-on-accent);
+
+  &:hover:not(:disabled) {
+    background-color: var(--cordly-color-accent-hover);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--cordly-color-accent-active);
+  }
+}
+
+:host([data-variant='neutral']) {
+  background-color: var(--cordly-color-control);
+  border-color: var(--cordly-color-border);
+  color: var(--cordly-color-control-text);
+
+  &:hover:not(:disabled) {
+    background-color: var(--cordly-color-control-hover);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--cordly-color-control-active);
+  }
+}
+
+:host([data-variant='quiet']) {
+  background-color: transparent;
+  color: var(--cordly-color-text-muted);
+
+  &:hover:not(:disabled) {
+    background-color: var(--cordly-color-control);
+    color: var(--cordly-color-text);
+  }
+}
+
+:host([data-variant='danger']) {
+  background-color: var(--cordly-color-danger-solid);
+  color: var(--cordly-color-on-danger-solid);
+
+  &:hover:not(:disabled) {
+    background-color: var(--cordly-color-danger-solid);
+    box-shadow: inset 0 0 0 999px oklch(0 0 0 / 0.12);
+  }
+}
+
+.cordly-button__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cordly-space-xs);
+  min-inline-size: 0;
+}
+
+// The busy indicator sits beside the label rather than replacing it. The label
+// is what says which action is running, and swapping it for a spinner is how a
+// person loses track of what they pressed.
+.cordly-button__busy {
+  inline-size: 0.875em;
+  block-size: 0.875em;
+  flex: none;
+  border: 2px solid currentcolor;
+  border-block-start-color: transparent;
+  border-radius: var(--cordly-radius-pill);
+  animation: cordly-button-spin 0.7s linear infinite;
+}
+
+@keyframes cordly-button-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+// A spinner is the one loop whose resting state is not its finished state, so
+// reduced motion replaces it rather than freezing it: a stationary broken ring
+// reads as a rendering fault. `aria-busy` on the host still carries the meaning.
+@media (prefers-reduced-motion: reduce) {
+  .cordly-button__busy {
+    animation: none;
+    border-block-start-color: currentcolor;
+    opacity: 0.55;
+  }
+}

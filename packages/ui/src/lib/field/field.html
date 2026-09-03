@@ -1,0 +1,64 @@
+<label class="cordly-field__label" [attr.for]="controlId">
+  {{ label() }}
+  @if (required()) {
+    <span class="cordly-field__required" aria-hidden="true">*</span>
+  }
+</label>
+
+@if (description()) {
+  <p class="cordly-field__description" [id]="descriptionId">{{ description() }}</p>
+}
+
+<div class="cordly-field__control">
+  <ng-content select="[cordly-field-prefix]" />
+
+  @if (multiline()) {
+    <textarea
+      class="cordly-field__input"
+      [id]="controlId"
+      [rows]="rows()"
+      [attr.name]="name()"
+      [attr.placeholder]="placeholder()"
+      [attr.autocomplete]="autocomplete()"
+      [attr.maxlength]="maxLength()"
+      [attr.aria-describedby]="describedBy()"
+      [attr.aria-invalid]="error() ? 'true' : null"
+      [attr.aria-required]="required() ? 'true' : null"
+      [disabled]="disabled()"
+      [readOnly]="readOnly()"
+      [value]="value()"
+      (input)="handleInput($event)"
+      (blur)="handleBlur()"
+    ></textarea>
+  } @else {
+    <input
+      class="cordly-field__input"
+      [id]="controlId"
+      [type]="type()"
+      [attr.name]="name()"
+      [attr.placeholder]="placeholder()"
+      [attr.autocomplete]="autocomplete()"
+      [attr.inputmode]="inputMode()"
+      [attr.maxlength]="maxLength()"
+      [attr.aria-describedby]="describedBy()"
+      [attr.aria-invalid]="error() ? 'true' : null"
+      [attr.aria-required]="required() ? 'true' : null"
+      [disabled]="disabled()"
+      [readOnly]="readOnly()"
+      [value]="value()"
+      (input)="handleInput($event)"
+      (blur)="handleBlur()"
+    />
+  }
+
+  <ng-content select="[cordly-field-suffix]" />
+</div>
+
+@if (error()) {
+  <p class="cordly-field__error" [id]="errorId">
+    <span class="cordly-field__error-mark" aria-hidden="true"></span>
+    {{ error() }}
+  </p>
+} @else if (hint()) {
+  <p class="cordly-field__hint" [id]="hintId">{{ hint() }}</p>
+}

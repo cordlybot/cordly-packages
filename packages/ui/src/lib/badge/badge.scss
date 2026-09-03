@@ -1,0 +1,56 @@
+@use 'layout';
+// A small, non-interactive state label.
+//
+// The dot is decoration: the badge always carries its own text, because colour
+// is never the only signal a state is being communicated. A badge with no text
+// is a dot nobody can read.
+:host {
+  @include layout.box;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cordly-space-2xs);
+  padding-inline: var(--cordly-space-xs);
+  padding-block: var(--cordly-space-3xs);
+  border: var(--cordly-border-width) solid var(--cordly-color-border);
+  border-radius: var(--cordly-radius-pill);
+  background-color: var(--cordly-color-control);
+  color: var(--cordly-color-text-muted);
+  font-family: var(--cordly-font-sans);
+  font-size: var(--cordly-font-size-2xs);
+  font-weight: var(--cordly-font-weight-medium);
+  line-height: var(--cordly-line-height-tight);
+  white-space: nowrap;
+}
+
+.cordly-badge__dot {
+  inline-size: 0.4em;
+  block-size: 0.4em;
+  border-radius: var(--cordly-radius-pill);
+  background-color: currentcolor;
+  flex: none;
+}
+
+:host([data-tone='info']) {
+  background-color: var(--cordly-color-info-surface);
+  border-color: var(--cordly-color-info-border);
+  color: var(--cordly-color-info-text);
+}
+
+:host([data-tone='success']) {
+  background-color: var(--cordly-color-success-surface);
+  border-color: var(--cordly-color-success-border);
+  color: var(--cordly-color-success-text);
+}
+
+:host([data-tone='warning']) {
+  background-color: var(--cordly-color-warning-surface);
+  border-color: var(--cordly-color-warning-border);
+  color: var(--cordly-color-warning-text);
+}
+
+:host([data-tone='danger']) {
+  background-color: var(--cordly-color-danger-surface);
+  border-color: var(--cordly-color-danger-border);
+  color: var(--cordly-color-danger-text);
+}

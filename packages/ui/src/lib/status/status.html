@@ -1,0 +1,9 @@
+<span class="cordly-status__mark" aria-hidden="true"></span>
+
+<div class="cordly-status__body">
+  @if (heading()) {
+    <p class="cordly-status__heading">{{ heading() }}</p>
+  }
+  <div class="cordly-status__message"><ng-content /></div>
+  <div class="cordly-status__actions"><ng-content select="[cordly-status-actions]" /></div>
+</div>

@@ -1,0 +1,22 @@
+<div class="cordly-toast-region__live" role="status" aria-live="polite" aria-atomic="false">
+  @for (toast of toasts(); track toast.id) {
+    <div class="cordly-toast" [attr.data-tone]="toast.tone">
+      <div class="cordly-toast__body">
+        <p class="cordly-toast__message">{{ toast.message }}</p>
+        @if (toast.action) {
+          <button type="button" class="cordly-toast__action" (click)="runAction(toast)">
+            {{ toast.action.label }}
+          </button>
+        }
+      </div>
+      <button
+        type="button"
+        class="cordly-toast__dismiss"
+        [attr.aria-label]="dismissLabel()"
+        (click)="dismiss(toast.id)"
+      >
+        <span class="cordly-toast__dismiss-mark" aria-hidden="true"></span>
+      </button>
+    </div>
+  }
+</div>

@@ -1,0 +1,36 @@
+{
+  "name": "@cordly/ui",
+  "version": "0.1.0",
+  "description": "Accessible Angular primitives for Cordly web applications. Owns the raw HTML controls so no application has to.",
+  "license": "MIT",
+  "author": "Cordly",
+  "homepage": "https://github.com/cordlybot/cordly-packages#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cordlybot/cordly-packages.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/cordlybot/cordly-packages/issues"
+  },
+  "keywords": [
+    "cordly",
+    "angular",
+    "design-system",
+    "accessibility",
+    "components"
+  ],
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@cordly/tokens": "^0.1.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

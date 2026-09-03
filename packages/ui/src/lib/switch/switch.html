@@ -1,0 +1,22 @@
+<button
+  type="button"
+  class="cordly-switch__control"
+  role="switch"
+  [id]="controlId"
+  [attr.aria-checked]="state()"
+  [attr.aria-describedby]="describedBy()"
+  [attr.aria-labelledby]="labelId"
+  [disabled]="disabled()"
+  (click)="toggle()"
+>
+  <span class="cordly-switch__track" aria-hidden="true">
+    <span class="cordly-switch__thumb"></span>
+  </span>
+</button>
+
+<span class="cordly-switch__text">
+  <span class="cordly-switch__label" [id]="labelId">{{ label() }}</span>
+  @if (description()) {
+    <span class="cordly-switch__description" [id]="descriptionId">{{ description() }}</span>
+  }
+</span>

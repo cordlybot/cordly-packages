@@ -1,0 +1,61 @@
+@use 'control';
+@use 'motion';
+@use 'layout';
+
+// A square control whose only content is a glyph.
+//
+// Reserved for actions that are both universally understood and used often
+// enough to be worth the ambiguity — close, more, expand. Everything else gets
+// a label, because an icon that needs a tooltip to be understood is a label
+// somebody hid.
+:host {
+  @include layout.box;
+
+  @include control.base;
+  @include control.disabled;
+  @include control.touch-target;
+  @include motion.transition(background-color, border-color, color);
+  @include motion.press;
+
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  color: var(--cordly-color-text-muted);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--cordly-color-control);
+    color: var(--cordly-color-text);
+  }
+}
+
+:host([data-size='sm']) {
+  inline-size: var(--cordly-control-height-sm);
+  block-size: var(--cordly-control-height-sm);
+}
+
+:host([data-size='md']) {
+  inline-size: var(--cordly-control-height-md);
+  block-size: var(--cordly-control-height-md);
+}
+
+:host([data-size='lg']) {
+  inline-size: var(--cordly-control-height-lg);
+  block-size: var(--cordly-control-height-lg);
+}
+
+:host([data-variant='solid']) {
+  background-color: var(--cordly-color-control);
+  border-color: var(--cordly-color-border);
+  color: var(--cordly-color-control-text);
+
+  &:hover:not(:disabled) {
+    background-color: var(--cordly-color-control-hover);
+  }
+}
+
+:host ::ng-deep svg {
+  inline-size: 1.125em;
+  block-size: 1.125em;
+  pointer-events: none;
+}

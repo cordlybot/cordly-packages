@@ -1,0 +1,102 @@
+@use 'focus';
+@use 'motion';
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  position: relative;
+  display: inline-flex;
+  font-family: var(--cordly-font-sans);
+}
+
+.cordly-menu__trigger {
+  @include focus.visible;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cordly-space-2xs);
+  min-block-size: var(--cordly-target-min);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  border-radius: var(--cordly-radius-control);
+}
+
+.cordly-menu__panel {
+  @include motion.transition(opacity);
+
+  position: absolute;
+  z-index: var(--cordly-layer-overlay);
+  inset-block-start: calc(100% + var(--cordly-space-2xs));
+  inset-inline-end: 0;
+  min-inline-size: 12rem;
+  max-inline-size: min(20rem, calc(100vw - var(--cordly-space-lg)));
+  padding: var(--cordly-space-2xs);
+  border: var(--cordly-border-width) solid var(--cordly-color-border);
+  border-radius: var(--cordly-radius-control);
+  background-color: var(--cordly-color-surface-overlay);
+  box-shadow: var(--cordly-elevation-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+:host([data-align='start']) .cordly-menu__panel {
+  inset-inline: 0 auto;
+}
+
+.cordly-menu__item {
+  @include focus.visible;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cordly-space-3xs);
+  inline-size: 100%;
+  min-block-size: var(--cordly-target-min);
+  justify-content: center;
+  padding: var(--cordly-space-xs) var(--cordly-space-sm);
+  border: 0;
+  border-radius: var(--cordly-radius-control);
+  background: none;
+  color: var(--cordly-color-text);
+  font: inherit;
+  font-size: var(--cordly-font-size-sm);
+  text-align: start;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: var(--cordly-color-control);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  &[data-tone='danger'] {
+    color: var(--cordly-color-danger-text);
+  }
+
+  // The current destination is marked with a rule as well as with weight, so
+  // "you are here" does not depend on noticing a font change.
+  &[aria-current='true'] {
+    font-weight: var(--cordly-font-weight-semibold);
+    box-shadow: inset 2px 0 0 var(--cordly-color-accent);
+  }
+}
+
+.cordly-menu__item-detail {
+  color: var(--cordly-color-text-muted);
+  font-size: var(--cordly-font-size-xs);
+}
+
+.cordly-menu__separator {
+  margin: var(--cordly-space-2xs) 0;
+  border: 0;
+  border-block-start: var(--cordly-border-width) solid var(--cordly-color-border-subtle);
+}

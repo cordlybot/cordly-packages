@@ -1,0 +1,29 @@
+@use 'layout';
+// Supplementary text, anchored to the control that owns it.
+//
+// The tooltip never carries the control's name — that is `aria-label`'s job and
+// it has to survive with the tooltip closed. This is the extra sentence, and a
+// sighted keyboard user reaches it on focus for the same reason a mouse user
+// reaches it on hover.
+:host {
+  @include layout.box;
+
+  position: absolute;
+  z-index: var(--cordly-layer-overlay);
+  inset-block-end: calc(100% + var(--cordly-space-2xs));
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  max-inline-size: 18rem;
+  inline-size: max-content;
+  padding: var(--cordly-space-2xs) var(--cordly-space-xs);
+  border: var(--cordly-border-width) solid var(--cordly-color-border);
+  border-radius: var(--cordly-radius-control);
+  background-color: var(--cordly-color-surface-overlay);
+  box-shadow: var(--cordly-elevation-overlay);
+  color: var(--cordly-color-text);
+  font-family: var(--cordly-font-sans);
+  font-size: var(--cordly-font-size-xs);
+  line-height: var(--cordly-line-height-normal);
+  // The bubble must never eat a pointer event aimed at the control beneath it.
+  pointer-events: none;
+}

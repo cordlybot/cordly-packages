@@ -1,0 +1,40 @@
+@use 'focus';
+@use 'motion';
+@use 'layout';
+
+// A link is underlined by default and stays underlined.
+//
+// Colour alone cannot carry "this is a link": it fails for the most common
+// colour-vision deficiencies and it fails again in forced-colours mode. The
+// underline is the affordance; the accent is the emphasis.
+:host {
+  @include layout.box;
+
+  @include motion.transition(color, text-decoration-color);
+
+  color: var(--cordly-color-accent-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: from-font;
+  border-radius: var(--cordly-radius-none);
+
+  @include focus.visible;
+
+  &:hover {
+    color: var(--cordly-color-text);
+  }
+}
+
+// An external destination is worth saying out loud, but the marker is decoration
+// and the accessible name comes from the caller's own text.
+:host([data-external])::after {
+  content: '';
+  display: inline-block;
+  inline-size: 0.6em;
+  block-size: 0.6em;
+  margin-inline-start: 0.3em;
+  border-block-start: 1.5px solid currentcolor;
+  border-inline-end: 1.5px solid currentcolor;
+  rotate: 45deg;
+  translate: 0 0.05em;
+}

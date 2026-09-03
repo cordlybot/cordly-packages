@@ -1,0 +1,48 @@
+<button
+  #trigger
+  type="button"
+  class="cordly-menu__trigger"
+  [id]="triggerId"
+  [attr.aria-haspopup]="'menu'"
+  [attr.aria-expanded]="expanded()"
+  [attr.aria-controls]="expanded() ? panelId : null"
+  [attr.aria-label]="triggerLabel()"
+  (click)="toggle()"
+  (keydown)="handleTriggerKeydown($event)"
+>
+  <ng-content />
+</button>
+
+@if (expanded()) {
+  <div
+    #panel
+    class="cordly-menu__panel"
+    role="menu"
+    tabindex="-1"
+    [id]="panelId"
+    [attr.aria-labelledby]="triggerId"
+    (keydown)="handlePanelKeydown($event)"
+  >
+    @for (item of items(); track item.id; let index = $index) {
+      @if (item.separatorBefore && index > 0) {
+        <hr class="cordly-menu__separator" role="separator" />
+      }
+      <button
+        type="button"
+        class="cordly-menu__item"
+        role="menuitem"
+        [attr.data-tone]="item.tone ?? 'neutral'"
+        [attr.data-index]="index"
+        [attr.aria-current]="item.current ? 'true' : null"
+        [disabled]="item.disabled ?? false"
+        [tabIndex]="index === activeIndex() ? 0 : -1"
+        (click)="choose(item)"
+      >
+        <span class="cordly-menu__item-label">{{ item.label }}</span>
+        @if (item.detail) {
+          <span class="cordly-menu__item-detail">{{ item.detail }}</span>
+        }
+      </button>
+    }
+  </div>
+}

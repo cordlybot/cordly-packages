@@ -1,0 +1,43 @@
+@use 'layout';
+// Nothing here yet, and here is what to do about it.
+//
+// An empty state that only says "no data" hands the reader a dead end. The
+// action slot is required by the component's contract for that reason.
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cordly-space-sm);
+  padding: var(--cordly-space-2xl) var(--cordly-space-lg);
+  text-align: center;
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-empty-state__art:empty {
+  display: none;
+}
+
+.cordly-empty-state__heading {
+  margin: 0;
+  font-size: var(--cordly-font-size-lg);
+  font-weight: var(--cordly-font-weight-semibold);
+  color: var(--cordly-color-text);
+}
+
+.cordly-empty-state__body {
+  margin: 0;
+  max-inline-size: 42ch;
+  font-size: var(--cordly-font-size-sm);
+  line-height: var(--cordly-line-height-normal);
+}
+
+.cordly-empty-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cordly-space-xs);
+  margin-block-start: var(--cordly-space-2xs);
+}

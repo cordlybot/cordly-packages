@@ -1,0 +1,64 @@
+@use 'layout';
+// A placeholder shaped like the content that is coming.
+//
+// Skeletons rather than spinners wherever the layout is known ahead, because a
+// spinner says "wait" and a skeleton says "wait, and here is what you will get" —
+// and because the layout does not jump when the real content lands.
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-xs);
+  inline-size: 100%;
+}
+
+.cordly-skeleton__line {
+  display: block;
+  block-size: 0.75rem;
+  border-radius: var(--cordly-radius-control);
+  background-color: var(--cordly-color-skeleton);
+  position: relative;
+  overflow: hidden;
+}
+
+:host([data-shape='block']) .cordly-skeleton__line {
+  block-size: 6rem;
+  border-radius: var(--cordly-radius-card);
+}
+
+:host([data-shape='circle']) {
+  inline-size: auto;
+}
+
+:host([data-shape='circle']) .cordly-skeleton__line {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: var(--cordly-radius-pill);
+}
+
+.cordly-skeleton__line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--cordly-color-skeleton-sheen), transparent);
+  animation: cordly-skeleton-sheen 1.6s linear infinite;
+}
+
+@keyframes cordly-skeleton-sheen {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 100% 0;
+  }
+}
+
+// The sheen is the only thing this element is. Stopping the animation would
+// park a bright bar over the placeholder, so reduced motion removes it entirely
+// and leaves the placeholder shape, which is what carried the meaning anyway.
+@media (prefers-reduced-motion: reduce) {
+  .cordly-skeleton__line::after {
+    display: none;
+  }
+}

@@ -1,0 +1,112 @@
+@use 'control';
+@use 'motion';
+@use 'layout';
+
+// A native `<select>`, styled.
+//
+// Deliberately not a custom listbox. The native control gets the platform's
+// picker on a phone, the platform's type-ahead on a keyboard, and the platform's
+// screen-reader behaviour everywhere — none of which a re-implementation gets
+// for free, and all of which people notice when it is missing. When a collection
+// grows past what a native select can serve, the answer is a searchable widget,
+// not a hand-built dropdown pretending to be this.
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-2xs);
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+  min-inline-size: 0;
+}
+
+.cordly-select-field__label {
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+}
+
+.cordly-select-field__required {
+  color: var(--cordly-color-danger-text);
+  margin-inline-start: var(--cordly-space-3xs);
+}
+
+.cordly-select-field__description,
+.cordly-select-field__hint,
+.cordly-select-field__error {
+  margin: 0;
+  font-size: var(--cordly-font-size-xs);
+  line-height: var(--cordly-line-height-normal);
+}
+
+.cordly-select-field__description,
+.cordly-select-field__hint {
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-select-field__error {
+  color: var(--cordly-color-danger-text);
+}
+
+.cordly-select-field__control {
+  @include control.base;
+  @include motion.transition(border-color, background-color);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--cordly-color-surface-sunken);
+  border-color: var(--cordly-color-control-border);
+  block-size: var(--cordly-control-height-md);
+  padding: 0;
+
+  &:focus-within {
+    outline: var(--cordly-focus-ring-width) solid var(--cordly-color-focus-ring);
+    outline-offset: var(--cordly-focus-ring-offset);
+    border-color: var(--cordly-color-focus-ring);
+  }
+}
+
+:host([data-invalid]) .cordly-select-field__control {
+  border-color: var(--cordly-color-danger-border);
+}
+
+.cordly-select-field__select {
+  appearance: none;
+  flex: 1;
+  min-inline-size: 0;
+  block-size: 100%;
+  padding-inline: var(--cordly-space-sm) var(--cordly-space-xl);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: var(--cordly-font-weight-regular);
+  outline: none;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  // The popup is drawn by the platform, so its colours come from the operating
+  // system unless the option elements are told otherwise.
+  option {
+    background-color: var(--cordly-color-surface-overlay);
+    color: var(--cordly-color-text);
+  }
+}
+
+.cordly-select-field__chevron {
+  position: absolute;
+  inset-inline-end: var(--cordly-space-sm);
+  inline-size: 0.5em;
+  block-size: 0.5em;
+  border-block-end: 1.5px solid var(--cordly-color-text-muted);
+  border-inline-end: 1.5px solid var(--cordly-color-text-muted);
+  rotate: 45deg;
+  translate: 0 -0.15em;
+  pointer-events: none;
+}

@@ -1,0 +1,99 @@
+@use 'focus';
+@use 'motion';
+@use 'layout';
+
+// One clear enabled state, in one place.
+//
+// `role="switch"` rather than a checkbox, because the two are read differently:
+// a checkbox is "selected for later", a switch is "on now". A module toggle
+// takes effect on apply, and calling it a switch is what makes that legible.
+:host {
+  @include layout.box;
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cordly-space-sm);
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+}
+
+.cordly-switch__control {
+  @include focus.visible;
+
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--cordly-radius-pill);
+  // The painted track is 24px tall; the target is not.
+  min-block-size: var(--cordly-target-min);
+  display: flex;
+  align-items: center;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}
+
+.cordly-switch__track {
+  @include motion.transition(background-color, border-color);
+
+  display: block;
+  inline-size: 2.75rem;
+  block-size: 1.5rem;
+  padding: 2px;
+  border: var(--cordly-border-width) solid var(--cordly-color-control-border);
+  border-radius: var(--cordly-radius-pill);
+  background-color: var(--cordly-color-control);
+}
+
+.cordly-switch__thumb {
+  @include motion.transition(translate, background-color);
+
+  display: block;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  border-radius: var(--cordly-radius-pill);
+  background-color: var(--cordly-color-text-muted);
+}
+
+[aria-checked='true'] {
+  .cordly-switch__track {
+    background-color: var(--cordly-color-accent);
+    border-color: var(--cordly-color-accent);
+  }
+
+  .cordly-switch__thumb {
+    translate: 1.25rem 0;
+    background-color: var(--cordly-color-on-accent);
+  }
+}
+
+// Reduced motion keeps the position change and loses the glide. The thumb still
+// ends up where it belongs; it simply arrives there without travelling.
+@media (prefers-reduced-motion: reduce) {
+  .cordly-switch__thumb {
+    transition-duration: 0.01ms;
+  }
+}
+
+.cordly-switch__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-3xs);
+  padding-block-start: 0.7rem;
+  min-inline-size: 0;
+}
+
+.cordly-switch__label {
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+}
+
+.cordly-switch__description {
+  font-size: var(--cordly-font-size-xs);
+  color: var(--cordly-color-text-muted);
+  line-height: var(--cordly-line-height-normal);
+}

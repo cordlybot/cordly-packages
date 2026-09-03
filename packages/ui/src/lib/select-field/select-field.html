@@ -1,0 +1,46 @@
+<label class="cordly-select-field__label" [attr.for]="controlId">
+  {{ label() }}
+  @if (required()) {
+    <span class="cordly-select-field__required" aria-hidden="true">*</span>
+  }
+</label>
+
+@if (description()) {
+  <p class="cordly-select-field__description" [id]="descriptionId">{{ description() }}</p>
+}
+
+<div class="cordly-select-field__control">
+  <select
+    class="cordly-select-field__select"
+    [id]="controlId"
+    [attr.name]="name()"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="error() ? 'true' : null"
+    [attr.aria-required]="required() ? 'true' : null"
+    [disabled]="disabled()"
+    (change)="handleChange($event)"
+    (blur)="handleBlur()"
+  >
+    @if (placeholder(); as placeholderLabel) {
+      <option value="" [selected]="value() === ''" [disabled]="required()">
+        {{ placeholderLabel }}
+      </option>
+    }
+    @for (option of options(); track option.value) {
+      <option
+        [value]="option.value"
+        [selected]="option.value === value()"
+        [disabled]="option.disabled ?? false"
+      >
+        {{ option.label }}
+      </option>
+    }
+  </select>
+  <span class="cordly-select-field__chevron" aria-hidden="true"></span>
+</div>
+
+@if (error()) {
+  <p class="cordly-select-field__error" [id]="errorId">{{ error() }}</p>
+} @else if (hint()) {
+  <p class="cordly-select-field__hint" [id]="hintId">{{ hint() }}</p>
+}

@@ -1,0 +1,125 @@
+@use 'control';
+@use 'motion';
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-2xs);
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+  min-inline-size: 0;
+}
+
+.cordly-field__label {
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+  color: var(--cordly-color-text);
+}
+
+// The asterisk is decoration; `aria-required` is what a screen reader reads.
+// Marking required-ness twice in the accessibility tree makes every label in a
+// form say "star" out loud.
+.cordly-field__required {
+  color: var(--cordly-color-danger-text);
+  margin-inline-start: var(--cordly-space-3xs);
+}
+
+.cordly-field__description,
+.cordly-field__hint,
+.cordly-field__error {
+  margin: 0;
+  font-size: var(--cordly-font-size-xs);
+  line-height: var(--cordly-line-height-normal);
+}
+
+.cordly-field__description,
+.cordly-field__hint {
+  color: var(--cordly-color-text-muted);
+}
+
+// The error sits with the field rather than at the top of the form, because a
+// message a person has to scroll to find is a message they will not read.
+.cordly-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cordly-space-2xs);
+  color: var(--cordly-color-danger-text);
+}
+
+// A shape as well as a colour, so the error state survives a colour-vision
+// deficiency and forced-colours mode.
+.cordly-field__error-mark {
+  flex: none;
+  inline-size: 0.85em;
+  block-size: 0.85em;
+  margin-block-start: 0.25em;
+  border-radius: var(--cordly-radius-pill);
+  border: 1.5px solid currentcolor;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block: 0.12em 0.28em;
+    inline-size: 1.5px;
+    translate: -50% 0;
+    background-color: currentcolor;
+  }
+}
+
+.cordly-field__control {
+  @include control.base;
+  @include motion.transition(border-color, box-shadow, background-color);
+
+  display: flex;
+  align-items: center;
+  gap: var(--cordly-space-xs);
+  padding-inline: var(--cordly-space-sm);
+  min-block-size: var(--cordly-control-height-md);
+  background-color: var(--cordly-color-surface-sunken);
+  border-color: var(--cordly-color-control-border);
+  color: var(--cordly-color-text);
+
+  // The ring is drawn on the wrapper, so a prefix or suffix is inside it and
+  // the control reads as one object rather than three.
+  &:focus-within {
+    outline: var(--cordly-focus-ring-width) solid var(--cordly-color-focus-ring);
+    outline-offset: var(--cordly-focus-ring-offset);
+    border-color: var(--cordly-color-focus-ring);
+  }
+}
+
+:host([data-invalid]) .cordly-field__control {
+  border-color: var(--cordly-color-danger-border);
+}
+
+:host([data-disabled]) .cordly-field__control {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cordly-field__input {
+  flex: 1;
+  min-inline-size: 0;
+  border: 0;
+  padding-block: var(--cordly-space-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: var(--cordly-font-weight-regular);
+  outline: none;
+  resize: vertical;
+
+  &::placeholder {
+    color: var(--cordly-color-text-subtle);
+  }
+}
+
+:host([data-multiline]) .cordly-field__control {
+  align-items: stretch;
+  padding-block: var(--cordly-space-2xs);
+}
