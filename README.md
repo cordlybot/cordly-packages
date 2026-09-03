@@ -87,7 +87,7 @@ product name appears anywhere in the repository.
 
 Development context, architecture direction, and decisions live in the
 `cordly-vault` Obsidian vault at the workspace root — principally
-`ADR-037 - Shared frontend foundations are versioned packages` and
+`ADR-037 - Shared frontend foundations are a published package repository` and
 `Design/Cordly Shared Frontend UX Plan 2026-09-03`. The `docs/` folder here
 documents this repository only.
 

@@ -32,9 +32,13 @@ two harnesses, a support window somebody has to remember, and an API-equivalence
 test to stop the lines drifting — permanent cost, carried to serve one consumer
 that was one version behind.
 
-`cordly-www` is being moved to Angular 22 and TypeScript 6.0.3 as part of the
-same decision. Until that lands, `cordly-www` cannot install these packages; the
-follow-up is recorded in `AI_WORKSTREAMS.md`.
+`cordly-www` has been moved to Angular 22.1.4 and TypeScript 6.0.3 as part of the
+same decision — the same pins `cordly-panel` carries, so the two front ends share
+a toolchain rather than sharing a major by coincidence. Both consumers can now
+resolve these peer ranges.
+
+What still blocks either of them installing the packages is the registry
+decision, not a version: see `docs/release.md`.
 
 ## How the range is proved
 
