@@ -11,9 +11,8 @@ Nothing yet.
 
 ## 0.1.0 — 2026-09-03
 
-The first cut of Cordly's shared frontend foundations. Not published: the
-registry decision is open, so no consumer can install these yet. The artefacts
-build, pack, install from their tarballs, and pass every gate.
+The first cut of Cordly's shared frontend foundations, published to the public
+npm registry under the `@cordly` scope with provenance.
 
 ### `@cordly/tokens` 0.1.0
 

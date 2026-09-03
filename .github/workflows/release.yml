@@ -1,0 +1,124 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Build and verify without publishing'
+        type: boolean
+        default: true
+
+# Nothing is published from a laptop. The tarballs that reach the registry are
+# the ones this run built, from this commit, and npm provenance records that
+# link so anyone can check it with `npm audit signatures`.
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # The full gate again rather than trusting the CI run on the same commit.
+  # A release is the one moment where re-running everything is cheap relative to
+  # what it protects: a published version cannot be taken back.
+  verify:
+    runs-on: ubuntu-latest
+    container:
+      image: node:24-bookworm@sha256:be23f54a88d34e8824c741b19b91064094f92c1c97b194144bfc8b50d67258e2
+    steps:
+      - uses: actions/checkout@v5
+      - run: npm ci
+      - run: npm run verify
+      - name: The release is coherent
+        run: node tools/release.mjs check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-tarballs
+          path: artifacts/*.tgz
+          retention-days: 7
+
+  consumers:
+    needs: verify
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-tarballs
+          path: artifacts
+      - name: Compatibility harness at the floor of the peer range
+        working-directory: compat/angular-22
+        run: |
+          npm ci
+          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npx ng build
+      - name: Browser fixture
+        working-directory: fixtures/browser
+        run: |
+          npm ci
+          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npx ng build
+      - name: Server-rendered fixture
+        working-directory: fixtures/ssr
+        run: |
+          npm ci
+          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npx ng build
+      - run: npm ci
+      - name: Browser, mobile, and server-rendering gates
+        run: npx playwright test
+
+  publish:
+    needs: [verify, consumers]
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      # `id-token: write` is what makes provenance possible: it lets the runner
+      # get a short-lived OIDC token that npm verifies, so the attestation is
+      # produced by GitHub rather than asserted by the publisher.
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+
+      # Rebuilt here rather than downloaded. `npm publish` packs from the
+      # directory, so what reaches the registry has to be produced in the same
+      # job — publishing a downloaded artifact would break the provenance link
+      # between the tarball and this run.
+      - run: npm run build
+
+      - name: Publish anything not already on the registry
+        run: node tools/release.mjs publish ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '--dry-run' || '' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Pack the artefacts to attach to the release
+        if: github.event_name == 'push'
+        run: npm run pack:all
+
+      - name: GitHub release
+        if: github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.tgz
+          generate_release_notes: true
+          body: |
+            Published to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements).
+            Verify with `npm audit signatures`.
+
+            See [CHANGELOG.md](https://github.com/cordlybot/cordly-packages/blob/main/CHANGELOG.md)
+            for what changed in each package, and
+            [docs/compatibility.md](https://github.com/cordlybot/cordly-packages/blob/main/docs/compatibility.md)
+            for the supported Angular and TypeScript versions.

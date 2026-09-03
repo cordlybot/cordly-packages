@@ -28,7 +28,10 @@
     "package:check": "node tools/check-packages.mjs",
     "hygiene:check": "node tools/check-hygiene.mjs",
     "verify": "npm run format:check && npm run lint && npm run files:check && npm run hygiene:check && npm run tokens:check && npm run tokens:test && npm run build && npm run test && npm run api:check && npm run pack:all && npm run package:check",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "release:status": "node tools/release.mjs status",
+    "release:check": "node tools/release.mjs check",
+    "release:publish": "node tools/release.mjs publish"
   },
   "devDependencies": {
     "@angular/build": "22.1.6",
@@ -55,5 +58,13 @@
     "typescript": "6.0.3",
     "typescript-eslint": "8.69.0",
     "vitest": "4.1.11"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cordlybot/cordly-packages.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cordlybot/cordly-packages/issues"
+  },
+  "homepage": "https://github.com/cordlybot/cordly-packages#readme"
 }

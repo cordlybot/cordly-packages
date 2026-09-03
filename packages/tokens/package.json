@@ -23,7 +23,8 @@
     "node": ">=24"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public",
+    "provenance": true
   },
   "type": "module",
   "exports": {

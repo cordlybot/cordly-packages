@@ -1,0 +1,62 @@
+name: Bug report
+description: Something in a published package does not behave as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. The most useful thing you can give us is a
+        reproduction — a component, its inputs, and what you saw.
+
+        **Security problems do not go here.** Use the private advisory form
+        linked in `SECURITY.md`.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Which package
+      options:
+        - '@cordly/tokens'
+        - '@cordly/ui'
+        - '@cordly/widgets'
+        - More than one, or not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: '0.1.0'
+    validations:
+      required: true
+  - type: input
+    id: angular
+    attributes:
+      label: Angular version
+      placeholder: '22.1.4'
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what happened instead
+      description: If the documentation says something different from the behaviour, quote it.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: A template and the inputs you passed is usually enough. A link to a repository is better.
+      render: html
+    validations:
+      required: true
+  - type: checkboxes
+    id: accessibility
+    attributes:
+      label: Is this an accessibility problem?
+      description: >
+        Keyboard, screen reader, contrast, zoom, touch target, reduced motion, or
+        forced colours. These are release gates here, so a failure is a defect
+        rather than an enhancement — say so and it gets triaged that way.
+      options:
+        - label: Yes, this is an accessibility failure

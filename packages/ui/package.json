@@ -21,7 +21,8 @@
     "components"
   ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public",
+    "provenance": true
   },
   "sideEffects": false,
   "peerDependencies": {

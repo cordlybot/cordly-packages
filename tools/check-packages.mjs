@@ -194,7 +194,21 @@ for (const expectation of expectations) {
 
   if (!manifest.license) problems.push(`${where}: no license field`);
   if (!manifest.repository) problems.push(`${where}: no repository field`);
+  if (!manifest.description) problems.push(`${where}: no description field`);
   if (manifest.private === true) problems.push(`${where}: marked private but packed for release`);
+
+  // These publish to a public registry under a scope. npm defaults a scoped
+  // package to restricted, so omitting this does not publish a private package
+  // — it fails the publish with a 402 after the release has already been
+  // tagged. Provenance is asserted here too, because it is the difference
+  // between "someone published this" and "this workflow, from this commit,
+  // published this".
+  if (manifest.publishConfig?.access !== 'public') {
+    problems.push(`${where}: publishConfig.access must be "public" for a scoped public package`);
+  }
+  if (manifest.publishConfig?.provenance !== true) {
+    problems.push(`${where}: publishConfig.provenance must be true`);
+  }
 
   const bytes = readFileSync(join(artifacts, expectation.file)).length;
   const kilobytes = bytes / 1024;

@@ -1,8 +1,31 @@
 # cordly-packages
 
+[![packages](https://github.com/cordlybot/cordly-packages/actions/workflows/packages.yml/badge.svg)](https://github.com/cordlybot/cordly-packages/actions/workflows/packages.yml)
+[![@cordly/tokens](https://img.shields.io/npm/v/@cordly/tokens?label=%40cordly%2Ftokens)](https://www.npmjs.com/package/@cordly/tokens)
+[![@cordly/ui](https://img.shields.io/npm/v/@cordly/ui?label=%40cordly%2Fui)](https://www.npmjs.com/package/@cordly/ui)
+[![@cordly/widgets](https://img.shields.io/npm/v/@cordly/widgets?label=%40cordly%2Fwidgets)](https://www.npmjs.com/package/@cordly/widgets)
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 The shared frontend foundations for Cordly's web surfaces: design tokens,
 accessible Angular primitives, and domain-neutral composed widgets, published as
 three independently versioned packages.
+
+```bash
+npm install @cordly/tokens @cordly/ui @cordly/widgets
+```
+
+```css
+/* one import, at your style entry point */
+@import '@cordly/tokens/css';
+```
+
+```html
+<button cordlyButton variant="primary" (click)="apply()">Apply 3 changes</button>
+```
+
+Angular 22 on TypeScript 6. Every version is published from a tagged CI run with
+[npm provenance](https://docs.npmjs.com/generating-provenance-statements) —
+`npm audit signatures` proves which commit and which workflow produced it.
 
 | Package                               | What it owns                                                                                                                                     |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -97,4 +120,23 @@ documents this repository only.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — how to add a component without widening the boundary
 - [`VERSIONING.md`](VERSIONING.md) — what is breaking, and what deprecation means here
 
-MIT licensed.
+## Using these outside Cordly
+
+You are welcome to. They are MIT licensed and they carry nothing Cordly-specific
+— no routes, no endpoints, no product copy, no analytics. What you get is a token
+system with contrast proved in both themes, and a set of Angular primitives built
+on native elements.
+
+Two things to know before you depend on them:
+
+- **They are pre-1.0 and they follow Cordly's needs.** A component exists here
+  because a Cordly surface needed it. Proposals are welcome (see
+  [`CONTRIBUTING.md`](CONTRIBUTING.md)) and "the application should own this" is a
+  common and legitimate answer.
+- **Pin an exact version.** Pre-1.0, a breaking change bumps the minor. See
+  [`VERSIONING.md`](VERSIONING.md).
+
+- [`SECURITY.md`](SECURITY.md) — reporting a vulnerability, and what is in scope
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+
+MIT licensed. Copyright Cordly.

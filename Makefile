@@ -37,7 +37,8 @@ TARBALLS = /w/artifacts/cordly-tokens.tgz /w/artifacts/cordly-ui.tgz /w/artifact
 
 .PHONY: help install verify release format format-check lint files hygiene \
 	tokens tokens-build test build api api-write pack package-check \
-	fixtures fixture-browser fixture-ssr compat e2e clean shell
+	fixtures fixture-browser fixture-ssr compat e2e clean shell \
+	release-status release-check bump
 
 help: ## Show the available commands.
 	@echo cordly-packages
@@ -58,6 +59,10 @@ help: ## Show the available commands.
 	@echo "  make fixtures       Install the tarballs into both fixture consumers and build"
 	@echo "  make compat         Compile every public export at the floor of the peer range"
 	@echo "  make e2e            Browser, mobile, and SSR gates against the built fixtures"
+	@echo.
+	@echo "  make release-status Package versions against what the registry has"
+	@echo "  make release-check  Refuse an incoherent release, without publishing"
+	@echo "  make bump PKG=ui VERSION=0.2.0   Set one package's version"
 
 install: ## Install pinned dependencies into the module volumes.
 	$(RUN) npm ci
@@ -125,6 +130,15 @@ e2e: ## Browser, mobile, and SSR gates against the built fixtures.
 
 release: verify pack fixtures compat e2e ## Everything, including release evidence.
 	@echo "release: packages built, packed, installed from tarballs, and proved in a browser and on a server"
+
+release-status: ## Package versions against what the registry already has.
+	$(RUN) node tools/release.mjs status
+
+release-check: ## Refuse an incoherent release. Publishes nothing.
+	$(RUN) node tools/release.mjs check
+
+bump: ## Set one package's version, e.g. make bump PKG=ui VERSION=0.2.0
+	$(RUN) node tools/release.mjs bump $(PKG) $(VERSION)
 
 clean: ## Remove build output and the dependency volumes.
 	rm -rf dist artifacts out-tsc coverage test-results playwright-report

@@ -1,0 +1,41 @@
+version: 2
+updates:
+  # The toolchain, the fixtures, and the compatibility harness each pin their own
+  # dependencies, and the harness deliberately pins the *floor* of the supported
+  # peer range — so it is listed here with a narrower policy: a bump there is a
+  # change to what compatibility means, not routine maintenance.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      angular:
+        patterns: ['@angular/*', 'ng-packagr']
+      lint-and-format:
+        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'angular-eslint', 'prettier*']
+      testing:
+        patterns: ['vitest', '@vitest/*', 'jsdom', '@playwright/*', '@axe-core/*']
+
+  - package-ecosystem: npm
+    directory: /fixtures/browser
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      angular:
+        patterns: ['@angular/*']
+
+  - package-ecosystem: npm
+    directory: /fixtures/ssr
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      angular:
+        patterns: ['@angular/*']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
