@@ -45,7 +45,7 @@
     "@angular/platform-server": "22.1.4",
     "@angular/router": "22.1.4",
     "@eslint/js": "10.0.1",
-    "@types/node": "24.13.3",
+    "@types/node": "26.4.0",
     "angular-eslint": "22.2.0",
     "eslint": "10.9.1",
     "jsdom": "30.0.1",
