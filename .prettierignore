@@ -1,0 +1,12 @@
+node_modules/
+dist/
+artifacts/
+coverage/
+test-results/
+playwright-report/
+package-lock.json
+
+# Written by tools/build-tokens.mjs and compared byte for byte by tokens:check.
+# Formatting it here would make the generator and the checker disagree.
+packages/tokens/generated/
+api/

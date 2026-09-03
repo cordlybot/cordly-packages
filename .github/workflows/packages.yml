@@ -1,0 +1,111 @@
+name: packages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A design system that only passes on the author's machine is not a design
+# system. Every step below runs the npm script the repository documents, in the
+# image `make` uses locally, pinned by digest — so the gate that approves a
+# release in CI is the one a person ran.
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    container:
+      image: node:24-bookworm@sha256:be23f54a88d34e8824c741b19b91064094f92c1c97b194144bfc8b50d67258e2
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - run: npm ci
+
+      - name: Formatting
+        run: npm run format:check
+
+      - name: Lint, including the package boundary and template accessibility
+        run: npm run lint
+
+      - name: Component file structure
+        run: npm run files:check
+
+      - name: Credentials, local paths, personal data, third-party names
+        run: npm run hygiene:check
+
+      - name: Tokens match their source and every contrast pair holds
+        run: |
+          npm run tokens:check
+          npm run tokens:test
+
+      - name: Build both Angular packages
+        run: npm run build
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Public API matches its committed report
+        run: npm run api:check
+
+      - name: Pack the release artefacts
+        run: npm run pack:all
+
+      - name: Tarball contents, exports, peers, and side effects
+        run: npm run package:check
+
+      - name: Keep the artefacts for the consumer jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: tarballs
+          path: artifacts/*.tgz
+          retention-days: 1
+
+  # The release evidence: the packed artefacts installed into real consumers,
+  # never a workspace link. A symlink resolves whatever is on disk and ignores
+  # `files` and `exports` entirely, so it proves nothing about what ships.
+  consumers:
+    needs: verify
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: tarballs
+          path: artifacts
+
+      - name: Compatibility harness at the floor of the declared peer range
+        working-directory: compat/angular-22
+        run: |
+          npm ci
+          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npx ng build
+
+      - name: Browser fixture
+        working-directory: fixtures/browser
+        run: |
+          npm ci
+          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npx ng build
+
+      - name: Server-rendered fixture
+        working-directory: fixtures/ssr
+        run: |
+          npm ci
+          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npx ng build
+
+      - run: npm ci
+
+      - name: Browser, mobile, and server-rendering gates
+        run: npx playwright test
+
+      - name: Keep the report when something failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7

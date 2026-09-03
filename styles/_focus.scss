@@ -1,0 +1,16 @@
+// One focus treatment for every Cordly control.
+//
+// A ring plus an offset rather than an outline change, so the indicator never
+// alters an element's box and shifts the layout around it. `focus-visible` is
+// what decides: a pointer press should not paint a ring, and a keyboard arrival
+// always should.
+@mixin ring {
+  outline: var(--cordly-focus-ring-width) solid var(--cordly-color-focus-ring);
+  outline-offset: var(--cordly-focus-ring-offset);
+}
+
+@mixin visible {
+  &:focus-visible {
+    @include ring;
+  }
+}

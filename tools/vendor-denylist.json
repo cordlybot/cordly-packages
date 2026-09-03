@@ -1,0 +1,10 @@
+{
+  "algorithm": "sha256",
+  "note": "Third-party product names that must not appear anywhere Cordly owns. They are stored as SHA-256 hashes of the lowercased token rather than as plain text, because a denylist written in plain text is itself an occurrence of the thing it forbids — the file would fail its own check, and a workspace-wide search for the name would keep finding it here forever. tools/check-hygiene.mjs tokenises each file the same way and compares hashes. To add a name: node -e \"console.log(require('node:crypto').createHash('sha256').update('<name in lowercase>').digest('hex'))\" and paste the digest below with a description that does not name it.",
+  "tokens": [
+    {
+      "digest": "86a1ded79bb0e47a8d36365c9c30fb94c945f8b47950b9cbed68c7a814b4871b",
+      "describes": "A long-established general-purpose Discord bot, referenced in early Cordly product notes as the incumbent whose paywalling behaviour Cordly deliberately does not copy."
+    }
+  ]
+}

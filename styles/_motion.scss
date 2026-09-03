@@ -1,0 +1,42 @@
+// The reduced-motion policy, as a mixin pair.
+//
+// Collapsing every duration to nothing stops a loop, but it turns a hover
+// displacement into an instant jump — precisely the movement the preference
+// exists to remove. So a transition mixin pairs with a suppression mixin, and a
+// component that moves something declares both.
+@mixin transition($properties...) {
+  transition-property: $properties;
+  transition-duration: var(--cordly-duration-fast);
+  transition-timing-function: var(--cordly-ease-standard);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition-duration: 0.01ms;
+  }
+}
+
+@mixin press {
+  @media (prefers-reduced-motion: no-preference) {
+    &:active:not(:disabled) {
+      transform: scale(0.97);
+      transition-duration: var(--cordly-duration-instant);
+    }
+  }
+}
+
+// A surface that responds to the pointer. Under reduced motion it keeps the
+// elevation and loses the travel: the affordance survives, nothing moves.
+@mixin lift {
+  @include transition(box-shadow, border-color, transform, background-color);
+
+  &:hover,
+  &:focus-within {
+    box-shadow: var(--cordly-elevation-lifted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover,
+    &:focus-within {
+      transform: translate3d(0, var(--cordly-lift-distance), 0);
+    }
+  }
+}

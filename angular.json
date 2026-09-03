@@ -1,0 +1,72 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": false
+  },
+  "projects": {
+    "ui": {
+      "projectType": "library",
+      "root": "packages/ui",
+      "sourceRoot": "packages/ui/src",
+      "prefix": "cordly",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "packages/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "packages/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "packages/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "packages/ui/tsconfig.spec.json",
+            "runner": "vitest",
+            "setupFiles": ["packages/ui/src/test-setup.ts"]
+          }
+        }
+      }
+    },
+    "widgets": {
+      "projectType": "library",
+      "root": "packages/widgets",
+      "sourceRoot": "packages/widgets/src",
+      "prefix": "cordly",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "packages/widgets/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "packages/widgets/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "packages/widgets/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "packages/widgets/tsconfig.spec.json",
+            "runner": "vitest",
+            "setupFiles": ["packages/widgets/src/test-setup.ts"]
+          }
+        }
+      }
+    }
+  }
+}

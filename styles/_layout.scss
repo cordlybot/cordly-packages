@@ -1,0 +1,20 @@
+// The box model, stated rather than assumed.
+//
+// A design system cannot rely on a consumer having set `box-sizing: border-box`
+// globally. Without it, a component that is `inline-size: 100%` and then adds
+// padding is wider than the space it was given — which shows up not as a broken
+// component but as a page that scrolls sideways at a phone width or at 200%
+// zoom, two places nobody looks until an audit.
+//
+// Applied on `:host`, the descendant selector is scoped to the component's own
+// template under emulated encapsulation, so it reaches everything this package
+// draws and nothing a consumer projected into it.
+@mixin box {
+  box-sizing: border-box;
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    // Node types reach the tools and the browser gates. The library builds
+    // override this with `"types": []`, so nothing Node-shaped can leak into a
+    // published package.
+    "types": ["node"],
+    // `@cordly/widgets` compiles against the *built* `@cordly/ui`, not against
+    // its sources. The mapping points at `dist/ui`, so the type surface the
+    // widgets see is byte-for-byte the one a consumer installs from the tarball
+    // and a widget cannot reach a symbol that is not exported publicly.
+    "paths": {
+      "@cordly/ui": ["./dist/ui"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true,
+    "typeCheckHostBindings": true,
+    "extendedDiagnostics": {
+      "defaultCategory": "error"
+    }
+  }
+}

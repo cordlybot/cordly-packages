@@ -1,0 +1,4 @@
+# Package tarballs are hashed and their contents are compared byte for byte.
+# Committing CRLF would make the packaging gate fail on Windows and pass in CI,
+# which is the worst kind of gate.
+* text=auto eol=lf

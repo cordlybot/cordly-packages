@@ -1,0 +1,42 @@
+@use 'focus';
+
+// Shared control geometry, so a button, an input, and a select line up on the
+// same baseline grid without each restating the numbers.
+@mixin base {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cordly-space-xs);
+  border: var(--cordly-border-width) solid transparent;
+  border-radius: var(--cordly-radius-control);
+  font-family: var(--cordly-font-sans);
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+  line-height: var(--cordly-line-height-snug);
+  text-decoration: none;
+
+  @include focus.visible;
+}
+
+// Pointer targets below 44px pad their hit area up to it without growing their
+// painted box. The UX plan makes 44 by 44 a release gate; a 32px chip that is
+// only 32px to a finger fails it while looking correct.
+@mixin touch-target {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 0;
+    translate: 0 -50%;
+    min-height: var(--cordly-target-min);
+  }
+}
+
+@mixin disabled {
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}
