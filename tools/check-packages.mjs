@@ -77,7 +77,7 @@ const expectations = [
       '@angular/core': ANGULAR_PEER,
       '@angular/forms': ANGULAR_PEER,
       '@cordly/tokens': '^0.1.0',
-      '@cordly/ui': '^0.1.0',
+      '@cordly/ui': '^0.2.0',
     },
   },
 ];

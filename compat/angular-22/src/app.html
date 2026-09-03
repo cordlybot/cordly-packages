@@ -8,7 +8,21 @@
   <cordly-side-nav cordly-frame-navigation [groups]="navGroups" />
 
   <div [id]="probeId">
+    <cordly-page-header heading="Compatibility harness" eyebrow="Floor" description="Every export.">
+      <button cordly-page-header-actions cordlyButton type="button">Action</button>
+    </cordly-page-header>
+
     <p>{{ tokenSummary }} / reduced motion: {{ reducedMotion() }}</p>
+
+    <cordly-section heading="Section" description="A plain titled region.">
+      <a cordly-section-actions cordlyLink href="#a">See all</a>
+      <cordly-avatar name="Night Library" size="lg" />
+      <cordly-status-dot tone="success" label="Connected" />
+      <cordly-separator semantic />
+      <cordly-error-state heading="Something failed" body="And here is what to do.">
+        <button cordlyButton type="button">Try again</button>
+      </cordly-error-state>
+    </cordly-section>
 
     <cordly-stat-row [stats]="stats" label="Stats" />
 

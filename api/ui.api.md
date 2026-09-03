@@ -145,6 +145,20 @@ declare class CordlyEmptyState {
 }
 ```
 
+## class CordlyErrorState
+
+```ts
+declare class CordlyErrorState {
+ readonly heading: _angular_core.InputSignal<string>;
+ readonly body: _angular_core.InputSignal<string | null>;
+ readonly detail: _angular_core.InputSignal<string | null>;
+ private readonly host;
+ constructor();
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyErrorState, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyErrorState, "cordly-error-state", never, { "heading": { "alias": "heading"; "required": true; "isSignal": true; }; "body": { "alias": "body"; "required": false; "isSignal": true; }; "detail": { "alias": "detail"; "required": false; "isSignal": true; }; }, {}, never, ["*"], true, never>;
+}
+```
+
 ## type CordlyFieldType
 
 ```ts
@@ -349,6 +363,26 @@ declare class CordlyStatus {
  static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyStatus, never>;
  static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyStatus, "cordly-status", never, { "tone": { "alias": "tone"; "required": false; "isSignal": true; }; "heading": { "alias": "heading"; "required": false; "isSignal": true; }; "live": { "alias": "live"; "required": false; "isSignal": true; }; }, {}, never, ["*", "[cordly-status-actions]"], true, never>;
 }
+```
+
+## class CordlyStatusDot
+
+```ts
+declare class CordlyStatusDot {
+ readonly label: _angular_core.InputSignal<string>;
+ readonly tone: _angular_core.InputSignal<CordlyTone>;
+ readonly size: _angular_core.InputSignal<CordlyStatusDotSize>;
+ readonly hideLabel: _angular_core.InputSignalWithTransform<boolean, unknown>;
+ readonly live: _angular_core.InputSignalWithTransform<boolean, unknown>;
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyStatusDot, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyStatusDot, "cordly-status-dot", never, { "label": { "alias": "label"; "required": true; "isSignal": true; }; "tone": { "alias": "tone"; "required": false; "isSignal": true; }; "size": { "alias": "size"; "required": false; "isSignal": true; }; "hideLabel": { "alias": "hideLabel"; "required": false; "isSignal": true; }; "live": { "alias": "live"; "required": false; "isSignal": true; }; }, {}, never, never, true, never>;
+}
+```
+
+## type CordlyStatusDotSize
+
+```ts
+type CordlyStatusDotSize = 'sm' | 'md' | 'lg';
 ```
 
 ## class CordlySwitch

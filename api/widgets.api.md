@@ -165,6 +165,18 @@ interface CordlyNavItem {
 }
 ```
 
+## class CordlyPageHeader
+
+```ts
+declare class CordlyPageHeader {
+ readonly heading: _angular_core.InputSignal<string>;
+ readonly eyebrow: _angular_core.InputSignal<string | null>;
+ readonly description: _angular_core.InputSignal<string | null>;
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyPageHeader, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyPageHeader, "cordly-page-header", never, { "heading": { "alias": "heading"; "required": true; "isSignal": true; }; "eyebrow": { "alias": "eyebrow"; "required": false; "isSignal": true; }; "description": { "alias": "description"; "required": false; "isSignal": true; }; }, {}, never, ["[cordly-page-header-before]", "[cordly-page-header-actions]", "*"], true, never>;
+}
+```
+
 ## class CordlyPreferenceGroup
 
 ```ts
@@ -203,6 +215,18 @@ declare class CordlyReviewList {
  readonly discardRow: _angular_core.OutputEmitterRef<CordlyChangeRow>;
  static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyReviewList, never>;
  static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyReviewList, "cordly-review-list", never, { "groups": { "alias": "groups"; "required": true; "isSignal": true; }; "statusLabels": { "alias": "statusLabels"; "required": true; "isSignal": true; }; "originLabels": { "alias": "originLabels"; "required": true; "isSignal": true; }; "riskLabels": { "alias": "riskLabels"; "required": true; "isSignal": true; }; "beforeLabel": { "alias": "beforeLabel"; "required": true; "isSignal": true; }; "afterLabel": { "alias": "afterLabel"; "required": true; "isSignal": true; }; "discardLabel": { "alias": "discardLabel"; "required": false; "isSignal": true; }; }, { "discardRow": "discardRow"; }, never, never, true, never>;
+}
+```
+
+## class CordlySection
+
+```ts
+declare class CordlySection {
+ readonly heading: _angular_core.InputSignal<string>;
+ readonly description: _angular_core.InputSignal<string | null>;
+ protected readonly headingId: string;
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlySection, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlySection, "cordly-section", never, { "heading": { "alias": "heading"; "required": true; "isSignal": true; }; "description": { "alias": "description"; "required": false; "isSignal": true; }; }, {}, never, ["[cordly-section-actions]", "*"], true, never>;
 }
 ```
 

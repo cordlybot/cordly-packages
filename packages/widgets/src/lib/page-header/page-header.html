@@ -1,0 +1,21 @@
+<div class="cordly-page-header__before">
+  <ng-content select="[cordly-page-header-before]" />
+</div>
+
+<div class="cordly-page-header__row">
+  <div class="cordly-page-header__text">
+    @if (eyebrow()) {
+      <p class="cordly-page-header__eyebrow">{{ eyebrow() }}</p>
+    }
+    <h1 class="cordly-page-header__heading">{{ heading() }}</h1>
+    @if (description()) {
+      <p class="cordly-page-header__description">{{ description() }}</p>
+    }
+  </div>
+
+  <div class="cordly-page-header__actions">
+    <ng-content select="[cordly-page-header-actions]" />
+  </div>
+</div>
+
+<ng-content />

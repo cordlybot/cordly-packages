@@ -13,7 +13,13 @@
   <cordly-side-nav cordly-frame-navigation [groups]="navigation" />
 
   <div class="ssr-page">
-    <h1 id="ssr-title">Server-rendered fixture</h1>
+    <cordly-page-header
+      heading="Server-rendered fixture"
+      eyebrow="Every component that renders markup"
+      description="If anything here reaches for a browser API during a render, this page fails to build."
+    >
+      <cordly-avatar cordly-page-header-actions name="Night Library" size="lg" />
+    </cordly-page-header>
 
     <cordly-stat-row [stats]="stats" label="Server health" />
 
@@ -88,6 +94,19 @@
       beforeLabel="Was"
       afterLabel="Becomes"
     />
+
+    <cordly-section heading="States" description="Rendered on the server, every one.">
+      <cordly-status-dot tone="success" label="Connected" />
+      <cordly-status-dot tone="danger" label="Offline" hideLabel />
+      <cordly-separator semantic />
+      <cordly-error-state
+        heading="Could not load your servers"
+        body="Cordly could not reach Discord. Your settings are unchanged."
+        detail="correlation 4f2a-91c3"
+      >
+        <button cordlyButton type="button">Try again</button>
+      </cordly-error-state>
+    </cordly-section>
 
     <cordly-skeleton [count]="2" />
 

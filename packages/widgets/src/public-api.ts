@@ -20,6 +20,10 @@ export type { CordlyNavGroup, CordlyNavItem } from './lib/side-nav/side-nav';
 export { CordlyStatRow } from './lib/stat-row/stat-row';
 export type { CordlyStat } from './lib/stat-row/stat-row';
 
+export { CordlyPageHeader } from './lib/page-header/page-header';
+
+export { CordlySection } from './lib/section/section';
+
 export { CordlySettingsSection } from './lib/settings-section/settings-section';
 
 export { CordlyCatalogue } from './lib/catalogue/catalogue';

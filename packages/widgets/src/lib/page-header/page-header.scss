@@ -1,0 +1,66 @@
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-md);
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+}
+
+.cordly-page-header__before:empty,
+.cordly-page-header__actions:empty {
+  display: none;
+}
+
+// Wraps rather than truncating. A long server name is information, and an
+// action pushed off the end of a row is an action nobody can reach.
+.cordly-page-header__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cordly-space-sm) var(--cordly-space-lg);
+}
+
+.cordly-page-header__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-3xs);
+  min-inline-size: 0;
+}
+
+.cordly-page-header__eyebrow {
+  margin: 0;
+  font-size: var(--cordly-font-size-xs);
+  font-weight: var(--cordly-font-weight-semibold);
+  letter-spacing: var(--cordly-letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-page-header__heading {
+  margin: 0;
+  font-size: var(--cordly-font-size-2xl);
+  font-weight: var(--cordly-font-weight-semibold);
+  line-height: var(--cordly-line-height-tight);
+  letter-spacing: var(--cordly-letter-spacing-tight);
+  text-wrap: balance;
+}
+
+.cordly-page-header__description {
+  margin: 0;
+  max-inline-size: var(--cordly-measure-prose);
+  font-size: var(--cordly-font-size-sm);
+  line-height: var(--cordly-line-height-normal);
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cordly-space-xs);
+}

@@ -7,7 +7,34 @@ the packages are versioned independently — see `VERSIONING.md`.
 
 ## Unreleased
 
-Nothing yet.
+### `@cordly/ui` 0.2.0
+
+**Added**
+
+- `CordlyStatusDot` — a coloured dot beside a word, where the word is required.
+  A dot alone encodes its meaning entirely in hue: unreadable with a
+  colour-vision deficiency, gone in forced-colours mode, and absent from a
+  screen reader. `hideLabel` takes the label off the screen and leaves it in the
+  accessibility tree; it does not remove it.
+- `CordlyErrorState` — something failed where content should have been.
+  Deliberately not the same component as `CordlyEmptyState`: nothing-yet is
+  normal and says nothing, something-failed is not and announces itself with
+  `role="alert"`. It refuses in development without a recovery action, and keeps
+  the technical remainder in a separate `detail` input so a stack trace cannot
+  land where the plain-language explanation belongs.
+
+### `@cordly/widgets` 0.2.0
+
+**Added**
+
+- `CordlyPageHeader` — eyebrow, the page's one `<h1>`, description, an actions
+  slot, and a `before` slot for a breadcrumb the application owns. The heading
+  level is not configurable: an input for it eventually gets `h3` from somebody
+  matching a visual size, and the document outline stops describing the page.
+- `CordlySection` — a titled block that is a real landmark named by its own
+  heading. `CordlySettingsSection` remains its sibling for configuration
+  sections; most sections have no aside, notice, or disclosure, and giving them
+  a component with five unused slots reads worse than the markup it replaced.
 
 ## 0.1.0 — 2026-09-03
 

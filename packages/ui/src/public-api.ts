@@ -37,9 +37,12 @@ export type { CordlySelectOption } from './lib/select-field/select-field';
 export { CordlySwitch } from './lib/switch/switch';
 
 export { CordlyStatus } from './lib/status/status';
+export { CordlyStatusDot } from './lib/status-dot/status-dot';
+export type { CordlyStatusDotSize } from './lib/status-dot/status-dot';
 export { CordlySkeleton } from './lib/skeleton/skeleton';
 export type { CordlySkeletonShape } from './lib/skeleton/skeleton';
 export { CordlyEmptyState } from './lib/empty-state/empty-state';
+export { CordlyErrorState } from './lib/error-state/error-state';
 
 export { CordlyToastRegion } from './lib/toast/toast-region';
 export { CordlyToasts } from './lib/toast/toasts';

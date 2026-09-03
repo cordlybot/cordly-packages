@@ -1,0 +1,102 @@
+@use 'layout';
+
+// A coloured dot beside a word.
+//
+// The word is not optional, and that is the whole design. A dot alone encodes
+// its meaning entirely in hue, which is unreadable with a colour-vision
+// deficiency, gone in forced-colours mode, and absent from a screen reader. So
+// the label is required and `hideLabel` only takes it off the screen — it stays
+// in the accessibility tree.
+:host {
+  @include layout.box;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cordly-space-2xs);
+  font-family: var(--cordly-font-sans);
+  font-size: var(--cordly-font-size-xs);
+  color: var(--cordly-color-text-muted);
+  white-space: nowrap;
+}
+
+.cordly-status-dot__mark {
+  position: relative;
+  flex: none;
+  border-radius: var(--cordly-radius-pill);
+  background-color: currentcolor;
+}
+
+:host([data-size='sm']) .cordly-status-dot__mark {
+  inline-size: 0.375rem;
+  block-size: 0.375rem;
+}
+
+:host([data-size='md']) .cordly-status-dot__mark {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+}
+
+:host([data-size='lg']) .cordly-status-dot__mark {
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+}
+
+:host([data-tone='info']) {
+  color: var(--cordly-color-info-text);
+}
+
+:host([data-tone='success']) {
+  color: var(--cordly-color-success-text);
+}
+
+:host([data-tone='warning']) {
+  color: var(--cordly-color-warning-text);
+}
+
+:host([data-tone='danger']) {
+  color: var(--cordly-color-danger-text);
+}
+
+// Clipped rather than hidden: the label still has to reach a screen reader,
+// which is the entire reason it is required.
+:host([data-hide-label]) .cordly-status-dot__label {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// A pulse for something genuinely live. The halo animates rather than the dot,
+// so the colour that carries the meaning never fades out mid-cycle and leaves
+// the state ambiguous.
+:host([data-live]) .cordly-status-dot__mark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: currentcolor;
+  animation: cordly-status-dot-pulse 2.4s var(--cordly-ease-ambient) infinite;
+}
+
+@keyframes cordly-status-dot-pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+// The resting state already says everything; the pulse is emphasis, so removing
+// it loses nothing a reader needed.
+@media (prefers-reduced-motion: reduce) {
+  :host([data-live]) .cordly-status-dot__mark::after {
+    animation: none;
+  }
+}

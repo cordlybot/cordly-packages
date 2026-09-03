@@ -1,0 +1,15 @@
+<span class="cordly-error-state__mark" aria-hidden="true"></span>
+
+<p class="cordly-error-state__heading">{{ heading() }}</p>
+
+@if (body()) {
+  <p class="cordly-error-state__body">{{ body() }}</p>
+}
+
+@if (detail()) {
+  <p class="cordly-error-state__detail">{{ detail() }}</p>
+}
+
+<div class="cordly-error-state__actions">
+  <ng-content />
+</div>

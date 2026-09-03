@@ -1,0 +1,14 @@
+<div class="cordly-section__row">
+  <div class="cordly-section__text">
+    <h2 class="cordly-section__heading" [id]="headingId">{{ heading() }}</h2>
+    @if (description()) {
+      <p class="cordly-section__description">{{ description() }}</p>
+    }
+  </div>
+
+  <div class="cordly-section__actions">
+    <ng-content select="[cordly-section-actions]" />
+  </div>
+</div>
+
+<ng-content />

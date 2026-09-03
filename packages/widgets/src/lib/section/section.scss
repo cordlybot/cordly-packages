@@ -1,0 +1,52 @@
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-md);
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+}
+
+.cordly-section__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cordly-space-2xs) var(--cordly-space-md);
+}
+
+.cordly-section__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-3xs);
+  min-inline-size: 0;
+}
+
+.cordly-section__heading {
+  margin: 0;
+  font-size: var(--cordly-font-size-md);
+  font-weight: var(--cordly-font-weight-semibold);
+  line-height: var(--cordly-line-height-tight);
+}
+
+.cordly-section__description {
+  margin: 0;
+  max-inline-size: var(--cordly-measure-prose);
+  font-size: var(--cordly-font-size-sm);
+  line-height: var(--cordly-line-height-normal);
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-section__actions:empty {
+  display: none;
+}
+
+.cordly-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cordly-space-xs);
+}
