@@ -90,10 +90,18 @@ opens a GitHub release with the tarballs attached.
 Two things a maintainer sets up and nobody touches again:
 
 - **`NPM_TOKEN`** — a granular npm access token with publish rights on the
-  `@cordly` scope, stored as a repository secret. The release workflow reads it
-  through an `npm` [deployment
-  environment](https://docs.github.com/en/actions/deployment/targeting-different-environments),
-  so publishing can require an approval if you want one.
+  `@cordly` scope, stored as a repository secret.
+
+  Until it exists, a tag still produces a fully verified GitHub release with the
+  tarballs attached; it just does not reach the registry, and the release notes
+  say so rather than implying a version is installable when it is not. Add the
+  secret and re-run the workflow to publish.
+
+  To require a human approval before publishing, create a GitHub deployment
+  environment named `npm` with a required reviewer and add `environment: npm` to
+  the publish job. It is left out by default because naming an environment that
+  does not exist fails the job before it starts.
+
 - **The `@cordly` scope**, claimed on npmjs.com by the organisation that owns
   it.
 
