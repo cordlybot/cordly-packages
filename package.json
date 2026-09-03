@@ -12,8 +12,8 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "node tools/check-build-artifacts.mjs && eslint .",
+    "lint:fix": "node tools/check-build-artifacts.mjs && eslint . --fix",
     "tokens:build": "node packages/tokens/tools/build-tokens.mjs",
     "tokens:check": "node packages/tokens/tools/build-tokens.mjs --check",
     "tokens:test": "node --test packages/tokens/test/*.test.mjs",
@@ -27,11 +27,12 @@
     "pack:all": "node tools/pack.mjs",
     "package:check": "node tools/check-packages.mjs",
     "hygiene:check": "node tools/check-hygiene.mjs",
-    "verify": "npm run format:check && npm run lint && npm run files:check && npm run hygiene:check && npm run tokens:check && npm run tokens:test && npm run build && npm run test && npm run api:check && npm run pack:all && npm run package:check",
+    "verify": "npm run format:check && npm run tokens:check && npm run tokens:test && npm run build && npm run lint && npm run files:check && npm run hygiene:check && npm test && npm run api:check && npm run pack:all && npm run package:check",
     "e2e": "npm --prefix e2e exec -- playwright test --config e2e/playwright.config.ts",
     "release:status": "node tools/release.mjs status",
     "release:check": "node tools/release.mjs check",
-    "release:publish": "node tools/release.mjs publish"
+    "release:publish": "node tools/release.mjs publish",
+    "artifacts:check": "node tools/check-build-artifacts.mjs"
   },
   "devDependencies": {
     "@angular/build": "22.1.6",

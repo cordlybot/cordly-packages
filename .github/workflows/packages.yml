@@ -42,6 +42,18 @@ jobs:
       - name: Formatting
         run: npm run format:check
 
+      - name: Tokens match their source and every contrast pair holds
+        run: |
+          npm run tokens:check
+          npm run tokens:test
+
+      # Before lint, not after. @cordly/widgets is type-checked against the
+      # built @cordly/ui rather than against its sources, so every type-aware
+      # tool needs this to have run. The old order passed locally only because
+      # dist/ was already there from a previous build.
+      - name: Build both Angular packages
+        run: npm run build
+
       - name: Lint, including the package boundary and template accessibility
         run: npm run lint
 
@@ -50,14 +62,6 @@ jobs:
 
       - name: Credentials, local paths, personal data, third-party names
         run: npm run hygiene:check
-
-      - name: Tokens match their source and every contrast pair holds
-        run: |
-          npm run tokens:check
-          npm run tokens:test
-
-      - name: Build both Angular packages
-        run: npm run build
 
       - name: Unit tests
         run: npm test

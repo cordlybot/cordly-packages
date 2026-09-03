@@ -78,7 +78,7 @@ format: ## Rewrite files to the repository's formatting.
 format-check: ## Formatting is already correct.
 	$(RUN) npm run format:check
 
-lint: ## Lint, including the package-boundary and template accessibility rules.
+lint: build ## Lint, including the package-boundary and template accessibility rules.
 	$(RUN) npm run lint
 
 files: ## Every component is four files and every directive two.
