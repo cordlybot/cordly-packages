@@ -7,20 +7,7 @@ the packages are versioned independently — see `VERSIONING.md`.
 
 ## Unreleased
 
-### `@cordly/ui`
-
-**Added**
-
-- `CordlyAvatar` — a picture of a person or a place with an initials fallback.
-  Hidden from assistive technology, because an avatar sits beside the name it
-  depicts and exposing it makes a screen reader read that name twice. A broken
-  image falls back to initials rather than to the browser's broken-image glyph:
-  avatar URLs point at a third party and expire, and a page of those looks like
-  the application is broken.
-- `CordlySeparator` — decorative by default, `semantic` when the rule genuinely
-  divides two regions. The default is the useful part: a separator exposed
-  between every pair of rows in a list is noise a sighted reader skips past
-  without noticing and a screen-reader user has to listen to.
+Nothing yet.
 
 ## 0.1.0 — 2026-09-03
 
@@ -60,6 +47,13 @@ npm registry under the `@cordly` scope with provenance.
 - Text field, select field, and switch, each owning the `id`/`for`/
   `aria-describedby` wiring between a label, a description, a hint, and an error.
 - Badge, card, status, skeleton, and empty state.
+- Avatar with an initials fallback, hidden from assistive technology because it
+  sits beside the name it depicts; a broken image falls back to initials rather
+  than to the browser's broken-image glyph, since avatar URLs point at a third
+  party and expire.
+- Separator, decorative by default and `semantic` when the rule genuinely
+  divides two regions — a rule announced between every pair of rows in a list is
+  noise a sighted reader never notices.
 - Dialog and drawer built on the platform's `<dialog>` in modal mode, with focus
   restoration to the trigger and a reported close reason.
 - Menu with the full keyboard model, and a tooltip that opens on focus as well as
