@@ -1,0 +1,117 @@
+@use 'focus';
+@use 'layout';
+
+// One decision per section, in one vertical rhythm.
+//
+// No tabs. A module split across tabs hides half its state from the person
+// deciding whether to change the other half, and it makes "what did I change?"
+// a question the interface cannot answer.
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-sm);
+  padding-block: var(--cordly-space-lg);
+  border-block-end: var(--cordly-border-width) solid var(--cordly-color-border-subtle);
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+}
+
+:host(:last-of-type) {
+  border-block-end: 0;
+}
+
+.cordly-settings-section__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--cordly-space-2xs) var(--cordly-space-md);
+}
+
+.cordly-settings-section__heading {
+  margin: 0;
+  font-size: var(--cordly-font-size-lg);
+  font-weight: var(--cordly-font-weight-semibold);
+  line-height: var(--cordly-line-height-tight);
+}
+
+.cordly-settings-section__description {
+  grid-column: 1;
+  margin: 0;
+  max-inline-size: var(--cordly-measure-prose);
+  font-size: var(--cordly-font-size-sm);
+  line-height: var(--cordly-line-height-normal);
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-settings-section__aside {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  align-self: start;
+}
+
+.cordly-settings-section__aside:empty,
+.cordly-settings-section__notice:empty {
+  display: none;
+}
+
+.cordly-settings-section__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-md);
+  max-inline-size: var(--cordly-measure-prose);
+}
+
+// Progressive disclosure on a `<details>`, so the open state is the platform's:
+// it works with no JavaScript, it is announced correctly, and in-page find
+// reaches text inside a closed section instead of pretending it is not there.
+.cordly-settings-section__advanced-summary {
+  @include focus.visible;
+
+  display: flex;
+  align-items: center;
+  gap: var(--cordly-space-2xs);
+  min-block-size: var(--cordly-target-min);
+  border-radius: var(--cordly-radius-control);
+  color: var(--cordly-color-text-muted);
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::before {
+    content: '';
+    inline-size: 0.45em;
+    block-size: 0.45em;
+    border-block-end: 1.5px solid currentcolor;
+    border-inline-end: 1.5px solid currentcolor;
+    rotate: -45deg;
+    transition: rotate var(--cordly-duration-fast) var(--cordly-ease-standard);
+  }
+
+  &:hover {
+    color: var(--cordly-color-text);
+  }
+}
+
+[open] > .cordly-settings-section__advanced-summary::before {
+  rotate: 45deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cordly-settings-section__advanced-summary::before {
+    transition-duration: 0.01ms;
+  }
+}
+
+.cordly-settings-section__advanced-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-md);
+  padding-block-start: var(--cordly-space-sm);
+  max-inline-size: var(--cordly-measure-prose);
+}

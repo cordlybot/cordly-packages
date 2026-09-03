@@ -1,0 +1,25 @@
+<ul class="cordly-stat-row__list" [attr.aria-label]="label()">
+  @for (stat of stats(); track stat.id) {
+    <li class="cordly-stat-row__item" [attr.data-tone]="stat.tone ?? 'neutral'">
+      @if (stat.action; as action) {
+        <button
+          type="button"
+          class="cordly-stat-row__tile cordly-stat-row__tile--action"
+          [attr.aria-label]="stat.label + ', ' + stat.value + '. ' + action.label"
+          (click)="activate.emit(stat)"
+        >
+          <span class="cordly-stat-row__label">{{ stat.label }}</span>
+          <span class="cordly-stat-row__value">{{ stat.value }}</span>
+          <span class="cordly-stat-row__meaning">{{ stat.meaning }}</span>
+          <span class="cordly-stat-row__action" aria-hidden="true">{{ action.label }}</span>
+        </button>
+      } @else {
+        <div class="cordly-stat-row__tile">
+          <span class="cordly-stat-row__label">{{ stat.label }}</span>
+          <span class="cordly-stat-row__value">{{ stat.value }}</span>
+          <span class="cordly-stat-row__meaning">{{ stat.meaning }}</span>
+        </div>
+      }
+    </li>
+  }
+</ul>

@@ -1,0 +1,28 @@
+<a class="cordly-app-frame__skip" [href]="'#' + mainId">{{ skipLabel() }}</a>
+
+<header class="cordly-app-frame__banner">
+  <ng-content select="[cordly-frame-header]" />
+</header>
+
+<div class="cordly-app-frame__row">
+  @if (!bare()) {
+    <nav class="cordly-app-frame__navigation" [attr.aria-label]="navigationLabel()">
+      <ng-content select="[cordly-frame-navigation]" />
+    </nav>
+
+    <button
+      type="button"
+      class="cordly-app-frame__scrim"
+      [attr.aria-label]="skipLabel()"
+      tabindex="-1"
+      aria-hidden="true"
+      (click)="closeNavigation()"
+    ></button>
+  }
+
+  <main class="cordly-app-frame__main" [id]="mainId" tabindex="-1">
+    <ng-content />
+  </main>
+</div>
+
+<ng-content select="[cordly-frame-footer]" />

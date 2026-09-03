@@ -1,0 +1,23 @@
+@for (group of groups(); track group.id) {
+  <section class="cordly-side-nav__group">
+    <h2 class="cordly-side-nav__group-label">{{ group.label }}</h2>
+    <ul class="cordly-side-nav__list">
+      @for (item of group.items; track item.id) {
+        <li>
+          <a
+            class="cordly-side-nav__item"
+            [attr.href]="item.href ?? '#'"
+            [attr.aria-current]="item.current ? 'page' : null"
+            [attr.aria-disabled]="item.disabled ? 'true' : null"
+            (click)="choose(item, $event)"
+          >
+            <span class="cordly-side-nav__item-label">{{ item.label }}</span>
+            @if (item.badge) {
+              <span class="cordly-side-nav__item-badge">{{ item.badge }}</span>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+}

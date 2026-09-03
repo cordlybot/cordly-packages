@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/widgets",
+    "declarationMap": true,
+    "types": []
+  },
+  "exclude": ["**/*.spec.ts", "src/testing/**/*"],
+  "include": ["src/**/*.ts"]
+}

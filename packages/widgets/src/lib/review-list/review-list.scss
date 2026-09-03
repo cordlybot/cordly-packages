@@ -1,0 +1,142 @@
+@use 'control';
+@use 'motion';
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-lg);
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+}
+
+.cordly-review-list__group-label {
+  margin: 0 0 var(--cordly-space-xs);
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-semibold);
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-review-list__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-xs);
+}
+
+.cordly-review-list__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--cordly-space-xs) var(--cordly-space-md);
+  padding: var(--cordly-space-sm) var(--cordly-space-md);
+  border: var(--cordly-border-width) solid var(--cordly-color-border);
+  border-radius: var(--cordly-radius-control);
+  background-color: var(--cordly-color-surface);
+}
+
+// A failed or blocked row gets an edge as well as a word. The word is what
+// carries the meaning; the edge is what makes it findable in a list of twenty.
+.cordly-review-list__row[data-status='failed'],
+.cordly-review-list__row[data-status='blocked'] {
+  border-inline-start: var(--cordly-border-width-strong) solid var(--cordly-color-danger-border);
+}
+
+.cordly-review-list__row[data-status='applied'] {
+  border-inline-start: var(--cordly-border-width-strong) solid var(--cordly-color-success-border);
+}
+
+.cordly-review-list__what {
+  margin: 0;
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+}
+
+.cordly-review-list__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cordly-space-xs);
+  margin: var(--cordly-space-3xs) 0 0;
+  font-size: var(--cordly-font-size-xs);
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-review-list__status[data-status='failed'],
+.cordly-review-list__status[data-status='blocked'] {
+  color: var(--cordly-color-danger-text);
+}
+
+.cordly-review-list__status[data-status='applied'] {
+  color: var(--cordly-color-success-text);
+}
+
+.cordly-review-list__risk[data-risk='irreversible'] {
+  color: var(--cordly-color-danger-text);
+  font-weight: var(--cordly-font-weight-medium);
+}
+
+.cordly-review-list__risk[data-risk='disruptive'] {
+  color: var(--cordly-color-warning-text);
+}
+
+// A description list, so a screen reader reads "was, X; becomes, Y" rather than
+// two anonymous values in a row it has to guess the order of.
+.cordly-review-list__values {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--cordly-space-3xs) var(--cordly-space-xs);
+  margin: 0;
+  font-size: var(--cordly-font-size-xs);
+
+  dt {
+    color: var(--cordly-color-text-subtle);
+  }
+
+  dd {
+    margin: 0;
+    font-family: var(--cordly-font-mono);
+    overflow-wrap: anywhere;
+  }
+}
+
+.cordly-review-list__before {
+  color: var(--cordly-color-text-muted);
+  text-decoration: line-through;
+}
+
+.cordly-review-list__after {
+  color: var(--cordly-color-text);
+}
+
+.cordly-review-list__detail {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--cordly-font-size-xs);
+  line-height: var(--cordly-line-height-normal);
+  color: var(--cordly-color-danger-text);
+}
+
+.cordly-review-list__discard {
+  @include control.base;
+  @include control.disabled;
+  @include control.touch-target;
+  @include motion.transition(background-color, color);
+
+  align-self: start;
+  block-size: var(--cordly-control-height-sm);
+  padding-inline: var(--cordly-space-sm);
+  background: transparent;
+  border-color: var(--cordly-color-border);
+  color: var(--cordly-color-text-muted);
+  font-size: var(--cordly-font-size-xs);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: var(--cordly-color-control);
+    color: var(--cordly-color-text);
+  }
+}

@@ -1,0 +1,46 @@
+<div class="cordly-catalogue__controls">
+  @if (searchable()) {
+    <div class="cordly-catalogue__search">
+      <label class="cordly-catalogue__search-label" [attr.for]="searchId">
+        {{ searchLabel() }}
+      </label>
+      <input
+        class="cordly-catalogue__search-input"
+        type="search"
+        [id]="searchId"
+        [value]="query()"
+        [attr.placeholder]="searchPlaceholder()"
+        [attr.aria-describedby]="countId"
+        (input)="handleQuery($event)"
+      />
+    </div>
+  }
+
+  @if (filters().length > 0) {
+    <div class="cordly-catalogue__filters" role="group" [attr.aria-label]="filtersLabel()">
+      @for (filter of filters(); track filter.id) {
+        <button
+          type="button"
+          class="cordly-catalogue__filter"
+          [attr.aria-pressed]="activeFilterId() === filter.id"
+          (click)="chooseFilter(filter)"
+        >
+          {{ filter.label }}
+          @if (filter.count !== undefined) {
+            <span class="cordly-catalogue__filter-count">{{ filter.count }}</span>
+          }
+        </button>
+      }
+    </div>
+  }
+</div>
+
+<p class="cordly-catalogue__count" [id]="countId" aria-live="polite">{{ countLabel() }}</p>
+
+@if (empty()) {
+  <ng-content select="[cordly-catalogue-empty]" />
+} @else {
+  <div class="cordly-catalogue__results">
+    <ng-content />
+  </div>
+}

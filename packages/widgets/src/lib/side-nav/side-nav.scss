@@ -1,0 +1,78 @@
+@use 'focus';
+@use 'motion';
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-lg);
+  padding: var(--cordly-space-md) var(--cordly-space-sm);
+  font-family: var(--cordly-font-sans);
+}
+
+.cordly-side-nav__group-label {
+  margin: 0 0 var(--cordly-space-2xs);
+  padding-inline: var(--cordly-space-sm);
+  font-size: var(--cordly-font-size-2xs);
+  font-weight: var(--cordly-font-weight-semibold);
+  letter-spacing: var(--cordly-letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--cordly-color-text-subtle);
+}
+
+.cordly-side-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-3xs);
+}
+
+.cordly-side-nav__item {
+  @include focus.visible;
+  @include motion.transition(background-color, color);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cordly-space-xs);
+  min-block-size: var(--cordly-target-min);
+  padding: var(--cordly-space-xs) var(--cordly-space-sm);
+  border-radius: var(--cordly-radius-control);
+  color: var(--cordly-color-text-muted);
+  font-size: var(--cordly-font-size-sm);
+  text-decoration: none;
+
+  &:hover:not([aria-disabled='true']) {
+    background-color: var(--cordly-color-control);
+    color: var(--cordly-color-text);
+  }
+
+  &[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  // "You are here" carries weight, a fill, and a rule. Colour alone would make
+  // the current destination invisible in forced-colours mode, and the rule is
+  // what survives it.
+  &[aria-current='page'] {
+    background-color: var(--cordly-color-accent-subtle);
+    color: var(--cordly-color-text);
+    font-weight: var(--cordly-font-weight-medium);
+    box-shadow: inset 2px 0 0 var(--cordly-color-accent);
+  }
+}
+
+.cordly-side-nav__item-badge {
+  flex: none;
+  padding-inline: var(--cordly-space-2xs);
+  border-radius: var(--cordly-radius-pill);
+  background-color: var(--cordly-color-control);
+  color: var(--cordly-color-text-muted);
+  font-size: var(--cordly-font-size-2xs);
+  font-variant-numeric: tabular-nums;
+}

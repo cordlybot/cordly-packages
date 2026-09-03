@@ -1,0 +1,14 @@
+@if (visible()) {
+  <section class="cordly-change-bar__inner" [attr.aria-label]="regionLabel()">
+    <p class="cordly-change-bar__count" aria-live="polite">{{ label() }}</p>
+
+    <div class="cordly-change-bar__actions">
+      <button type="button" class="cordly-change-bar__discard" (click)="discard.emit()">
+        {{ discardLabel() }}
+      </button>
+      <button type="button" class="cordly-change-bar__review" (click)="review.emit()">
+        {{ reviewLabel() }}
+      </button>
+    </div>
+  </section>
+}

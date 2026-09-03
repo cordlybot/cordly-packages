@@ -1,0 +1,105 @@
+@use 'motion';
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+  background-color: var(--cordly-color-canvas);
+  color: var(--cordly-color-text);
+  font-family: var(--cordly-font-sans);
+}
+
+// Hidden until it has focus, then unmissable. A skip link that is invisible
+// when focused is the same as no skip link at all.
+.cordly-app-frame__skip {
+  position: absolute;
+  inset-block-start: var(--cordly-space-xs);
+  inset-inline-start: var(--cordly-space-xs);
+  z-index: calc(var(--cordly-layer-toast) + 1);
+  padding: var(--cordly-space-xs) var(--cordly-space-md);
+  border-radius: var(--cordly-radius-control);
+  background-color: var(--cordly-color-surface-overlay);
+  color: var(--cordly-color-text);
+  box-shadow: var(--cordly-elevation-overlay);
+  text-decoration: none;
+  translate: 0 -200%;
+
+  &:focus-visible {
+    translate: 0 0;
+    outline: var(--cordly-focus-ring-width) solid var(--cordly-color-focus-ring);
+    outline-offset: var(--cordly-focus-ring-offset);
+  }
+}
+
+.cordly-app-frame__banner {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--cordly-layer-sticky);
+  border-block-end: var(--cordly-border-width) solid var(--cordly-color-border);
+  background-color: var(--cordly-color-surface);
+}
+
+// The content row is full width. Bounding the readable column happens once, in
+// the page: doing it here as well is what stops a full-bleed band inside a page
+// ever actually reaching the viewport edge.
+.cordly-app-frame__row {
+  display: flex;
+  flex: 1;
+  min-block-size: 0;
+}
+
+.cordly-app-frame__navigation {
+  flex: none;
+  inline-size: 16rem;
+  border-inline-end: var(--cordly-border-width) solid var(--cordly-color-border);
+  background-color: var(--cordly-color-surface);
+  overflow-y: auto;
+}
+
+.cordly-app-frame__main {
+  flex: 1;
+  min-inline-size: 0;
+
+  // Focused programmatically by the skip link. `tabindex="-1"` makes that
+  // possible; removing the ring would hide where focus went.
+  &:focus-visible {
+    outline: var(--cordly-focus-ring-width) solid var(--cordly-color-focus-ring);
+    outline-offset: calc(var(--cordly-focus-ring-offset) * -1);
+  }
+}
+
+.cordly-app-frame__scrim {
+  display: none;
+}
+
+// Below the medium breakpoint the navigation becomes a drawer over the content.
+@media (max-width: 47.999rem) {
+  .cordly-app-frame__navigation {
+    @include motion.transition(translate);
+
+    position: fixed;
+    z-index: var(--cordly-layer-overlay);
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: min(20rem, 85vw);
+    translate: -100% 0;
+    box-shadow: var(--cordly-elevation-overlay);
+  }
+
+  :host([data-navigation-open]) .cordly-app-frame__navigation {
+    translate: 0 0;
+  }
+
+  :host([data-navigation-open]) .cordly-app-frame__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--cordly-layer-overlay) - 1);
+    border: 0;
+    padding: 0;
+    background-color: var(--cordly-color-scrim);
+  }
+}

@@ -1,0 +1,93 @@
+@use 'layout';
+// A small closed set of choices, laid out as one control.
+//
+// Native radios rather than a button group carrying `aria-checked`. The platform
+// already supplies arrow-key navigation, a single tab stop, correct
+// announcement, and form participation, and every hand-built segmented control
+// re-earns at least one of those the hard way.
+:host {
+  @include layout.box;
+
+  display: block;
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+}
+
+.cordly-preference-group__field {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.cordly-preference-group__legend {
+  padding: 0;
+  margin-block-end: var(--cordly-space-2xs);
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+}
+
+.cordly-preference-group__description {
+  margin: 0 0 var(--cordly-space-xs);
+  font-size: var(--cordly-font-size-xs);
+  color: var(--cordly-color-text-muted);
+}
+
+.cordly-preference-group__options {
+  display: inline-flex;
+  gap: var(--cordly-space-3xs);
+  padding: var(--cordly-space-3xs);
+  border: var(--cordly-border-width) solid var(--cordly-color-border);
+  border-radius: var(--cordly-radius-control);
+  background-color: var(--cordly-color-surface-sunken);
+}
+
+.cordly-preference-group__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-block-size: var(--cordly-target-min);
+  padding-inline: var(--cordly-space-sm);
+  border-radius: calc(var(--cordly-radius-control) - 2px);
+  font-size: var(--cordly-font-size-sm);
+  color: var(--cordly-color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--cordly-duration-fast) var(--cordly-ease-standard),
+    color var(--cordly-duration-fast) var(--cordly-ease-standard);
+
+  &:hover {
+    color: var(--cordly-color-text);
+  }
+
+  &:has(.cordly-preference-group__input:checked) {
+    background-color: var(--cordly-color-surface-raised);
+    color: var(--cordly-color-text);
+    font-weight: var(--cordly-font-weight-medium);
+    box-shadow: var(--cordly-elevation-raised);
+  }
+
+  // The ring is drawn on the label, because the radio itself is clipped away.
+  // Without this a keyboard user has no indication of where they are.
+  &:has(.cordly-preference-group__input:focus-visible) {
+    outline: var(--cordly-focus-ring-width) solid var(--cordly-color-focus-ring);
+    outline-offset: var(--cordly-focus-ring-offset);
+  }
+}
+
+// Clipped rather than hidden: `display: none` takes a radio out of the tab
+// order and out of the accessibility tree, which is the entire reason for
+// using one.
+.cordly-preference-group__input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cordly-preference-group__option {
+    transition-duration: 0.01ms;
+  }
+}

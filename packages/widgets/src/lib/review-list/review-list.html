@@ -1,0 +1,50 @@
+@for (group of groups(); track group.id) {
+  <section class="cordly-review-list__group">
+    <h3 class="cordly-review-list__group-label">{{ group.label }}</h3>
+
+    <ul class="cordly-review-list__rows">
+      @for (row of group.rows; track row.id) {
+        <li class="cordly-review-list__row" [attr.data-status]="row.status">
+          <div class="cordly-review-list__summary">
+            <p class="cordly-review-list__what">{{ row.summary }}</p>
+
+            <p class="cordly-review-list__meta">
+              <span class="cordly-review-list__status" [attr.data-status]="row.status">
+                {{ statusLabels()[row.status] }}
+              </span>
+              <span class="cordly-review-list__origin">{{ originLabels()[row.origin] }}</span>
+              @if (row.risk && row.risk !== 'reversible') {
+                <span class="cordly-review-list__risk" [attr.data-risk]="row.risk">
+                  {{ riskLabels()[row.risk] }}
+                </span>
+              }
+            </p>
+          </div>
+
+          <dl class="cordly-review-list__values">
+            <dt>{{ beforeLabel() }}</dt>
+            <dd class="cordly-review-list__before">{{ row.before }}</dd>
+            <dt>{{ afterLabel() }}</dt>
+            <dd class="cordly-review-list__after">{{ row.after }}</dd>
+          </dl>
+
+          @if (row.detail) {
+            <p class="cordly-review-list__detail">{{ row.detail }}</p>
+          }
+
+          @if (discardLabel(); as label) {
+            <button
+              type="button"
+              class="cordly-review-list__discard"
+              [attr.aria-label]="label + ': ' + row.summary"
+              [disabled]="row.status === 'applying' || row.status === 'applied'"
+              (click)="discardRow.emit(row)"
+            >
+              {{ label }}
+            </button>
+          }
+        </li>
+      }
+    </ul>
+  </section>
+}

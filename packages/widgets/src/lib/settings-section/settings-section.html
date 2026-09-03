@@ -1,0 +1,28 @@
+<header class="cordly-settings-section__header">
+  <h2 class="cordly-settings-section__heading" [id]="headingId">{{ heading() }}</h2>
+  @if (description()) {
+    <p class="cordly-settings-section__description">{{ description() }}</p>
+  }
+  <div class="cordly-settings-section__aside">
+    <ng-content select="[cordly-section-aside]" />
+  </div>
+</header>
+
+<div class="cordly-settings-section__notice">
+  <ng-content select="[cordly-section-notice]" />
+</div>
+
+<div class="cordly-settings-section__body">
+  <ng-content />
+</div>
+
+@if (advancedLabel(); as label) {
+  <details class="cordly-settings-section__advanced" [open]="advancedOpen()">
+    <summary class="cordly-settings-section__advanced-summary" (click)="toggleAdvanced($event)">
+      {{ label }}
+    </summary>
+    <div class="cordly-settings-section__advanced-body">
+      <ng-content select="[cordly-section-advanced]" />
+    </div>
+  </details>
+}

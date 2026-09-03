@@ -1,0 +1,37 @@
+{
+  "name": "@cordly/widgets",
+  "version": "0.1.0",
+  "description": "Domain-neutral composed presentation for Cordly web applications: shells, catalogues, settings sections, staged-change and review surfaces.",
+  "license": "MIT",
+  "author": "Cordly",
+  "homepage": "https://github.com/cordlybot/cordly-packages#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cordlybot/cordly-packages.git",
+    "directory": "packages/widgets"
+  },
+  "bugs": {
+    "url": "https://github.com/cordlybot/cordly-packages/issues"
+  },
+  "keywords": [
+    "cordly",
+    "angular",
+    "design-system",
+    "widgets",
+    "accessibility"
+  ],
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@cordly/tokens": "^0.1.0",
+    "@cordly/ui": "^0.1.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

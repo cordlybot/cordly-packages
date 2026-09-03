@@ -1,0 +1,102 @@
+@use 'control';
+@use 'motion';
+@use 'layout';
+
+:host {
+  @include layout.box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-md);
+  font-family: var(--cordly-font-sans);
+  color: var(--cordly-color-text);
+}
+
+.cordly-catalogue__controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-sm);
+}
+
+.cordly-catalogue__search {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cordly-space-2xs);
+  max-inline-size: 26rem;
+}
+
+.cordly-catalogue__search-label {
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+}
+
+.cordly-catalogue__search-input {
+  @include control.base;
+  @include motion.transition(border-color, background-color);
+
+  block-size: var(--cordly-control-height-md);
+  padding-inline: var(--cordly-space-sm);
+  background-color: var(--cordly-color-surface-sunken);
+  border-color: var(--cordly-color-control-border);
+  color: inherit;
+  font-weight: var(--cordly-font-weight-regular);
+
+  &::placeholder {
+    color: var(--cordly-color-text-subtle);
+  }
+}
+
+.cordly-catalogue__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cordly-space-2xs);
+}
+
+// `aria-pressed` rather than a made-up selected class: a filter chip is a
+// toggle, and a toggle that does not say it is pressed is a button a screen
+// reader user has no way to read the state of.
+.cordly-catalogue__filter {
+  @include control.base;
+  @include control.touch-target;
+  @include motion.transition(background-color, border-color, color);
+
+  block-size: var(--cordly-control-height-sm);
+  padding-inline: var(--cordly-space-sm);
+  background-color: transparent;
+  border-color: var(--cordly-color-border);
+  color: var(--cordly-color-text-muted);
+  font-size: var(--cordly-font-size-xs);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--cordly-color-control);
+    color: var(--cordly-color-text);
+  }
+
+  &[aria-pressed='true'] {
+    background-color: var(--cordly-color-accent-subtle);
+    border-color: var(--cordly-color-accent);
+    color: var(--cordly-color-text);
+    font-weight: var(--cordly-font-weight-medium);
+  }
+}
+
+.cordly-catalogue__filter-count {
+  margin-inline-start: var(--cordly-space-2xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--cordly-color-text-subtle);
+}
+
+.cordly-catalogue__count {
+  margin: 0;
+  font-size: var(--cordly-font-size-xs);
+  color: var(--cordly-color-text-muted);
+}
+
+// Auto-fill rather than a fixed column count, so the grid answers the container
+// instead of the viewport and the same catalogue works inside a drawer.
+.cordly-catalogue__results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+  gap: var(--cordly-space-sm);
+}

@@ -1,0 +1,93 @@
+@use 'control';
+@use 'focus';
+@use 'motion';
+@use 'layout';
+
+// Anchored to the bottom of the viewport, above everything except a modal and a
+// toast, and inside the safe area on a phone so it clears the home indicator.
+:host {
+  @include layout.box;
+
+  position: sticky;
+  inset-block-end: 0;
+  z-index: var(--cordly-layer-sticky);
+  display: block;
+  font-family: var(--cordly-font-sans);
+}
+
+.cordly-change-bar__inner {
+  @include motion.transition(opacity);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cordly-space-sm);
+  padding: var(--cordly-space-sm) var(--cordly-space-md);
+  padding-block-end: max(var(--cordly-space-sm), env(safe-area-inset-bottom));
+  border-block-start: var(--cordly-border-width) solid var(--cordly-color-border);
+  background-color: var(--cordly-color-surface-raised);
+  box-shadow: var(--cordly-elevation-overlay);
+  color: var(--cordly-color-text);
+}
+
+.cordly-change-bar__count {
+  margin: 0;
+  font-size: var(--cordly-font-size-sm);
+  font-weight: var(--cordly-font-weight-medium);
+}
+
+.cordly-change-bar__actions {
+  display: flex;
+  gap: var(--cordly-space-xs);
+  margin-inline-start: auto;
+}
+
+.cordly-change-bar__discard,
+.cordly-change-bar__review {
+  @include control.base;
+  @include control.touch-target;
+  @include motion.transition(background-color, border-color, color);
+
+  justify-content: center;
+  block-size: var(--cordly-control-height-md);
+  padding-inline: var(--cordly-space-md);
+  cursor: pointer;
+}
+
+.cordly-change-bar__discard {
+  background-color: transparent;
+  border-color: var(--cordly-color-border);
+  color: var(--cordly-color-text-muted);
+
+  &:hover {
+    background-color: var(--cordly-color-control);
+    color: var(--cordly-color-text);
+  }
+}
+
+// Review, not Apply. The primary action on this bar opens the surface where a
+// person can see what they are about to change; applying is a decision made
+// after reading, not a shortcut past it.
+.cordly-change-bar__review {
+  background-color: var(--cordly-color-accent);
+  color: var(--cordly-color-on-accent);
+
+  &:hover {
+    background-color: var(--cordly-color-accent-hover);
+  }
+}
+
+// On a narrow screen the actions get a row of their own and fill it, so neither
+// is a small target near the edge of the screen.
+@media (max-width: 29.999rem) {
+  .cordly-change-bar__actions {
+    inline-size: 100%;
+    margin-inline-start: 0;
+  }
+
+  .cordly-change-bar__discard,
+  .cordly-change-bar__review {
+    flex: 1;
+  }
+}

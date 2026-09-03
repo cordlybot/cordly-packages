@@ -1,0 +1,41 @@
+@if (href(); as destination) {
+  <a
+    class="cordly-entity-tile__target"
+    [attr.href]="destination"
+    [attr.aria-label]="name() + '. ' + stateLabel() + '. ' + actionLabel()"
+    [attr.aria-disabled]="state() === 'inaccessible' ? 'true' : null"
+    (click)="handleClick($event)"
+  >
+    <ng-container [ngTemplateOutlet]="body" />
+  </a>
+} @else {
+  <button
+    type="button"
+    class="cordly-entity-tile__target"
+    [attr.aria-label]="name() + '. ' + stateLabel() + '. ' + actionLabel()"
+    [disabled]="state() === 'inaccessible'"
+    (click)="handleClick($event)"
+  >
+    <ng-container [ngTemplateOutlet]="body" />
+  </button>
+}
+
+<ng-template #body>
+  <span class="cordly-entity-tile__avatar" aria-hidden="true">
+    @if (avatarUrl(); as url) {
+      <img class="cordly-entity-tile__avatar-image" [src]="url" alt="" loading="lazy" />
+    } @else {
+      {{ initial }}
+    }
+  </span>
+
+  <span class="cordly-entity-tile__text">
+    <span class="cordly-entity-tile__name">{{ name() }}</span>
+    @if (detail()) {
+      <span class="cordly-entity-tile__detail">{{ detail() }}</span>
+    }
+    <span class="cordly-entity-tile__state" aria-hidden="true">{{ stateLabel() }}</span>
+  </span>
+
+  <span class="cordly-entity-tile__action" aria-hidden="true">{{ actionLabel() }}</span>
+</ng-template>
