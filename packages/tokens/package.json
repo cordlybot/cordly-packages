@@ -1,0 +1,47 @@
+{
+  "name": "@cordly/tokens",
+  "version": "0.1.0",
+  "description": "Cordly design tokens: semantic colour, spacing, radius, typography, elevation, breakpoint, focus, and motion values as CSS custom properties, with a machine-readable representation.",
+  "license": "MIT",
+  "author": "Cordly",
+  "homepage": "https://github.com/cordlybot/cordly-packages#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cordlybot/cordly-packages.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/cordlybot/cordly-packages/issues"
+  },
+  "keywords": [
+    "cordly",
+    "design-tokens",
+    "css-custom-properties",
+    "theming"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./generated/index.d.ts",
+      "default": "./generated/index.js"
+    },
+    "./css": "./generated/cordly-tokens.css",
+    "./css/tailwind": "./generated/cordly-tokens.tailwind.css",
+    "./tokens.json": "./generated/tokens.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "generated",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css"
+  ]
+}

@@ -1,0 +1,366 @@
+/*
+ * Cordly design tokens 0.1.0 - GENERATED, DO NOT EDIT.
+ *
+ * Source: packages/tokens/src/tokens.source.mjs
+ * Regenerate: npm run tokens:build   Verify: npm run tokens:check
+ */
+
+/* The default theme. Every colour is defined here, so no value has its
+   only definition inside a media query or a single theme block. */
+:root {
+  color-scheme: dark;
+  --cordly-color-canvas: oklch(0.145 0.012 290);
+  --cordly-color-surface: oklch(0.185 0.013 290);
+  --cordly-color-surface-raised: oklch(0.225 0.016 292);
+  --cordly-color-surface-overlay: oklch(0.255 0.017 292);
+  --cordly-color-surface-sunken: oklch(0.125 0.011 290);
+  --cordly-color-scrim: oklch(0.08 0.01 290 / 0.66);
+  --cordly-color-text: oklch(0.97 0.008 300);
+  --cordly-color-text-muted: oklch(0.79 0.014 292);
+  --cordly-color-text-subtle: oklch(0.68 0.014 292);
+  --cordly-color-text-inverse: oklch(0.16 0.012 290);
+  --cordly-color-border: oklch(0.31 0.016 292);
+  --cordly-color-border-strong: oklch(0.58 0.018 292);
+  --cordly-color-border-subtle: oklch(0.25 0.014 292);
+  --cordly-color-accent: oklch(0.56 0.196 277);
+  --cordly-color-accent-hover: oklch(0.52 0.196 277);
+  --cordly-color-accent-active: oklch(0.48 0.19 277);
+  --cordly-color-accent-subtle: oklch(0.28 0.07 277);
+  --cordly-color-accent-text: oklch(0.78 0.105 277);
+  --cordly-color-on-accent: oklch(1 0 0);
+  --cordly-color-control: oklch(0.265 0.017 292);
+  --cordly-color-control-hover: oklch(0.305 0.018 292);
+  --cordly-color-control-active: oklch(0.235 0.016 292);
+  --cordly-color-control-text: oklch(0.95 0.008 300);
+  --cordly-color-control-border: oklch(0.58 0.018 292);
+  --cordly-color-info-surface: oklch(0.26 0.055 245);
+  --cordly-color-info-border: oklch(0.5 0.09 245);
+  --cordly-color-info-text: oklch(0.78 0.112 245);
+  --cordly-color-info-solid: oklch(0.62 0.13 245);
+  --cordly-color-on-info-solid: oklch(0.16 0.02 245);
+  --cordly-color-success-surface: oklch(0.26 0.055 152);
+  --cordly-color-success-border: oklch(0.5 0.09 152);
+  --cordly-color-success-text: oklch(0.8 0.16 152);
+  --cordly-color-success-solid: oklch(0.72 0.14 152);
+  --cordly-color-on-success-solid: oklch(0.16 0.03 152);
+  --cordly-color-warning-surface: oklch(0.27 0.05 75);
+  --cordly-color-warning-border: oklch(0.52 0.09 75);
+  --cordly-color-warning-text: oklch(0.8 0.15 82);
+  --cordly-color-warning-solid: oklch(0.82 0.145 78);
+  --cordly-color-on-warning-solid: oklch(0.2 0.03 78);
+  --cordly-color-danger-surface: oklch(0.26 0.06 22);
+  --cordly-color-danger-border: oklch(0.52 0.13 22);
+  --cordly-color-danger-text: oklch(0.78 0.12 22);
+  --cordly-color-danger-solid: oklch(0.58 0.2 25);
+  --cordly-color-on-danger-solid: oklch(1 0 0);
+  --cordly-color-focus-ring: oklch(0.78 0.105 277);
+  --cordly-color-focus-ring-offset: oklch(0.145 0.012 290);
+  --cordly-color-selection: oklch(0.4 0.13 277);
+  --cordly-color-skeleton: oklch(0.25 0.015 292);
+  --cordly-color-skeleton-sheen: oklch(0.33 0.018 292);
+  --cordly-elevation-flat: none;
+  --cordly-elevation-raised: 0 1px 2px oklch(0 0 0 / 0.32);
+  --cordly-elevation-overlay: 0 12px 32px -8px oklch(0 0 0 / 0.58);
+  --cordly-elevation-lifted: 0 10px 28px -12px oklch(0 0 0 / 0.52);
+}
+
+/* Values that do not change with the theme. */
+:root {
+  --cordly-space-3xs: 0.125rem;
+  --cordly-space-2xs: 0.25rem;
+  --cordly-space-xs: 0.5rem;
+  --cordly-space-sm: 0.75rem;
+  --cordly-space-md: 1rem;
+  --cordly-space-lg: 1.5rem;
+  --cordly-space-xl: 2rem;
+  --cordly-space-2xl: 3rem;
+  --cordly-space-3xl: 4rem;
+  --cordly-radius-none: 0;
+  --cordly-radius-control: 0.625rem;
+  --cordly-radius-card: 1rem;
+  --cordly-radius-pill: 9999px;
+  --cordly-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --cordly-font-mono: ui-monospace, SFMono-Regular, 'JetBrains Mono', Menlo, Consolas, monospace;
+  --cordly-font-size-2xs: 0.6875rem;
+  --cordly-font-size-xs: 0.75rem;
+  --cordly-font-size-sm: 0.875rem;
+  --cordly-font-size-md: 1rem;
+  --cordly-font-size-lg: 1.125rem;
+  --cordly-font-size-xl: 1.375rem;
+  --cordly-font-size-2xl: 1.75rem;
+  --cordly-font-size-3xl: 2.25rem;
+  --cordly-line-height-tight: 1.2;
+  --cordly-line-height-snug: 1.35;
+  --cordly-line-height-normal: 1.55;
+  --cordly-line-height-relaxed: 1.7;
+  --cordly-font-weight-regular: 400;
+  --cordly-font-weight-medium: 500;
+  --cordly-font-weight-semibold: 600;
+  --cordly-letter-spacing-tight: -0.01em;
+  --cordly-letter-spacing-normal: 0;
+  --cordly-letter-spacing-wide: 0.02em;
+  --cordly-control-height-sm: 2rem;
+  --cordly-control-height-md: 2.5rem;
+  --cordly-control-height-lg: 2.75rem;
+  --cordly-target-min: 2.75rem;
+  --cordly-border-width: 1px;
+  --cordly-border-width-strong: 2px;
+  --cordly-focus-ring-width: 2px;
+  --cordly-focus-ring-offset: 2px;
+  --cordly-duration-instant: 90ms;
+  --cordly-duration-fast: 150ms;
+  --cordly-duration-slow: 260ms;
+  --cordly-duration-ambient: 24s;
+  --cordly-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --cordly-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --cordly-ease-ambient: cubic-bezier(0.45, 0, 0.55, 1);
+  --cordly-lift-distance: -2px;
+  --cordly-breakpoint-sm: 30rem;
+  --cordly-breakpoint-md: 48rem;
+  --cordly-breakpoint-lg: 64rem;
+  --cordly-breakpoint-xl: 80rem;
+  --cordly-layer-base: 0;
+  --cordly-layer-sticky: 100;
+  --cordly-layer-overlay: 200;
+  --cordly-layer-toast: 300;
+  --cordly-measure-prose: 68ch;
+}
+
+/* An explicit choice. Set `data-cordly-theme` on <html> and nothing else
+   has to change; a theme swap is a variable swap, never a class swap on
+   every component. */
+[data-cordly-theme='light'] {
+  color-scheme: light;
+  --cordly-color-canvas: oklch(0.985 0.003 290);
+  --cordly-color-surface: oklch(1 0 0);
+  --cordly-color-surface-raised: oklch(0.975 0.005 290);
+  --cordly-color-surface-overlay: oklch(1 0 0);
+  --cordly-color-surface-sunken: oklch(0.955 0.006 290);
+  --cordly-color-scrim: oklch(0.25 0.02 290 / 0.45);
+  --cordly-color-text: oklch(0.2 0.014 290);
+  --cordly-color-text-muted: oklch(0.44 0.016 290);
+  --cordly-color-text-subtle: oklch(0.5 0.016 290);
+  --cordly-color-text-inverse: oklch(0.99 0.003 290);
+  --cordly-color-border: oklch(0.89 0.008 290);
+  --cordly-color-border-strong: oklch(0.6 0.012 290);
+  --cordly-color-border-subtle: oklch(0.935 0.006 290);
+  --cordly-color-accent: oklch(0.49 0.216 277);
+  --cordly-color-accent-hover: oklch(0.44 0.21 277);
+  --cordly-color-accent-active: oklch(0.4 0.2 277);
+  --cordly-color-accent-subtle: oklch(0.94 0.026 277);
+  --cordly-color-accent-text: oklch(0.47 0.216 277);
+  --cordly-color-on-accent: oklch(1 0 0);
+  --cordly-color-control: oklch(0.955 0.006 290);
+  --cordly-color-control-hover: oklch(0.925 0.008 290);
+  --cordly-color-control-active: oklch(0.895 0.009 290);
+  --cordly-color-control-text: oklch(0.24 0.016 290);
+  --cordly-color-control-border: oklch(0.6 0.012 290);
+  --cordly-color-info-surface: oklch(0.96 0.018 245);
+  --cordly-color-info-border: oklch(0.62 0.1 245);
+  --cordly-color-info-text: oklch(0.42 0.1 245);
+  --cordly-color-info-solid: oklch(0.48 0.115 245);
+  --cordly-color-on-info-solid: oklch(1 0 0);
+  --cordly-color-success-surface: oklch(0.96 0.03 152);
+  --cordly-color-success-border: oklch(0.62 0.1 152);
+  --cordly-color-success-text: oklch(0.42 0.1 152);
+  --cordly-color-success-solid: oklch(0.46 0.11 152);
+  --cordly-color-on-success-solid: oklch(1 0 0);
+  --cordly-color-warning-surface: oklch(0.965 0.031 82);
+  --cordly-color-warning-border: oklch(0.62 0.1 82);
+  --cordly-color-warning-text: oklch(0.42 0.09 70);
+  --cordly-color-warning-solid: oklch(0.66 0.135 78);
+  --cordly-color-on-warning-solid: oklch(0.2 0.03 78);
+  --cordly-color-danger-surface: oklch(0.96 0.017 22);
+  --cordly-color-danger-border: oklch(0.62 0.12 22);
+  --cordly-color-danger-text: oklch(0.46 0.178 25);
+  --cordly-color-danger-solid: oklch(0.5 0.195 25);
+  --cordly-color-on-danger-solid: oklch(1 0 0);
+  --cordly-color-focus-ring: oklch(0.49 0.216 277);
+  --cordly-color-focus-ring-offset: oklch(1 0 0);
+  --cordly-color-selection: oklch(0.88 0.055 277);
+  --cordly-color-skeleton: oklch(0.93 0.007 290);
+  --cordly-color-skeleton-sheen: oklch(0.975 0.004 290);
+  --cordly-elevation-flat: none;
+  --cordly-elevation-raised: 0 1px 2px oklch(0.2 0.02 290 / 0.08);
+  --cordly-elevation-overlay: 0 12px 32px -8px oklch(0.2 0.02 290 / 0.18);
+  --cordly-elevation-lifted: 0 10px 28px -14px oklch(0.2 0.02 290 / 0.26);
+}
+
+[data-cordly-theme='dark'] {
+  color-scheme: dark;
+  --cordly-color-canvas: oklch(0.145 0.012 290);
+  --cordly-color-surface: oklch(0.185 0.013 290);
+  --cordly-color-surface-raised: oklch(0.225 0.016 292);
+  --cordly-color-surface-overlay: oklch(0.255 0.017 292);
+  --cordly-color-surface-sunken: oklch(0.125 0.011 290);
+  --cordly-color-scrim: oklch(0.08 0.01 290 / 0.66);
+  --cordly-color-text: oklch(0.97 0.008 300);
+  --cordly-color-text-muted: oklch(0.79 0.014 292);
+  --cordly-color-text-subtle: oklch(0.68 0.014 292);
+  --cordly-color-text-inverse: oklch(0.16 0.012 290);
+  --cordly-color-border: oklch(0.31 0.016 292);
+  --cordly-color-border-strong: oklch(0.58 0.018 292);
+  --cordly-color-border-subtle: oklch(0.25 0.014 292);
+  --cordly-color-accent: oklch(0.56 0.196 277);
+  --cordly-color-accent-hover: oklch(0.52 0.196 277);
+  --cordly-color-accent-active: oklch(0.48 0.19 277);
+  --cordly-color-accent-subtle: oklch(0.28 0.07 277);
+  --cordly-color-accent-text: oklch(0.78 0.105 277);
+  --cordly-color-on-accent: oklch(1 0 0);
+  --cordly-color-control: oklch(0.265 0.017 292);
+  --cordly-color-control-hover: oklch(0.305 0.018 292);
+  --cordly-color-control-active: oklch(0.235 0.016 292);
+  --cordly-color-control-text: oklch(0.95 0.008 300);
+  --cordly-color-control-border: oklch(0.58 0.018 292);
+  --cordly-color-info-surface: oklch(0.26 0.055 245);
+  --cordly-color-info-border: oklch(0.5 0.09 245);
+  --cordly-color-info-text: oklch(0.78 0.112 245);
+  --cordly-color-info-solid: oklch(0.62 0.13 245);
+  --cordly-color-on-info-solid: oklch(0.16 0.02 245);
+  --cordly-color-success-surface: oklch(0.26 0.055 152);
+  --cordly-color-success-border: oklch(0.5 0.09 152);
+  --cordly-color-success-text: oklch(0.8 0.16 152);
+  --cordly-color-success-solid: oklch(0.72 0.14 152);
+  --cordly-color-on-success-solid: oklch(0.16 0.03 152);
+  --cordly-color-warning-surface: oklch(0.27 0.05 75);
+  --cordly-color-warning-border: oklch(0.52 0.09 75);
+  --cordly-color-warning-text: oklch(0.8 0.15 82);
+  --cordly-color-warning-solid: oklch(0.82 0.145 78);
+  --cordly-color-on-warning-solid: oklch(0.2 0.03 78);
+  --cordly-color-danger-surface: oklch(0.26 0.06 22);
+  --cordly-color-danger-border: oklch(0.52 0.13 22);
+  --cordly-color-danger-text: oklch(0.78 0.12 22);
+  --cordly-color-danger-solid: oklch(0.58 0.2 25);
+  --cordly-color-on-danger-solid: oklch(1 0 0);
+  --cordly-color-focus-ring: oklch(0.78 0.105 277);
+  --cordly-color-focus-ring-offset: oklch(0.145 0.012 290);
+  --cordly-color-selection: oklch(0.4 0.13 277);
+  --cordly-color-skeleton: oklch(0.25 0.015 292);
+  --cordly-color-skeleton-sheen: oklch(0.33 0.018 292);
+  --cordly-elevation-flat: none;
+  --cordly-elevation-raised: 0 1px 2px oklch(0 0 0 / 0.32);
+  --cordly-elevation-overlay: 0 12px 32px -8px oklch(0 0 0 / 0.58);
+  --cordly-elevation-lifted: 0 10px 28px -12px oklch(0 0 0 / 0.52);
+}
+
+/* No explicit choice: follow the system. Server-rendered pages reach this
+   branch on the first paint, before any script has run, which is what
+   stops a dark-mode visitor being shown a white page that corrects
+   itself on hydration. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-cordly-theme]) {
+    color-scheme: light;
+    --cordly-color-canvas: oklch(0.985 0.003 290);
+    --cordly-color-surface: oklch(1 0 0);
+    --cordly-color-surface-raised: oklch(0.975 0.005 290);
+    --cordly-color-surface-overlay: oklch(1 0 0);
+    --cordly-color-surface-sunken: oklch(0.955 0.006 290);
+    --cordly-color-scrim: oklch(0.25 0.02 290 / 0.45);
+    --cordly-color-text: oklch(0.2 0.014 290);
+    --cordly-color-text-muted: oklch(0.44 0.016 290);
+    --cordly-color-text-subtle: oklch(0.5 0.016 290);
+    --cordly-color-text-inverse: oklch(0.99 0.003 290);
+    --cordly-color-border: oklch(0.89 0.008 290);
+    --cordly-color-border-strong: oklch(0.6 0.012 290);
+    --cordly-color-border-subtle: oklch(0.935 0.006 290);
+    --cordly-color-accent: oklch(0.49 0.216 277);
+    --cordly-color-accent-hover: oklch(0.44 0.21 277);
+    --cordly-color-accent-active: oklch(0.4 0.2 277);
+    --cordly-color-accent-subtle: oklch(0.94 0.026 277);
+    --cordly-color-accent-text: oklch(0.47 0.216 277);
+    --cordly-color-on-accent: oklch(1 0 0);
+    --cordly-color-control: oklch(0.955 0.006 290);
+    --cordly-color-control-hover: oklch(0.925 0.008 290);
+    --cordly-color-control-active: oklch(0.895 0.009 290);
+    --cordly-color-control-text: oklch(0.24 0.016 290);
+    --cordly-color-control-border: oklch(0.6 0.012 290);
+    --cordly-color-info-surface: oklch(0.96 0.018 245);
+    --cordly-color-info-border: oklch(0.62 0.1 245);
+    --cordly-color-info-text: oklch(0.42 0.1 245);
+    --cordly-color-info-solid: oklch(0.48 0.115 245);
+    --cordly-color-on-info-solid: oklch(1 0 0);
+    --cordly-color-success-surface: oklch(0.96 0.03 152);
+    --cordly-color-success-border: oklch(0.62 0.1 152);
+    --cordly-color-success-text: oklch(0.42 0.1 152);
+    --cordly-color-success-solid: oklch(0.46 0.11 152);
+    --cordly-color-on-success-solid: oklch(1 0 0);
+    --cordly-color-warning-surface: oklch(0.965 0.031 82);
+    --cordly-color-warning-border: oklch(0.62 0.1 82);
+    --cordly-color-warning-text: oklch(0.42 0.09 70);
+    --cordly-color-warning-solid: oklch(0.66 0.135 78);
+    --cordly-color-on-warning-solid: oklch(0.2 0.03 78);
+    --cordly-color-danger-surface: oklch(0.96 0.017 22);
+    --cordly-color-danger-border: oklch(0.62 0.12 22);
+    --cordly-color-danger-text: oklch(0.46 0.178 25);
+    --cordly-color-danger-solid: oklch(0.5 0.195 25);
+    --cordly-color-on-danger-solid: oklch(1 0 0);
+    --cordly-color-focus-ring: oklch(0.49 0.216 277);
+    --cordly-color-focus-ring-offset: oklch(1 0 0);
+    --cordly-color-selection: oklch(0.88 0.055 277);
+    --cordly-color-skeleton: oklch(0.93 0.007 290);
+    --cordly-color-skeleton-sheen: oklch(0.975 0.004 290);
+    --cordly-elevation-flat: none;
+    --cordly-elevation-raised: 0 1px 2px oklch(0.2 0.02 290 / 0.08);
+    --cordly-elevation-overlay: 0 12px 32px -8px oklch(0.2 0.02 290 / 0.18);
+    --cordly-elevation-lifted: 0 10px 28px -14px oklch(0.2 0.02 290 / 0.26);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-cordly-theme]) {
+    color-scheme: dark;
+    --cordly-color-canvas: oklch(0.145 0.012 290);
+    --cordly-color-surface: oklch(0.185 0.013 290);
+    --cordly-color-surface-raised: oklch(0.225 0.016 292);
+    --cordly-color-surface-overlay: oklch(0.255 0.017 292);
+    --cordly-color-surface-sunken: oklch(0.125 0.011 290);
+    --cordly-color-scrim: oklch(0.08 0.01 290 / 0.66);
+    --cordly-color-text: oklch(0.97 0.008 300);
+    --cordly-color-text-muted: oklch(0.79 0.014 292);
+    --cordly-color-text-subtle: oklch(0.68 0.014 292);
+    --cordly-color-text-inverse: oklch(0.16 0.012 290);
+    --cordly-color-border: oklch(0.31 0.016 292);
+    --cordly-color-border-strong: oklch(0.58 0.018 292);
+    --cordly-color-border-subtle: oklch(0.25 0.014 292);
+    --cordly-color-accent: oklch(0.56 0.196 277);
+    --cordly-color-accent-hover: oklch(0.52 0.196 277);
+    --cordly-color-accent-active: oklch(0.48 0.19 277);
+    --cordly-color-accent-subtle: oklch(0.28 0.07 277);
+    --cordly-color-accent-text: oklch(0.78 0.105 277);
+    --cordly-color-on-accent: oklch(1 0 0);
+    --cordly-color-control: oklch(0.265 0.017 292);
+    --cordly-color-control-hover: oklch(0.305 0.018 292);
+    --cordly-color-control-active: oklch(0.235 0.016 292);
+    --cordly-color-control-text: oklch(0.95 0.008 300);
+    --cordly-color-control-border: oklch(0.58 0.018 292);
+    --cordly-color-info-surface: oklch(0.26 0.055 245);
+    --cordly-color-info-border: oklch(0.5 0.09 245);
+    --cordly-color-info-text: oklch(0.78 0.112 245);
+    --cordly-color-info-solid: oklch(0.62 0.13 245);
+    --cordly-color-on-info-solid: oklch(0.16 0.02 245);
+    --cordly-color-success-surface: oklch(0.26 0.055 152);
+    --cordly-color-success-border: oklch(0.5 0.09 152);
+    --cordly-color-success-text: oklch(0.8 0.16 152);
+    --cordly-color-success-solid: oklch(0.72 0.14 152);
+    --cordly-color-on-success-solid: oklch(0.16 0.03 152);
+    --cordly-color-warning-surface: oklch(0.27 0.05 75);
+    --cordly-color-warning-border: oklch(0.52 0.09 75);
+    --cordly-color-warning-text: oklch(0.8 0.15 82);
+    --cordly-color-warning-solid: oklch(0.82 0.145 78);
+    --cordly-color-on-warning-solid: oklch(0.2 0.03 78);
+    --cordly-color-danger-surface: oklch(0.26 0.06 22);
+    --cordly-color-danger-border: oklch(0.52 0.13 22);
+    --cordly-color-danger-text: oklch(0.78 0.12 22);
+    --cordly-color-danger-solid: oklch(0.58 0.2 25);
+    --cordly-color-on-danger-solid: oklch(1 0 0);
+    --cordly-color-focus-ring: oklch(0.78 0.105 277);
+    --cordly-color-focus-ring-offset: oklch(0.145 0.012 290);
+    --cordly-color-selection: oklch(0.4 0.13 277);
+    --cordly-color-skeleton: oklch(0.25 0.015 292);
+    --cordly-color-skeleton-sheen: oklch(0.33 0.018 292);
+    --cordly-elevation-flat: none;
+    --cordly-elevation-raised: 0 1px 2px oklch(0 0 0 / 0.32);
+    --cordly-elevation-overlay: 0 12px 32px -8px oklch(0 0 0 / 0.58);
+    --cordly-elevation-lifted: 0 10px 28px -12px oklch(0 0 0 / 0.52);
+  }
+}

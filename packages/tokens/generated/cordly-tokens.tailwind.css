@@ -1,0 +1,104 @@
+/*
+ * Cordly design tokens 0.1.0 - GENERATED, DO NOT EDIT.
+ *
+ * Source: packages/tokens/src/tokens.source.mjs
+ * Regenerate: npm run tokens:build   Verify: npm run tokens:check
+ */
+
+@import './cordly-tokens.css';
+
+@theme inline {
+  --color-canvas: var(--cordly-color-canvas);
+  --color-surface: var(--cordly-color-surface);
+  --color-surface-raised: var(--cordly-color-surface-raised);
+  --color-surface-overlay: var(--cordly-color-surface-overlay);
+  --color-surface-sunken: var(--cordly-color-surface-sunken);
+  --color-scrim: var(--cordly-color-scrim);
+  --color-text: var(--cordly-color-text);
+  --color-text-muted: var(--cordly-color-text-muted);
+  --color-text-subtle: var(--cordly-color-text-subtle);
+  --color-text-inverse: var(--cordly-color-text-inverse);
+  --color-border: var(--cordly-color-border);
+  --color-border-strong: var(--cordly-color-border-strong);
+  --color-border-subtle: var(--cordly-color-border-subtle);
+  --color-accent: var(--cordly-color-accent);
+  --color-accent-hover: var(--cordly-color-accent-hover);
+  --color-accent-active: var(--cordly-color-accent-active);
+  --color-accent-subtle: var(--cordly-color-accent-subtle);
+  --color-accent-text: var(--cordly-color-accent-text);
+  --color-on-accent: var(--cordly-color-on-accent);
+  --color-control: var(--cordly-color-control);
+  --color-control-hover: var(--cordly-color-control-hover);
+  --color-control-active: var(--cordly-color-control-active);
+  --color-control-text: var(--cordly-color-control-text);
+  --color-control-border: var(--cordly-color-control-border);
+  --color-info-surface: var(--cordly-color-info-surface);
+  --color-info-border: var(--cordly-color-info-border);
+  --color-info-text: var(--cordly-color-info-text);
+  --color-info-solid: var(--cordly-color-info-solid);
+  --color-on-info-solid: var(--cordly-color-on-info-solid);
+  --color-success-surface: var(--cordly-color-success-surface);
+  --color-success-border: var(--cordly-color-success-border);
+  --color-success-text: var(--cordly-color-success-text);
+  --color-success-solid: var(--cordly-color-success-solid);
+  --color-on-success-solid: var(--cordly-color-on-success-solid);
+  --color-warning-surface: var(--cordly-color-warning-surface);
+  --color-warning-border: var(--cordly-color-warning-border);
+  --color-warning-text: var(--cordly-color-warning-text);
+  --color-warning-solid: var(--cordly-color-warning-solid);
+  --color-on-warning-solid: var(--cordly-color-on-warning-solid);
+  --color-danger-surface: var(--cordly-color-danger-surface);
+  --color-danger-border: var(--cordly-color-danger-border);
+  --color-danger-text: var(--cordly-color-danger-text);
+  --color-danger-solid: var(--cordly-color-danger-solid);
+  --color-on-danger-solid: var(--cordly-color-on-danger-solid);
+  --color-focus-ring: var(--cordly-color-focus-ring);
+  --color-focus-ring-offset: var(--cordly-color-focus-ring-offset);
+  --color-selection: var(--cordly-color-selection);
+  --color-skeleton: var(--cordly-color-skeleton);
+  --color-skeleton-sheen: var(--cordly-color-skeleton-sheen);
+  --shadow-flat: var(--cordly-elevation-flat);
+  --shadow-raised: var(--cordly-elevation-raised);
+  --shadow-overlay: var(--cordly-elevation-overlay);
+  --shadow-lifted: var(--cordly-elevation-lifted);
+  --spacing-3xs: var(--cordly-space-3xs);
+  --spacing-2xs: var(--cordly-space-2xs);
+  --spacing-xs: var(--cordly-space-xs);
+  --spacing-sm: var(--cordly-space-sm);
+  --spacing-md: var(--cordly-space-md);
+  --spacing-lg: var(--cordly-space-lg);
+  --spacing-xl: var(--cordly-space-xl);
+  --spacing-2xl: var(--cordly-space-2xl);
+  --spacing-3xl: var(--cordly-space-3xl);
+  --radius-none: var(--cordly-radius-none);
+  --radius-control: var(--cordly-radius-control);
+  --radius-card: var(--cordly-radius-card);
+  --radius-pill: var(--cordly-radius-pill);
+  --text-2xs: var(--cordly-font-size-2xs);
+  --text-xs: var(--cordly-font-size-xs);
+  --text-sm: var(--cordly-font-size-sm);
+  --text-md: var(--cordly-font-size-md);
+  --text-lg: var(--cordly-font-size-lg);
+  --text-xl: var(--cordly-font-size-xl);
+  --text-2xl: var(--cordly-font-size-2xl);
+  --text-3xl: var(--cordly-font-size-3xl);
+  --leading-tight: var(--cordly-line-height-tight);
+  --leading-snug: var(--cordly-line-height-snug);
+  --leading-normal: var(--cordly-line-height-normal);
+  --leading-relaxed: var(--cordly-line-height-relaxed);
+  --font-weight-regular: var(--cordly-font-weight-regular);
+  --font-weight-medium: var(--cordly-font-weight-medium);
+  --font-weight-semibold: var(--cordly-font-weight-semibold);
+  --tracking-tight: var(--cordly-letter-spacing-tight);
+  --tracking-normal: var(--cordly-letter-spacing-normal);
+  --tracking-wide: var(--cordly-letter-spacing-wide);
+  --ease-standard: var(--cordly-ease-standard);
+  --ease-exit: var(--cordly-ease-exit);
+  --ease-ambient: var(--cordly-ease-ambient);
+  --breakpoint-sm: var(--cordly-breakpoint-sm);
+  --breakpoint-md: var(--cordly-breakpoint-md);
+  --breakpoint-lg: var(--cordly-breakpoint-lg);
+  --breakpoint-xl: var(--cordly-breakpoint-xl);
+  --font-sans: var(--cordly-font-sans);
+  --font-mono: var(--cordly-font-mono);
+}
