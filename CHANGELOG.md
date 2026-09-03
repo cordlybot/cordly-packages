@@ -23,6 +23,29 @@ the packages are versioned independently — see `VERSIONING.md`.
   the technical remainder in a separate `detail` input so a stack trace cannot
   land where the plain-language explanation belongs.
 
+**Changed**
+
+- `CordlyTone` gains `accent`. Four of the tones are status and answer "how is
+  this going?"; `accent` is emphasis and answers "is this the one to look at?".
+  They share a slot on a component, so they share a union — and the
+  documentation keeps them apart, because a badge using `accent` to mean
+  "healthy" has said nothing.
+- `CordlyEmptyState` gains a `body` input. The sibling `CordlyErrorState`
+  already had one, and two components in the same union of states should not
+  need to be called differently. The asymmetry was in this package.
+- `CordlyTextField` gains `hideLabel`, for a control whose purpose its
+  surroundings already give — a toolbar search box. It hides the label and never
+  removes it, because `aria-label` on a bare input is how a field ends up with a
+  name nobody can see.
+- `CordlySkeleton` with `shape="block"` now fills the box the caller gave it.
+  Holding the right space is the whole advantage of a skeleton over a spinner,
+  and a component that picks its own height throws it away.
+- `CordlyMenuItemContent` renders each item from a caller template while the
+  menu keeps the roles, the roving tab stop, the arrow keys, Escape, and focus
+  return. Added because the string API lost information that mattered: a
+  language picker has to mark each name with its own `lang` or a screen reader
+  pronounces "Français" as English, and that does not fit in a label.
+
 ### `@cordly/widgets` 0.2.0
 
 **Added**

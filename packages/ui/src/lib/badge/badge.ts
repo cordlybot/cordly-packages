@@ -1,7 +1,17 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-/** The five states this system distinguishes. `neutral` carries no colour. */
-export type CordlyTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+/**
+ * The tone vocabulary, closed.
+ *
+ * Four of these are status — information, success, warning, danger — and they
+ * answer "how is this going?". `accent` is not: it is emphasis, and it answers
+ * "is this the one to look at?". They are in one union because they occupy the
+ * same slot on a component, and kept distinct in the documentation because a
+ * badge that uses `accent` to mean "healthy" has said nothing.
+ *
+ * `neutral` carries no colour at all.
+ */
+export type CordlyTone = 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
 
 /**
  * A small, non-interactive state label.

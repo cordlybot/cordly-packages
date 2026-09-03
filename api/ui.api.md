@@ -138,10 +138,11 @@ type CordlyDialogPlacement = 'center' | 'end';
 ```ts
 declare class CordlyEmptyState {
  readonly heading: _angular_core.InputSignal<string>;
+ readonly body: _angular_core.InputSignal<string | null>;
  private readonly host;
  constructor();
  static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyEmptyState, never>;
- static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyEmptyState, "cordly-empty-state", never, { "heading": { "alias": "heading"; "required": true; "isSignal": true; }; }, {}, never, ["[cordly-empty-state-art]", "*", "[cordly-empty-state-action]"], true, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyEmptyState, "cordly-empty-state", never, { "heading": { "alias": "heading"; "required": true; "isSignal": true; }; "body": { "alias": "body"; "required": false; "isSignal": true; }; }, {}, never, ["[cordly-empty-state-art]", "*", "[cordly-empty-state-action]"], true, never>;
 }
 ```
 
@@ -216,6 +217,7 @@ declare class CordlyMenu {
  readonly triggerLabel: _angular_core.InputSignal<string>;
  readonly align: _angular_core.InputSignal<"end" | "start">;
  readonly selected: _angular_core.OutputEmitterRef<CordlyMenuItem>;
+ protected readonly itemContent: _angular_core.Signal<CordlyMenuItemContent | undefined>;
  private readonly document;
  private readonly injector;
  private readonly host;
@@ -238,7 +240,7 @@ declare class CordlyMenu {
  private firstEnabledIndex;
  private lastEnabledIndex;
  static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyMenu, never>;
- static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyMenu, "cordly-menu", never, { "items": { "alias": "items"; "required": true; "isSignal": true; }; "triggerLabel": { "alias": "triggerLabel"; "required": true; "isSignal": true; }; "align": { "alias": "align"; "required": false; "isSignal": true; }; }, { "selected": "selected"; }, never, ["*"], true, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyMenu, "cordly-menu", never, { "items": { "alias": "items"; "required": true; "isSignal": true; }; "triggerLabel": { "alias": "triggerLabel"; "required": true; "isSignal": true; }; "align": { "alias": "align"; "required": false; "isSignal": true; }; }, { "selected": "selected"; }, ["itemContent"], ["*"], true, never>;
 }
 ```
 
@@ -253,6 +255,27 @@ interface CordlyMenuItem {
  readonly current?: boolean;
  readonly tone?: 'neutral' | 'danger';
  readonly separatorBefore?: boolean;
+}
+```
+
+## class CordlyMenuItemContent
+
+```ts
+declare class CordlyMenuItemContent {
+ readonly template: TemplateRef<CordlyMenuItemContext>;
+ static ngTemplateContextGuard(_directive: CordlyMenuItemContent, _context: unknown): _context is CordlyMenuItemContext;
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyMenuItemContent, never>;
+ static ɵdir: _angular_core.ɵɵDirectiveDeclaration<CordlyMenuItemContent, "ng-template[cordlyMenuItemContent]", never, {}, {}, never, never, true, never>;
+}
+```
+
+## interface CordlyMenuItemContext
+
+```ts
+interface CordlyMenuItemContext {
+ readonly $implicit: CordlyMenuItem;
+ readonly index: number;
+ readonly active: boolean;
 }
 ```
 
@@ -417,6 +440,7 @@ declare class CordlySwitch implements ControlValueAccessor {
 ```ts
 declare class CordlyTextField implements ControlValueAccessor {
  readonly label: _angular_core.InputSignal<string>;
+ readonly hideLabel: _angular_core.InputSignalWithTransform<boolean, unknown>;
  readonly type: _angular_core.InputSignal<CordlyFieldType>;
  readonly name: _angular_core.InputSignal<string | null>;
  readonly placeholder: _angular_core.InputSignal<string | null>;
@@ -448,7 +472,7 @@ declare class CordlyTextField implements ControlValueAccessor {
  registerOnTouched(fn: () => void): void;
  setDisabledState(isDisabled: boolean): void;
  static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyTextField, never>;
- static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyTextField, "cordly-text-field", never, { "label": { "alias": "label"; "required": true; "isSignal": true; }; "type": { "alias": "type"; "required": false; "isSignal": true; }; "name": { "alias": "name"; "required": false; "isSignal": true; }; "placeholder": { "alias": "placeholder"; "required": false; "isSignal": true; }; "autocomplete": { "alias": "autocomplete"; "required": false; "isSignal": true; }; "inputMode": { "alias": "inputMode"; "required": false; "isSignal": true; }; "maxLength": { "alias": "maxLength"; "required": false; "isSignal": true; }; "readOnly": { "alias": "readOnly"; "required": false; "isSignal": true; }; "required": { "alias": "required"; "required": false; "isSignal": true; }; "description": { "alias": "description"; "required": false; "isSignal": true; }; "hint": { "alias": "hint"; "required": false; "isSignal": true; }; "error": { "alias": "error"; "required": false; "isSignal": true; }; "multiline": { "alias": "multiline"; "required": false; "isSignal": true; }; "rows": { "alias": "rows"; "required": false; "isSignal": true; }; }, { "valueChange": "valueChange"; "blurred": "blurred"; }, never, ["[cordly-field-prefix]", "[cordly-field-suffix]"], true, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyTextField, "cordly-text-field", never, { "label": { "alias": "label"; "required": true; "isSignal": true; }; "hideLabel": { "alias": "hideLabel"; "required": false; "isSignal": true; }; "type": { "alias": "type"; "required": false; "isSignal": true; }; "name": { "alias": "name"; "required": false; "isSignal": true; }; "placeholder": { "alias": "placeholder"; "required": false; "isSignal": true; }; "autocomplete": { "alias": "autocomplete"; "required": false; "isSignal": true; }; "inputMode": { "alias": "inputMode"; "required": false; "isSignal": true; }; "maxLength": { "alias": "maxLength"; "required": false; "isSignal": true; }; "readOnly": { "alias": "readOnly"; "required": false; "isSignal": true; }; "required": { "alias": "required"; "required": false; "isSignal": true; }; "description": { "alias": "description"; "required": false; "isSignal": true; }; "hint": { "alias": "hint"; "required": false; "isSignal": true; }; "error": { "alias": "error"; "required": false; "isSignal": true; }; "multiline": { "alias": "multiline"; "required": false; "isSignal": true; }; "rows": { "alias": "rows"; "required": false; "isSignal": true; }; }, { "valueChange": "valueChange"; "blurred": "blurred"; }, never, ["[cordly-field-prefix]", "[cordly-field-suffix]"], true, never>;
 }
 ```
 
@@ -509,7 +533,7 @@ declare class CordlyToasts {
 ## type CordlyTone
 
 ```ts
-type CordlyTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+type CordlyTone = 'neutral' | 'accent' | 'info' | 'success' | 'warning' | 'danger';
 ```
 
 ## class CordlyTooltip

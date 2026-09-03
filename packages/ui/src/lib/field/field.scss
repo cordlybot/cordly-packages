@@ -13,6 +13,18 @@
   min-inline-size: 0;
 }
 
+// Clipped rather than hidden: the label still names the control for anyone
+// navigating by form field, which is the entire reason it is required.
+:host([data-hide-label]) .cordly-field__label {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .cordly-field__label {
   font-size: var(--cordly-font-size-sm);
   font-weight: var(--cordly-font-weight-medium);

@@ -38,9 +38,20 @@
         [tabIndex]="index === activeIndex() ? 0 : -1"
         (click)="choose(item)"
       >
-        <span class="cordly-menu__item-label">{{ item.label }}</span>
-        @if (item.detail) {
-          <span class="cordly-menu__item-detail">{{ item.detail }}</span>
+        @if (itemContent(); as template) {
+          <ng-container
+            [ngTemplateOutlet]="template.template"
+            [ngTemplateOutletContext]="{
+              $implicit: item,
+              index: index,
+              active: index === activeIndex(),
+            }"
+          />
+        } @else {
+          <span class="cordly-menu__item-label">{{ item.label }}</span>
+          @if (item.detail) {
+            <span class="cordly-menu__item-detail">{{ item.detail }}</span>
+          }
         }
       </button>
     }

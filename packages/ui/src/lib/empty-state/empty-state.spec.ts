@@ -8,8 +8,8 @@ import { CordlyEmptyState } from './empty-state';
 @Component({
   imports: [CordlyEmptyState],
   template: `
-    <cordly-empty-state heading="No servers yet">
-      Add Cordly to a server you manage to configure it here.
+    <cordly-empty-state heading="No servers yet" body="Add Cordly to a server you manage.">
+      Or read the setup guide.
       <a cordly-empty-state-action href="#add">Add to a server</a>
     </cordly-empty-state>
   `,
@@ -31,6 +31,17 @@ describe('CordlyEmptyState', () => {
     const heading = (fixture.nativeElement as HTMLElement).querySelector('h3');
 
     expect(heading?.textContent).toContain('No servers yet');
+  });
+
+  it('takes a one-sentence body as an input and richer content as a slot', () => {
+    // The sibling error state has the same pair. Two components in the same
+    // union of states should not need to be called differently.
+    const fixture = TestBed.createComponent(WithAction);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(root.textContent).toContain('Add Cordly to a server you manage.');
+    expect(root.textContent).toContain('Or read the setup guide.');
   });
 
   it('projects the next action', () => {

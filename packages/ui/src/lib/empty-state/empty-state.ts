@@ -33,6 +33,16 @@ import {
 export class CordlyEmptyState {
   readonly heading = input.required<string>();
 
+  /**
+   * The explanation, when it is one sentence.
+   *
+   * The default slot takes anything richer. Both exist because the sibling
+   * `cordly-error-state` has the same pair, and two components that sit next to
+   * each other in the same union of states should not need to be called
+   * differently — the asymmetry was in this package, not in its callers.
+   */
+  readonly body = input<string | null>(null);
+
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 
   constructor() {

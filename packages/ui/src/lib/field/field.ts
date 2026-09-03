@@ -54,11 +54,22 @@ export type CordlyFieldType = 'text' | 'email' | 'password' | 'search' | 'tel' |
     '[attr.data-invalid]': 'error() ? "" : null',
     '[attr.data-disabled]': 'disabled() ? "" : null',
     '[attr.data-multiline]': 'multiline() ? "" : null',
+    '[attr.data-hide-label]': 'hideLabel() ? "" : null',
   },
 })
 export class CordlyTextField implements ControlValueAccessor {
-  /** Always visible. A placeholder is not a label; it disappears when it is needed most. */
+  /** Required. A placeholder is not a label; it disappears when it is needed most. */
   readonly label = input.required<string>();
+
+  /**
+   * Draw the label off-screen, keeping it in the accessibility tree.
+   *
+   * For a control whose purpose is already obvious from its surroundings — a
+   * search box in a toolbar is the case this exists for. It hides the label; it
+   * never removes it, because `aria-label` on a bare input is how a field ends
+   * up with a name nobody can see and a magnifying glass nobody can parse.
+   */
+  readonly hideLabel = input(false, { transform: booleanAttribute });
 
   readonly type = input<CordlyFieldType>('text');
   readonly name = input<string | null>(null);

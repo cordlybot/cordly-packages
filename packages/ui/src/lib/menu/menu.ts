@@ -1,10 +1,11 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   HostListener,
   Injector,
+  contentChild,
   afterNextRender,
   inject,
   input,
@@ -14,6 +15,7 @@ import {
 } from '@angular/core';
 
 import { cordlyId } from '../a11y/unique-id';
+import { CordlyMenuItemContent } from './menu-item-content';
 
 /**
  * One menu entry.
@@ -48,6 +50,7 @@ export interface CordlyMenuItem {
  */
 @Component({
   selector: 'cordly-menu',
+  imports: [NgTemplateOutlet],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +74,12 @@ export class CordlyMenu {
   readonly align = input<'start' | 'end'>('end');
 
   readonly selected = output<CordlyMenuItem>();
+
+  /**
+   * An optional per-item template. Without one, items render their label and
+   * detail; with one, the caller owns appearance and the menu keeps behaviour.
+   */
+  protected readonly itemContent = contentChild(CordlyMenuItemContent);
 
   private readonly document = inject(DOCUMENT);
   private readonly injector = inject(Injector);

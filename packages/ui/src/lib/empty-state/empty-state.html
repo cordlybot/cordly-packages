@@ -4,6 +4,10 @@
 
 <h3 class="cordly-empty-state__heading">{{ heading() }}</h3>
 
+@if (body()) {
+  <p class="cordly-empty-state__body">{{ body() }}</p>
+}
+
 <p class="cordly-empty-state__body"><ng-content /></p>
 
 <div class="cordly-empty-state__actions">

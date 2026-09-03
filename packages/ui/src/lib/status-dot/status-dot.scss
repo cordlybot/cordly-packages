@@ -41,6 +41,10 @@
   block-size: 0.625rem;
 }
 
+:host([data-tone='accent']) {
+  color: var(--cordly-color-accent-text);
+}
+
 :host([data-tone='info']) {
   color: var(--cordly-color-info-text);
 }

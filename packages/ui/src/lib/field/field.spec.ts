@@ -16,6 +16,7 @@ import { CordlyTextField } from './field';
       [error]="error()"
       [required]="required()"
       [multiline]="multiline()"
+      [hideLabel]="hideLabel()"
       [(ngModel)]="channel"
     />
   `,
@@ -26,6 +27,7 @@ class Host {
   readonly error = signal<string | null>(null);
   readonly required = signal(false);
   readonly multiline = signal(false);
+  readonly hideLabel = signal(false);
   channel = 'general';
 }
 
@@ -122,6 +124,20 @@ describe('CordlyTextField', () => {
 
     expect(input().tagName).toBe('TEXTAREA');
     expect(label().htmlFor).toBe(input().id);
+  });
+
+  it('keeps the label associated when it is drawn off-screen', () => {
+    // A search box in a toolbar needs no visible label; it still needs a name,
+    // and `aria-label` on a bare input is how a field ends up with one nobody
+    // can see.
+    const { fixture, host, input, label, root } = render();
+
+    host.hideLabel.set(true);
+    fixture.detectChanges();
+
+    expect(root.querySelector('cordly-text-field')?.hasAttribute('data-hide-label')).toBe(true);
+    expect(label().htmlFor).toBe(input().id);
+    expect(label().textContent).toContain('Announcement channel');
   });
 
   it('gives every instance a distinct control id', () => {

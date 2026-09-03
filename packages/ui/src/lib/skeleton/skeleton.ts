@@ -16,6 +16,10 @@ export type CordlySkeletonShape = 'text' | 'block' | 'circle';
  * and — more usefully — it holds the space, so nothing jumps when the real
  * content arrives and nobody clicks the wrong row.
  *
+ * `shape="block"` fills whatever box the caller gave it, so a placeholder is the
+ * size of the thing it stands in for — which is the entire advantage of a
+ * skeleton over a spinner, and it is lost if the component picks its own height.
+ *
  * The whole element is `aria-hidden` with a `busy` region around it. A screen
  * reader gains nothing from hearing four grey rectangles described; what it
  * needs is one statement that the region is loading, which is what `aria-busy`

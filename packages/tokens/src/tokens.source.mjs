@@ -341,6 +341,8 @@ export const contrastContract = [
     ['color-control-border', bg, 3],
     ['color-focus-ring', bg, 3],
   ]),
+  ['color-accent-text', 'color-accent-subtle', 4.5],
+  ['color-accent', 'color-surface', 3],
   ['color-on-accent', 'color-accent', 4.5],
   ['color-on-accent', 'color-accent-hover', 4.5],
   ['color-on-accent', 'color-accent-active', 4.5],

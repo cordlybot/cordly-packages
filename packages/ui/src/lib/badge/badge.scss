@@ -31,6 +31,12 @@
   flex: none;
 }
 
+:host([data-tone='accent']) {
+  background-color: var(--cordly-color-accent-subtle);
+  border-color: var(--cordly-color-accent);
+  color: var(--cordly-color-accent-text);
+}
+
 :host([data-tone='info']) {
   background-color: var(--cordly-color-info-surface);
   border-color: var(--cordly-color-info-border);

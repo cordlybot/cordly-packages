@@ -22,8 +22,18 @@
   overflow: hidden;
 }
 
+// A block fills whatever box the consumer gave it, so the placeholder is the
+// size of the thing it stands in for. That is the whole point of a skeleton
+// over a spinner: a caller that knows the layout says so, and the page does not
+// move when the content lands. The minimum is a floor for a caller who sizes
+// nothing, not a fixed height.
+:host([data-shape='block']) {
+  block-size: 100%;
+}
+
 :host([data-shape='block']) .cordly-skeleton__line {
-  block-size: 6rem;
+  block-size: 100%;
+  min-block-size: 4rem;
   border-radius: var(--cordly-radius-card);
 }
 

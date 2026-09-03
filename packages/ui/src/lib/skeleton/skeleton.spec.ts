@@ -54,6 +54,17 @@ describe('CordlySkeleton', () => {
     expect(at(lines(), 2).style.inlineSize).toBe('60%');
   });
 
+  it('lets the caller size a block, so the placeholder matches what is coming', () => {
+    // The whole advantage of a skeleton over a spinner is that it holds the
+    // right space. A component that picks its own height throws that away.
+    const { fixture, host, skeleton } = render();
+
+    host.shape.set('block');
+    fixture.detectChanges();
+
+    expect(skeleton.getAttribute('data-shape')).toBe('block');
+  });
+
   it('collapses to a single shape for a block or a circle', () => {
     const { fixture, host, lines, skeleton } = render();
 

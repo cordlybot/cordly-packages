@@ -53,6 +53,8 @@ export type { CordlyDialogCloseReason, CordlyDialogPlacement } from './lib/dialo
 
 export { CordlyMenu } from './lib/menu/menu';
 export type { CordlyMenuItem } from './lib/menu/menu';
+export { CordlyMenuItemContent } from './lib/menu/menu-item-content';
+export type { CordlyMenuItemContext } from './lib/menu/menu-item-content';
 
 export { CordlyTooltip } from './lib/tooltip/tooltip';
 export { CordlyTooltipPanel } from './lib/tooltip/tooltip-panel';
