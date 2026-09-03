@@ -26,7 +26,7 @@ jobs:
       image: node:24-bookworm@sha256:be23f54a88d34e8824c741b19b91064094f92c1c97b194144bfc8b50d67258e2
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       # Keyed on the lockfile, so an unchanged dependency tree is a restore
       # rather than a download. `npm ci` still installs from the lockfile; the
@@ -92,7 +92,7 @@ jobs:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: actions/download-artifact@v4
         with:
