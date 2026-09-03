@@ -30,7 +30,12 @@ jobs:
       image: node:24-bookworm@sha256:be23f54a88d34e8824c741b19b91064094f92c1c97b194144bfc8b50d67258e2
     steps:
       - uses: actions/checkout@v5
-      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-root-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-root-
+      - run: npm ci --no-audit --no-fund
       - run: npm run verify
       - name: The release is coherent
         run: node tools/release.mjs check
@@ -45,33 +50,42 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.62.1-noble
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
     steps:
       - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4
         with:
           name: release-tarballs
           path: artifacts
+      - uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-consumers-${{ hashFiles('fixtures/*/package-lock.json', 'compat/*/package-lock.json', 'e2e/package-lock.json') }}
+          restore-keys: npm-consumers-
       - name: Compatibility harness at the floor of the peer range
         working-directory: compat/angular-22
         run: |
-          npm ci
-          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npm ci --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
           npx ng build
       - name: Browser fixture
         working-directory: fixtures/browser
         run: |
-          npm ci
-          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npm ci --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
           npx ng build
       - name: Server-rendered fixture
         working-directory: fixtures/ssr
         run: |
-          npm ci
-          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npm ci --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
           npx ng build
-      - run: npm ci
       - name: Browser, mobile, and server-rendering gates
-        run: npx playwright test
+        working-directory: e2e
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright test
 
   publish:
     needs: [verify, consumers]
@@ -94,7 +108,13 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
-      - run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-root-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-root-
+
+      - run: npm ci --no-audit --no-fund
 
       # Rebuilt here rather than downloaded. `npm publish` packs from the
       # directory, so what reaches the registry has to be produced in the same

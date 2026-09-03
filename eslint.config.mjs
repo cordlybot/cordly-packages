@@ -23,6 +23,11 @@ export default tseslint.config(
       'packages/tokens/generated/**',
       'fixtures/**',
       'compat/**',
+      // The consumer projects and the browser gates each carry their own
+      // dependencies and their own lockfile. Type-aware lint here would need
+      // their packages installed into this project, which is the coupling they
+      // exist to avoid.
+      'e2e/**',
     ],
   },
   {
@@ -108,7 +113,7 @@ export default tseslint.config(
     // result with a cast and then reads it defensively, which the
     // non-nullish rules read as redundant — they are right about the type and
     // wrong about the intent, because the cast is the assumption under test.
-    files: ['**/*.spec.ts', 'packages/*/src/testing/**/*.ts', 'e2e/**/*.ts'],
+    files: ['**/*.spec.ts', 'packages/*/src/testing/**/*.ts'],
     rules: {
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -116,16 +121,6 @@ export default tseslint.config(
       '@typescript-eslint/no-unnecessary-condition': 'off',
       '@typescript-eslint/non-nullable-type-assertion-style': 'off',
       '@typescript-eslint/no-unnecessary-type-assertion': 'off',
-    },
-  },
-  {
-    // The browser gates and their configuration run under Node, outside any
-    // package, and are not part of a published artefact.
-    files: ['e2e/**/*.ts', 'playwright.config.ts'],
-    rules: {
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
-      '@typescript-eslint/no-unsafe-argument': 'off',
     },
   },
   {

@@ -7,7 +7,20 @@ the packages are versioned independently — see `VERSIONING.md`.
 
 ## Unreleased
 
-Nothing yet.
+### `@cordly/ui`
+
+**Added**
+
+- `CordlyAvatar` — a picture of a person or a place with an initials fallback.
+  Hidden from assistive technology, because an avatar sits beside the name it
+  depicts and exposing it makes a screen reader read that name twice. A broken
+  image falls back to initials rather than to the browser's broken-image glyph:
+  avatar URLs point at a third party and expire, and a page of those looks like
+  the application is broken.
+- `CordlySeparator` — decorative by default, `semantic` when the rule genuinely
+  divides two regions. The default is the useful part: a separator exposed
+  between every pair of rows in a list is noise a sighted reader skips past
+  without noticing and a screen-reader user has to listen to.
 
 ## 0.1.0 — 2026-09-03
 

@@ -1,0 +1,12 @@
+@if (imageUrl(); as url) {
+  <img
+    class="cordly-avatar__image"
+    [src]="url"
+    alt=""
+    loading="lazy"
+    decoding="async"
+    (error)="handleImageError()"
+  />
+} @else {
+  <span class="cordly-avatar__initials" aria-hidden="true">{{ initials() }}</span>
+}

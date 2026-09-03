@@ -9,7 +9,17 @@ on:
 # system. Every step below runs the npm script the repository documents, in the
 # image `make` uses locally, pinned by digest — so the gate that approves a
 # release in CI is the one a person ran.
+permissions:
+  contents: read
+
+concurrency:
+  group: packages-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # The gate that runs on every push. It installs the library toolchain and
+  # nothing else: the browser harness lives in `e2e/` as its own project,
+  # because Playwright is most of an install and this job never uses it.
   verify:
     runs-on: ubuntu-latest
     container:
@@ -18,7 +28,16 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - run: npm ci
+      # Keyed on the lockfile, so an unchanged dependency tree is a restore
+      # rather than a download. `npm ci` still installs from the lockfile; the
+      # cache only removes the network round trips.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-root-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-root-
+
+      - run: npm ci --no-audit --no-fund
 
       - name: Formatting
         run: npm run format:check
@@ -67,6 +86,10 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.62.1-noble
+    env:
+      # The image already carries the browsers. Downloading them again is a
+      # few hundred megabytes for no change in what is tested.
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
     steps:
       - uses: actions/checkout@v5
@@ -76,36 +99,43 @@ jobs:
           name: tarballs
           path: artifacts
 
+      - uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-consumers-${{ hashFiles('fixtures/*/package-lock.json', 'compat/*/package-lock.json', 'e2e/package-lock.json') }}
+          restore-keys: npm-consumers-
+
       - name: Compatibility harness at the floor of the declared peer range
         working-directory: compat/angular-22
         run: |
-          npm ci
-          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npm ci --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
           npx ng build
 
       - name: Browser fixture
         working-directory: fixtures/browser
         run: |
-          npm ci
-          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npm ci --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
           npx ng build
 
       - name: Server-rendered fixture
         working-directory: fixtures/ssr
         run: |
-          npm ci
-          npm install --no-save ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
+          npm ci --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund ../../artifacts/cordly-tokens.tgz ../../artifacts/cordly-ui.tgz ../../artifacts/cordly-widgets.tgz
           npx ng build
 
-      - run: npm ci
-
       - name: Browser, mobile, and server-rendering gates
-        run: npx playwright test
+        working-directory: e2e
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright test
 
       - name: Keep the report when something failed
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: playwright-report
+          path: e2e/playwright-report
           retention-days: 7

@@ -13,9 +13,15 @@ import { defineConfig, devices } from '@playwright/test';
  * Both servers are started by Playwright and both are the *production* build,
  * for the same reason: the development server applies different CSS ordering and
  * skips the budget, and neither is what ships.
+ *
+ * This lives in its own npm project. Playwright and its browsers are most of an
+ * install, and the gate that runs on every push has no use for either — keeping
+ * them here took a cold `npm ci` for that gate from five minutes to thirty
+ * seconds. The fixtures and the compatibility harness are separate projects for
+ * a different reason, but the shape is the same one.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: '.',
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 1 : 0,
@@ -26,12 +32,14 @@ export default defineConfig({
   webServer: [
     {
       command: 'node tools/serve-static.mjs fixtures/browser/dist/browser 4400',
+      cwd: '..',
       url: 'http://localhost:4400/',
       reuseExistingServer: !process.env['CI'],
       timeout: 60_000,
     },
     {
       command: 'node fixtures/ssr/dist/server/server.mjs',
+      cwd: '..',
       url: 'http://localhost:4401/',
       env: { PORT: '4401' },
       reuseExistingServer: !process.env['CI'],

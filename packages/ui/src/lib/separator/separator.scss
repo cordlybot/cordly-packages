@@ -1,0 +1,27 @@
+@use 'layout';
+
+// A rule between things.
+//
+// Decorative by default and therefore hidden from assistive technology: a
+// screen reader gains nothing from "separator" between every pair of rows, and
+// a list of them is noise a sighted reader simply skips past. `semantic` opts
+// back in for the case where the rule genuinely divides two regions and losing
+// it would change the meaning.
+:host {
+  @include layout.box;
+
+  display: block;
+  flex: none;
+  background-color: var(--cordly-color-border);
+}
+
+:host([data-orientation='horizontal']) {
+  inline-size: 100%;
+  block-size: var(--cordly-border-width);
+}
+
+:host([data-orientation='vertical']) {
+  inline-size: var(--cordly-border-width);
+  block-size: 100%;
+  align-self: stretch;
+}

@@ -19,6 +19,7 @@ MODULES_VOLUME ?= cordly_packages_modules
 BROWSER_FIXTURE_VOLUME ?= cordly_fixture_browser_modules
 SSR_FIXTURE_VOLUME ?= cordly_fixture_ssr_modules
 COMPAT_VOLUME ?= cordly_compat22_modules
+E2E_VOLUME ?= cordly_packages_e2e_modules
 
 RUN = docker run --rm -v "$(CURDIR)":/w -w /w -v $(MODULES_VOLUME):/w/node_modules $(IMAGE)
 RUN_BROWSER_FIXTURE = docker run --rm -v "$(CURDIR)":/w -w /w/fixtures/browser \
@@ -27,8 +28,8 @@ RUN_SSR_FIXTURE = docker run --rm -v "$(CURDIR)":/w -w /w/fixtures/ssr \
 	-v $(SSR_FIXTURE_VOLUME):/w/fixtures/ssr/node_modules $(IMAGE)
 RUN_COMPAT = docker run --rm -v "$(CURDIR)":/w -w /w/compat/angular-22 \
 	-v $(COMPAT_VOLUME):/w/compat/angular-22/node_modules $(IMAGE)
-RUN_E2E = docker run --rm --network host -v "$(CURDIR)":/w -w /w \
-	-v $(MODULES_VOLUME):/w/node_modules \
+RUN_E2E = docker run --rm --network host -v "$(CURDIR)":/w -w /w/e2e \
+	-v $(E2E_VOLUME):/w/e2e/node_modules \
 	-v $(SSR_FIXTURE_VOLUME):/w/fixtures/ssr/node_modules $(BROWSERS)
 
 TARBALLS = /w/artifacts/cordly-tokens.tgz /w/artifacts/cordly-ui.tgz /w/artifacts/cordly-widgets.tgz
@@ -65,10 +66,11 @@ help: ## Show the available commands.
 	@echo "  make bump PKG=ui VERSION=0.2.0   Set one package's version"
 
 install: ## Install pinned dependencies into the module volumes.
-	$(RUN) npm ci
-	$(RUN_BROWSER_FIXTURE) npm ci
-	$(RUN_SSR_FIXTURE) npm ci
-	$(RUN_COMPAT) npm ci
+	$(RUN) npm ci --no-audit --no-fund
+	$(RUN_BROWSER_FIXTURE) npm ci --no-audit --no-fund
+	$(RUN_SSR_FIXTURE) npm ci --no-audit --no-fund
+	$(RUN_COMPAT) npm ci --no-audit --no-fund
+	$(RUN_E2E) npm ci --no-audit --no-fund
 
 format: ## Rewrite files to the repository's formatting.
 	$(RUN) npm run format
@@ -115,18 +117,18 @@ verify: ## Everything a change has to pass. CI runs exactly this.
 	$(RUN) npm run verify
 
 fixture-browser: ## Install the tarballs into the browser fixture and build it.
-	$(RUN_BROWSER_FIXTURE) sh -c "npm ci && npm install --no-save $(TARBALLS) && npx ng build"
+	$(RUN_BROWSER_FIXTURE) sh -c "npm ci --no-audit --no-fund && npm install --no-save --no-audit --no-fund $(TARBALLS) && npx ng build"
 
 fixture-ssr: ## Install the tarballs into the SSR fixture and build it.
-	$(RUN_SSR_FIXTURE) sh -c "npm ci && npm install --no-save $(TARBALLS) && npx ng build"
+	$(RUN_SSR_FIXTURE) sh -c "npm ci --no-audit --no-fund && npm install --no-save --no-audit --no-fund $(TARBALLS) && npx ng build"
 
 fixtures: fixture-browser fixture-ssr ## Both fixture consumers, from the packed artefacts.
 
 compat: ## Compile every public export at the floor of the declared peer range.
-	$(RUN_COMPAT) sh -c "npm ci && npm install --no-save $(TARBALLS) && npx ng build"
+	$(RUN_COMPAT) sh -c "npm ci --no-audit --no-fund && npm install --no-save --no-audit --no-fund $(TARBALLS) && npx ng build"
 
 e2e: ## Browser, mobile, and SSR gates against the built fixtures.
-	$(RUN_E2E) npx playwright test
+	$(RUN_E2E) sh -c "npm ci --no-audit --no-fund && npx playwright test"
 
 release: verify pack fixtures compat e2e ## Everything, including release evidence.
 	@echo "release: packages built, packed, installed from tarballs, and proved in a browser and on a server"
@@ -142,7 +144,7 @@ bump: ## Set one package's version, e.g. make bump PKG=ui VERSION=0.2.0
 
 clean: ## Remove build output and the dependency volumes.
 	rm -rf dist artifacts out-tsc coverage test-results playwright-report
-	-docker volume rm $(MODULES_VOLUME) $(BROWSER_FIXTURE_VOLUME) $(SSR_FIXTURE_VOLUME) $(COMPAT_VOLUME)
+	-docker volume rm $(MODULES_VOLUME) $(BROWSER_FIXTURE_VOLUME) $(SSR_FIXTURE_VOLUME) $(COMPAT_VOLUME) $(E2E_VOLUME)
 
 shell: ## Open a shell in the toolchain image.
 	docker run --rm -it -v "$(CURDIR)":/w -w /w -v $(MODULES_VOLUME):/w/node_modules $(IMAGE) bash

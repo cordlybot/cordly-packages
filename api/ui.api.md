@@ -5,6 +5,36 @@
 Every entry below is part of the package contract. Removing or narrowing one
 is a breaking change; see VERSIONING.md.
 
+## class CordlyAvatar
+
+```ts
+declare class CordlyAvatar {
+ readonly name: _angular_core.InputSignal<string>;
+ readonly src: _angular_core.InputSignal<string | null>;
+ readonly size: _angular_core.InputSignal<CordlyAvatarSize>;
+ readonly shape: _angular_core.InputSignal<CordlyAvatarShape>;
+ private readonly failed;
+ constructor();
+ protected readonly imageUrl: _angular_core.Signal<string | null>;
+ protected readonly initials: _angular_core.Signal<string>;
+ protected handleImageError(): void;
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyAvatar, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyAvatar, "cordly-avatar", never, { "name": { "alias": "name"; "required": true; "isSignal": true; }; "src": { "alias": "src"; "required": false; "isSignal": true; }; "size": { "alias": "size"; "required": false; "isSignal": true; }; "shape": { "alias": "shape"; "required": false; "isSignal": true; }; }, {}, never, never, true, never>;
+}
+```
+
+## type CordlyAvatarShape
+
+```ts
+type CordlyAvatarShape = 'circle' | 'square';
+```
+
+## type CordlyAvatarSize
+
+```ts
+type CordlyAvatarSize = 'sm' | 'md' | 'lg' | 'xl';
+```
+
 ## class CordlyBadge
 
 ```ts
@@ -268,6 +298,25 @@ interface CordlySelectOption {
  readonly label: string;
  readonly disabled?: boolean;
 }
+```
+
+## class CordlySeparator
+
+```ts
+declare class CordlySeparator {
+ readonly orientation: _angular_core.InputSignal<CordlySeparatorOrientation>;
+ readonly semantic: _angular_core.InputSignalWithTransform<boolean, unknown>;
+ protected readonly role: _angular_core.Signal<"separator" | "presentation">;
+ protected readonly ariaOrientation: _angular_core.Signal<"vertical" | null>;
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlySeparator, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlySeparator, "cordly-separator", never, { "orientation": { "alias": "orientation"; "required": false; "isSignal": true; }; "semantic": { "alias": "semantic"; "required": false; "isSignal": true; }; }, {}, never, never, true, never>;
+}
+```
+
+## type CordlySeparatorOrientation
+
+```ts
+type CordlySeparatorOrientation = 'horizontal' | 'vertical';
 ```
 
 ## class CordlySkeleton

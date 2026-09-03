@@ -28,7 +28,7 @@
     "package:check": "node tools/check-packages.mjs",
     "hygiene:check": "node tools/check-hygiene.mjs",
     "verify": "npm run format:check && npm run lint && npm run files:check && npm run hygiene:check && npm run tokens:check && npm run tokens:test && npm run build && npm run test && npm run api:check && npm run pack:all && npm run package:check",
-    "e2e": "playwright test",
+    "e2e": "npm --prefix e2e exec -- playwright test --config e2e/playwright.config.ts",
     "release:status": "node tools/release.mjs status",
     "release:check": "node tools/release.mjs check",
     "release:publish": "node tools/release.mjs publish"
@@ -44,9 +44,7 @@
     "@angular/platform-browser": "22.1.4",
     "@angular/platform-server": "22.1.4",
     "@angular/router": "22.1.4",
-    "@axe-core/playwright": "4.13.0",
     "@eslint/js": "10.0.1",
-    "@playwright/test": "1.62.1",
     "@types/node": "24.13.3",
     "angular-eslint": "22.2.0",
     "eslint": "10.9.1",

@@ -19,6 +19,9 @@ export type { CordlyIconButtonSize, CordlyIconButtonVariant } from './lib/icon-b
 
 export { CordlyLink } from './lib/link/link';
 
+export { CordlyAvatar } from './lib/avatar/avatar';
+export type { CordlyAvatarShape, CordlyAvatarSize } from './lib/avatar/avatar';
+
 export { CordlyBadge } from './lib/badge/badge';
 export type { CordlyTone } from './lib/badge/badge';
 
@@ -50,6 +53,9 @@ export type { CordlyMenuItem } from './lib/menu/menu';
 
 export { CordlyTooltip } from './lib/tooltip/tooltip';
 export { CordlyTooltipPanel } from './lib/tooltip/tooltip-panel';
+
+export { CordlySeparator } from './lib/separator/separator';
+export type { CordlySeparatorOrientation } from './lib/separator/separator';
 
 export { CordlyVisuallyHidden } from './lib/visually-hidden/visually-hidden';
 
