@@ -105,10 +105,6 @@ Two things a maintainer sets up and nobody touches again:
 - **The `@cordly` scope**, claimed on npmjs.com by the organisation that owns
   it.
 
-Until the token exists the workflow reaches the publish step and fails there,
-after everything else has passed — which is the right order: nothing is tagged
-that was not proved.
-
 ## Dry runs
 
 ```bash
