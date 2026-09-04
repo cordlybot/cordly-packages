@@ -1,3 +1,4 @@
+@use 'forced-colors';
 @use 'control';
 @use 'motion';
 @use 'layout';
@@ -151,5 +152,19 @@
     // Above a card's decorative layers, below anything the card deliberately
     // raises above it — an overflow menu, a favourite toggle.
     z-index: 1;
+  }
+}
+
+// Every variant is one shape in forced colours: the fills that separate primary
+// from neutral from danger are all replaced by the same system colour, and a
+// `quiet` button — transparent fill, transparent border — becomes text that
+// happens to be clickable.
+//
+// So the border does the work instead, which is also how the platform's own
+// buttons look in this mode. It costs no layout: `control.base` already
+// reserves a transparent one.
+:host {
+  @include forced-colors.only {
+    border-color: ButtonBorder;
   }
 }

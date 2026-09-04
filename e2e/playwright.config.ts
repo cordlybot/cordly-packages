@@ -61,6 +61,28 @@ export default defineConfig({
       use: { ...devices['Pixel 7'], baseURL: 'http://localhost:4400' },
     },
     {
+      // The same fixture in Windows High Contrast mode.
+      //
+      // Its own project because forced colours is a browser-level setting, not
+      // something a test can turn on partway through. It earns a gate of its
+      // own because it is the one mode that removes a category of styling
+      // outright: every box-shadow is dropped, and every author colour that is
+      // not a system keyword is replaced. Several components documented forced
+      // colours as the reason for a design decision and then expressed that
+      // decision in a box-shadow, which is exactly the thing that does not
+      // survive.
+      // Forced colours itself is turned on per page rather than here. The
+      // context-level `forcedColors` option is accepted and silently does
+      // nothing in this Chromium — `matchMedia('(forced-colors: active)')`
+      // stays false — so a suite that trusted it would assert against an
+      // ordinary page and pass for the wrong reason. `page.emulateMedia` does
+      // work, and Chromium then applies the real treatment: box-shadows go, and
+      // author colours are substituted. The project exists for the file split.
+      name: 'forced-colors',
+      testMatch: /forced-colors.spec.ts/,
+      use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4400' },
+    },
+    {
       name: 'ssr',
       testMatch: /ssr\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4401' },

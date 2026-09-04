@@ -1,4 +1,5 @@
 @use 'focus';
+@use 'forced-colors';
 @use 'motion';
 @use 'layout';
 
@@ -34,6 +35,9 @@
 .cordly-side-nav__item {
   @include focus.visible;
   @include motion.transition(background-color, color);
+  @include forced-colors.current-marker;
+
+  box-sizing: border-box;
 
   display: flex;
   align-items: center;
@@ -56,14 +60,17 @@
     cursor: not-allowed;
   }
 
-  // "You are here" carries weight, a fill, and a rule. Colour alone would make
-  // the current destination invisible in forced-colours mode, and the rule is
-  // what survives it.
+  // "You are here" carries weight, a fill, and a rule, and the rule is the one
+  // that has to survive on its own: in forced colours the fill is flattened and
+  // weight alone is not a distinction anyone should have to notice.
+  //
+  // The rule is a real border, supplied by `current-marker` above. It used to
+  // be an inset box-shadow, which reads the same on screen and is forced to
+  // `none` in exactly the mode this comment claimed it was for.
   &[aria-current='page'] {
     background-color: var(--cordly-color-accent-subtle);
     color: var(--cordly-color-text);
     font-weight: var(--cordly-font-weight-medium);
-    box-shadow: inset 2px 0 0 var(--cordly-color-accent);
   }
 }
 

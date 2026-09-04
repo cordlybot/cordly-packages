@@ -1,4 +1,5 @@
 @use 'focus';
+@use 'forced-colors';
 @use 'motion';
 @use 'layout';
 
@@ -51,6 +52,7 @@
 
 .cordly-menu__item {
   @include focus.visible;
+  @include forced-colors.current-marker;
 
   // Stated rather than inherited, because an entry can be an anchor and a
   // `<button>` is border-box by user-agent default while an `<a>` is not —
@@ -68,7 +70,11 @@
   min-block-size: var(--cordly-target-min);
   justify-content: center;
   padding: var(--cordly-space-xs) var(--cordly-space-sm);
-  border: 0;
+  // Three sides, not `border: 0`. The inline-start edge belongs to the
+  // current-item marker included above, and resetting all four silently
+  // removed it.
+  border-block: 0;
+  border-inline-end: 0;
   border-radius: var(--cordly-radius-control);
   background: none;
   color: var(--cordly-color-text);
@@ -95,10 +101,11 @@
   }
 
   // The current destination is marked with a rule as well as with weight, so
-  // "you are here" does not depend on noticing a font change.
+  // "you are here" does not depend on noticing a font change. The rule comes
+  // from `current-marker`: it was an inset box-shadow, and forced colours drops
+  // every one of those, leaving the weight to carry it alone.
   &[aria-current='true'] {
     font-weight: var(--cordly-font-weight-semibold);
-    box-shadow: inset 2px 0 0 var(--cordly-color-accent);
   }
 }
 

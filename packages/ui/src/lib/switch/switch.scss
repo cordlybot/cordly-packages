@@ -1,4 +1,5 @@
 @use 'focus';
+@use 'forced-colors';
 @use 'motion';
 @use 'layout';
 
@@ -96,4 +97,33 @@
   font-size: var(--cordly-font-size-xs);
   color: var(--cordly-color-text-muted);
   line-height: var(--cordly-line-height-normal);
+}
+
+// Forced colours flattens both track fills to the same system colour, and the
+// thumb with them — leaving a switch that looks identical on and off, which is
+// the whole of what this control says.
+//
+// System keywords are the only colours that survive here, and they carry the
+// right meaning: `Highlight` is what the user's own palette means by selected.
+@include forced-colors.only {
+  // The thumb is outlined rather than filled. Chromium substitutes the
+  // background of anything inside a button for its own, so the fill is not the
+  // author's to set here — measured, and it is why an unchecked thumb came out
+  // the same white as the track it sits on, taking the position cue with it.
+  //
+  // An outline is not substituted away, and position is untouched by forced
+  // colours altogether, so between them the two states stay legible whatever
+  // the palette does to the fills.
+  .cordly-switch__thumb {
+    outline: var(--cordly-border-width) solid ButtonText;
+    outline-offset: calc(var(--cordly-border-width) * -1);
+  }
+
+  .cordly-switch__track {
+    border-color: ButtonText;
+  }
+
+  [aria-checked='true'] .cordly-switch__track {
+    border-color: Highlight;
+  }
 }

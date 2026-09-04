@@ -1,0 +1,85 @@
+// Windows High Contrast, and what it takes away.
+//
+// In forced colours the user's palette replaces the author's: every colour that
+// is not a system keyword is substituted, `background-image` is dropped, and —
+// the one that catches people — **every `box-shadow` is forced to `none`**. A
+// component that expresses a meaningful distinction as a shadow has no
+// distinction at all for the people most likely to depend on one.
+//
+// Several components here documented forced colours as the reason for a
+// decision and then wrote that decision as an inset `box-shadow`, which is
+// precisely the property that does not survive. These mixins exist so the
+// answer is written once and is the same answer everywhere.
+//
+// The rule for what to write inside `only`: **system colour keywords only**.
+// An author colour inside this media query is substituted like any other, so
+// writing one is the same as writing nothing.
+
+@mixin only {
+  @media (forced-colors: active) {
+    @content;
+  }
+}
+
+// The marker that says "this is the current one".
+//
+// A reserved inline-start border rather than an inset shadow. It costs the same
+// two pixels in every mode, it never shifts as an item becomes current, and it
+// is a real border — so forced colours substitutes its colour instead of
+// removing it.
+//
+// Both colours are named for forced colours, including the invisible one.
+// `transparent` is not carried through the substitution — measured, not
+// assumed: left alone, every item in the list comes out wearing a visible rule
+// and "current" stops meaning anything. `Canvas` is the page's own background,
+// so a border painted in it is the absence of a marker, in the user's palette
+// rather than in ours.
+@mixin current-marker($colour: var(--cordly-color-accent)) {
+  border-inline-start: var(--cordly-border-width-strong) solid transparent;
+
+  @include only {
+    border-inline-start-color: Canvas;
+  }
+
+  &[aria-current='true'],
+  &[aria-current='page'] {
+    border-inline-start-color: $colour;
+
+    @include only {
+      // The one system colour that means selected, so "current" reads the way
+      // the rest of the desktop marks a current thing.
+      border-inline-start-color: Highlight;
+    }
+  }
+}
+
+// The marker that says "this one is chosen", where the chosen thing is a box
+// rather than a row in a list — a segmented control, a selectable card.
+//
+// Same reasoning as `current-marker` and the same two named colours: a raised
+// fill and a shadow both disappear, an outline does not. Drawn as an outline
+// rather than a border so it costs no layout and cannot disturb a control whose
+// geometry is already set.
+@mixin selected-outline {
+  @include only {
+    outline: var(--cordly-border-width-strong) solid Canvas;
+    outline-offset: calc(var(--cordly-border-width-strong) * -1);
+  }
+}
+
+@mixin selected-outline-on {
+  @include only {
+    outline-color: Highlight;
+  }
+}
+
+// A surface that floats over the page and is separated from it only by its
+// elevation — a drawer, a sheet.
+//
+// Every shadow is dropped and both surfaces are painted the user's background,
+// so an overlay with no border of its own merges into the page behind it.
+@mixin floating-edge($side: inline-end) {
+  @include only {
+    border-#{$side}: var(--cordly-border-width) solid CanvasText;
+  }
+}

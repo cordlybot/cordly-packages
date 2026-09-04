@@ -1,4 +1,5 @@
 @use 'motion';
+@use 'forced-colors';
 @use 'layout';
 
 :host {
@@ -86,6 +87,13 @@
     inset-inline-start: 0;
     inline-size: min(20rem, 85vw);
     translate: -100% 0;
+    // The drawer is separated from the page by its elevation alone. Forced
+    // colours deletes the shadow and paints both surfaces the user's own
+    // background, so without an edge the drawer and the page it covers become
+    // one continuous sheet — on the viewport where the drawer is the only
+    // navigation there is.
+    @include forced-colors.floating-edge;
+
     box-shadow: var(--cordly-elevation-overlay);
   }
 

@@ -87,6 +87,33 @@ mobile behaviour, and the platform's screen-reader semantics for free.
 - **The tokens carry no chart palette.** No Cordly surface renders a chart yet,
   and inventing five colours nothing uses is how a token set starts drifting.
 
+## Forced colours
+
+Windows High Contrast is the one mode that removes a category of styling rather
+than changing it. Every `box-shadow` becomes `none`, every author colour that is
+not a system keyword is substituted, `transparent` is not carried through, and
+Chromium replaces the background of anything inside a `<button>` with its own.
+
+Five components here documented forced colours as the reason for a design
+decision and then wrote that decision as an inset `box-shadow`. The rules are
+therefore stated once, in `styles/_forced-colors.scss`, and the important one is
+this: **inside `@media (forced-colors: active)`, only system colour keywords
+mean anything.** An author colour there is substituted like any other, so writing
+one is the same as writing nothing — including the invisible one. `current-marker`
+paints an unmarked item's border in `Canvas` rather than leaving it
+`transparent`, because left alone every item comes out wearing a visible rule.
+
+What survives, in rough order of reliability: **position** (untouched),
+**outline** and **border** (colour substituted, never removed), **system colour
+keywords**, and **words**. What does not: shadows, gradients, background images,
+and the difference between two author fills.
+
+`e2e/forced-colors.spec.ts` runs the whole fixture in the mode, including an axe
+scan. It turns it on with `page.emulateMedia` rather than Playwright's
+context-level `forcedColors` option: that option is accepted and silently does
+nothing in this Chromium — `matchMedia` stays false — so a suite trusting it runs
+against an ordinary page and passes without testing anything.
+
 ## Why the build is shaped the way it is
 
 `packages/*` are **not** npm workspace members. If they were, npm would symlink

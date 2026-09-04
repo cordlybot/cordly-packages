@@ -99,3 +99,27 @@ test('nothing scrolls horizontally at a phone width', async ({ page }) => {
 
   expect(overflow).toBeLessThanOrEqual(1);
 });
+
+test('the drawer keeps an edge when its shadow is taken away', async ({ page }) => {
+  // The drawer floats over the page on elevation alone. Forced colours drops
+  // every shadow and paints both surfaces the user's background, so without a
+  // border the drawer and the page it covers become one sheet — on the only
+  // viewport where the drawer is the navigation.
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Show server sections' }).click();
+
+  const drawer = page.locator('.cordly-app-frame__navigation');
+  await expect(page.getByRole('navigation', { name: 'Server sections' })).toBeInViewport();
+
+  const edge = await drawer.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { width: style.borderInlineEndWidth, colour: style.borderInlineEndColor };
+  });
+  const background = await page
+    .locator('body')
+    .evaluate((element) => getComputedStyle(element).backgroundColor);
+
+  expect(edge.width).not.toBe('0px');
+  expect(edge.colour).not.toBe(background);
+});

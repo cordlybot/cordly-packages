@@ -1,4 +1,5 @@
 @use 'layout';
+@use 'forced-colors';
 // A small closed set of choices, laid out as one control.
 //
 // Native radios rather than a button group carrying `aria-checked`. The platform
@@ -42,6 +43,8 @@
 }
 
 .cordly-preference-group__option {
+  @include forced-colors.selected-outline;
+
   position: relative;
   display: flex;
   align-items: center;
@@ -59,7 +62,13 @@
     color: var(--cordly-color-text);
   }
 
+  // Chosen is a raised fill, a weight, and a lift. In forced colours the fill is
+  // repainted, the lift is deleted, and weight alone is left to say which option
+  // is selected — in a control whose native radio is clipped away, so weight is
+  // genuinely all there is. The outline is what survives.
   &:has(.cordly-preference-group__input:checked) {
+    @include forced-colors.selected-outline-on;
+
     background-color: var(--cordly-color-surface-raised);
     color: var(--cordly-color-text);
     font-weight: var(--cordly-font-weight-medium);

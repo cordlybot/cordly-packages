@@ -7,6 +7,54 @@ the packages are versioned independently — see `VERSIONING.md`.
 
 ## Unreleased
 
+### `@cordly/ui` 0.4.0
+
+**Fixed**
+
+- **Forced colours (Windows High Contrast) was cited as a reason and never
+  implemented.** Five components explained a design decision by saying colour
+  alone would fail in forced colours — and then expressed that decision as an
+  inset `box-shadow`, which is the one property forced colours removes outright.
+  The comment beside the side navigation's current-item rule said the rule "is
+  what survives it". It was the only part that did not.
+
+  What actually happens in that mode, measured rather than assumed: every
+  `box-shadow` becomes `none`, every author colour that is not a system keyword
+  is substituted, `transparent` is **not** carried through, and Chromium
+  replaces the background of anything inside a `<button>` with its own. So:
+
+  - The current entry in a menu and in the side navigation is marked by a
+    reserved inline-start border rather than an inset shadow. Both colours are
+    named for forced colours, including the invisible one — left to the
+    substitution, every item in the list comes out wearing a visible rule and
+    "current" stops meaning anything.
+  - A switch outlines its thumb and colours its track's border. Its fills are
+    not the author's to set inside a button, and both states were coming out the
+    same white; position is the one cue forced colours cannot touch, and an
+    unoutlined thumb the colour of its track takes that with it.
+  - Every button keeps a visible border, which is also how the platform draws
+    its own. A `quiet` button was a transparent fill inside a transparent
+    border, so once the variant fills flattened together it was text that
+    happened to be clickable.
+
+  A new browser gate runs the whole fixture in forced colours, including an axe
+  scan. It turns the mode on with `page.emulateMedia` rather than the
+  context-level option, which is accepted and silently does nothing — a suite
+  trusting it runs against an ordinary page and passes without testing anything.
+
+### `@cordly/widgets` 0.4.0
+
+**Fixed**
+
+- The mobile navigation drawer floats over the page on elevation alone, so in
+  forced colours it and the page it covers became one continuous sheet — on the
+  only viewport where the drawer _is_ the navigation. It now carries an edge.
+- The selected option in a preference group was a raised fill, a weight, and a
+  lift. The fill is repainted and the lift deleted, and the control clips its
+  native radio away, so weight alone was left saying which option was chosen. It
+  is outlined now.
+- Peers `@cordly/ui@^0.4.0`.
+
 ### `@cordly/ui` 0.3.0
 
 Everything in this release came out of migrating a real application and then
