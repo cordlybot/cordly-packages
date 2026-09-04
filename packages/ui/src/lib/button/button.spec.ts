@@ -136,3 +136,40 @@ describe('CordlyButton', () => {
     });
   });
 });
+
+describe('CordlyButton stretch', () => {
+  beforeEach(() => TestBed.resetTestingModule());
+
+  it('hands the overlay back to the card by making the control unpositioned', () => {
+    // The whole mechanism. Left positioned, the ::after this package already
+    // owns for touch padding resolves `inset: 0` against the control itself,
+    // which is how a "stretched" hit area comes out exactly button-sized.
+    @Component({
+      imports: [CordlyButton],
+      template: `<div style="position: relative">
+        <a cordlyButton stretch href="/guilds/1">Manage</a>
+      </div>`,
+    })
+    class Card {}
+
+    const fixture = TestBed.createComponent(Card);
+    fixture.detectChanges();
+
+    const anchor = (fixture.nativeElement as HTMLElement).querySelector('a') as HTMLElement;
+    expect(anchor.hasAttribute('data-stretch')).toBe(true);
+  });
+
+  it('is off unless asked for, so an ordinary button keeps its touch padding', () => {
+    @Component({
+      imports: [CordlyButton],
+      template: `<button cordlyButton size="sm">Refresh</button>`,
+    })
+    class Plain {}
+
+    const fixture = TestBed.createComponent(Plain);
+    fixture.detectChanges();
+
+    const button = (fixture.nativeElement as HTMLElement).querySelector('button') as HTMLElement;
+    expect(button.hasAttribute('data-stretch')).toBe(false);
+  });
+});

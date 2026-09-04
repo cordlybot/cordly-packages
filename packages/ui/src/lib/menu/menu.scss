@@ -52,6 +52,14 @@
 .cordly-menu__item {
   @include focus.visible;
 
+  // Stated rather than inherited, because an entry can be an anchor and a
+  // `<button>` is border-box by user-agent default while an `<a>` is not —
+  // 100% inline size plus padding would overflow the panel on exactly the
+  // entries that navigate.
+  box-sizing: border-box;
+  // Anchors carry the prose underline; a menu entry is not prose.
+  text-decoration: none;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -72,6 +80,10 @@
   &:hover:not(:disabled) {
     background-color: var(--cordly-color-control);
   }
+
+  // An anchor entry is never disabled — an item with a destination and a
+  // disabled flag renders as a button instead — so the hover rule above needs
+  // no anchor equivalent.
 
   &:disabled {
     cursor: not-allowed;

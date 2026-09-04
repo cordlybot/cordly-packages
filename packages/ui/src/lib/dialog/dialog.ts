@@ -71,7 +71,20 @@ export class CordlyDialog {
   readonly placement = input<CordlyDialogPlacement>('center');
 
   /** Accessible name for the ✕ control. Required for the same reason as the toast's. */
-  readonly dismissLabel = input.required<string>();
+  /**
+   * The ✕ button's accessible name, or `null` for no ✕ at all.
+   *
+   * Not optional, because the failure it prevents — an unnamed close button in
+   * a modal — is invisible to the person shipping it and total for a screen
+   * reader user.
+   *
+   * `null` is for a dialog whose own actions already answer it. A confirmation
+   * is the case: it offers "Stay signed in" and "Sign out", and adding a ✕ that
+   * means the same as one of them puts two identically named controls in the
+   * same dialog. Escape and the backdrop still dismiss it — `dismissible`
+   * decides that, and this input decides only whether there is a button.
+   */
+  readonly dismissLabel = input.required<string | null>();
 
   /**
    * Escape and a backdrop click close the dialog.

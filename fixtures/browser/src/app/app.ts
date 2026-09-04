@@ -127,6 +127,9 @@ export class FixtureApp {
   ];
 
   readonly accountMenu: readonly CordlyMenuItem[] = [
+    // A destination, so the browser gate can check that this entry is a real
+    // link rather than a button that happens to navigate.
+    { id: 'profile', label: 'Profile', href: '/profile' },
     { id: 'settings', label: 'Settings' },
     { id: 'appearance', label: 'Appearance', detail: 'Theme and language' },
     { id: 'sign-out', label: 'Sign out', tone: 'danger', separatorBefore: true },

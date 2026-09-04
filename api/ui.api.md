@@ -52,9 +52,12 @@ declare class CordlyButton {
  readonly variant: _angular_core.InputSignal<CordlyButtonVariant>;
  readonly size: _angular_core.InputSignal<CordlyButtonSize>;
  readonly block: _angular_core.InputSignalWithTransform<boolean, unknown>;
+ readonly stretch: _angular_core.InputSignalWithTransform<boolean, unknown>;
+ private readonly host;
+ constructor();
  readonly busy: _angular_core.InputSignalWithTransform<boolean, unknown>;
  static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyButton, never>;
- static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyButton, "button[cordlyButton], a[cordlyButton]", never, { "variant": { "alias": "variant"; "required": false; "isSignal": true; }; "size": { "alias": "size"; "required": false; "isSignal": true; }; "block": { "alias": "block"; "required": false; "isSignal": true; }; "busy": { "alias": "busy"; "required": false; "isSignal": true; }; }, {}, never, ["*"], true, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyButton, "button[cordlyButton], a[cordlyButton]", never, { "variant": { "alias": "variant"; "required": false; "isSignal": true; }; "size": { "alias": "size"; "required": false; "isSignal": true; }; "block": { "alias": "block"; "required": false; "isSignal": true; }; "stretch": { "alias": "stretch"; "required": false; "isSignal": true; }; "busy": { "alias": "busy"; "required": false; "isSignal": true; }; }, {}, never, ["*"], true, never>;
 }
 ```
 
@@ -143,7 +146,7 @@ declare class CordlyDialog {
  readonly heading: _angular_core.InputSignal<string>;
  readonly description: _angular_core.InputSignal<string | null>;
  readonly placement: _angular_core.InputSignal<CordlyDialogPlacement>;
- readonly dismissLabel: _angular_core.InputSignal<string>;
+ readonly dismissLabel: _angular_core.InputSignal<string | null>;
  readonly dismissible: _angular_core.InputSignalWithTransform<boolean, unknown>;
  readonly alert: _angular_core.InputSignalWithTransform<boolean, unknown>;
  readonly closed: _angular_core.OutputEmitterRef<CordlyDialogCloseReason>;
@@ -180,11 +183,12 @@ type CordlyDialogPlacement = 'center' | 'end';
 ```ts
 declare class CordlyEmptyState {
  readonly heading: _angular_core.InputSignal<string>;
+ readonly headingLevel: _angular_core.InputSignal<2 | 1 | 3 | 4>;
  readonly body: _angular_core.InputSignal<string | null>;
  private readonly host;
  constructor();
  static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyEmptyState, never>;
- static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyEmptyState, "cordly-empty-state", never, { "heading": { "alias": "heading"; "required": true; "isSignal": true; }; "body": { "alias": "body"; "required": false; "isSignal": true; }; }, {}, never, ["[cordly-empty-state-art]", "*", "[cordly-empty-state-action]"], true, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyEmptyState, "cordly-empty-state", never, { "heading": { "alias": "heading"; "required": true; "isSignal": true; }; "headingLevel": { "alias": "headingLevel"; "required": false; "isSignal": true; }; "body": { "alias": "body"; "required": false; "isSignal": true; }; }, {}, never, ["[cordly-empty-state-art]", "*", "[cordly-empty-state-action]"], true, never>;
 }
 ```
 
@@ -271,6 +275,9 @@ declare class CordlyMenu {
  protected readonly activeIndex: _angular_core.WritableSignal<number>;
  protected toggle(): void;
  protected choose(item: CordlyMenuItem): void;
+ protected linkFor(item: CordlyMenuItem): string | null;
+ protected chooseFromLink(event: MouseEvent, item: CordlyMenuItem): void;
+ protected chooseFromLinkKey(event: Event, item: CordlyMenuItem): void;
  protected handleTriggerKeydown(event: KeyboardEvent): void;
  protected handlePanelKeydown(event: KeyboardEvent): void;
  protected handleOutsidePointer(event: Event): void;
@@ -292,6 +299,7 @@ declare class CordlyMenu {
 interface CordlyMenuItem {
  readonly id: string;
  readonly label: string;
+ readonly href?: string;
  readonly detail?: string;
  readonly disabled?: boolean;
  readonly current?: boolean;

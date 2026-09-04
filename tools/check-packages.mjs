@@ -26,6 +26,19 @@ const artifacts = join(root, 'artifacts');
 /** The Angular line this release is built for and proved against. */
 const ANGULAR_PEER = '^22.0.0';
 
+/**
+ * The range a package must declare for a sibling in this repository.
+ *
+ * Derived rather than written down, because a literal here is stale the moment
+ * anything is bumped and stale in the direction that matters: a caret range on a
+ * 0.x version does not reach the next minor, so `^0.2.0` stops covering the
+ * `@cordly/ui` it is built against as soon as that becomes 0.3.0. The check
+ * still catches a range that is too wide — the point of the rule — because the
+ * only accepted value is the exact version the tarballs were built from.
+ */
+const siblingPeer = (key) =>
+  `^${JSON.parse(readFileSync(join(root, 'packages', key, 'package.json'), 'utf8')).version}`;
+
 const expectations = [
   {
     file: 'cordly-tokens.tgz',
@@ -58,7 +71,7 @@ const expectations = [
       '@angular/common': ANGULAR_PEER,
       '@angular/core': ANGULAR_PEER,
       '@angular/forms': ANGULAR_PEER,
-      '@cordly/tokens': '^0.1.0',
+      '@cordly/tokens': siblingPeer('tokens'),
     },
   },
   {
@@ -76,8 +89,8 @@ const expectations = [
       '@angular/common': ANGULAR_PEER,
       '@angular/core': ANGULAR_PEER,
       '@angular/forms': ANGULAR_PEER,
-      '@cordly/tokens': '^0.1.0',
-      '@cordly/ui': '^0.2.0',
+      '@cordly/tokens': siblingPeer('tokens'),
+      '@cordly/ui': siblingPeer('ui'),
     },
   },
 ];

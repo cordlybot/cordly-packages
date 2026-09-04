@@ -27,6 +27,25 @@ import { CordlyMenuItemContent } from './menu-item-content';
 export interface CordlyMenuItem {
   readonly id: string;
   readonly label: string;
+
+  /**
+   * Where this entry goes, when it goes somewhere.
+   *
+   * An entry that navigates renders as an anchor rather than a button, and the
+   * difference is not cosmetic: middle-click, ctrl/cmd-click, "open in a new
+   * tab", "copy link address", and the status bar preview all belong to the
+   * anchor and cannot be recovered by handling a click. The panel's account menu
+   * lost every one of them when it moved to this package, and nothing noticed
+   * until its browser suite asked the menu item for its `href`.
+   *
+   * A plain activation is still reported through `select` with its default
+   * prevented, so an application keeps client-side routing. A modified click is
+   * left entirely to the browser.
+   *
+   * Ignored on a disabled entry: an anchor has no disabled state, and a link
+   * that has to be talked out of navigating is worse than a button that cannot.
+   */
+  readonly href?: string;
   readonly detail?: string;
   readonly disabled?: boolean;
   readonly current?: boolean;
@@ -104,6 +123,39 @@ export class CordlyMenu {
     if (item.disabled) return;
     this.selected.emit(item);
     this.closeAndRestore();
+  }
+
+  /** True when this entry renders as an anchor. */
+  protected linkFor(item: CordlyMenuItem): string | null {
+    return item.disabled ? null : (item.href ?? null);
+  }
+
+  /**
+   * A click on an entry that has a destination.
+   *
+   * Anything the browser has its own answer for is left alone — a middle-click,
+   * or any modifier — because those are exactly the interactions an `href`
+   * exists to preserve. A plain left-click is reported instead, so the
+   * application routes it without a full page load.
+   */
+  protected chooseFromLink(event: MouseEvent, item: CordlyMenuItem): void {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    event.preventDefault();
+    this.choose(item);
+  }
+
+  /**
+   * Space on a link entry.
+   *
+   * A native anchor answers Enter and ignores Space; a `menuitem` has to answer
+   * both. Without this, half the menu responds to Space and half of it scrolls
+   * the page behind the open menu.
+   */
+  protected chooseFromLinkKey(event: Event, item: CordlyMenuItem): void {
+    event.preventDefault();
+    this.choose(item);
   }
 
   protected handleTriggerKeydown(event: KeyboardEvent): void {
@@ -197,9 +249,10 @@ export class CordlyMenu {
     this.trigger().nativeElement.focus();
   }
 
-  private itemButtons(): HTMLButtonElement[] {
+  // Elements rather than buttons: an entry with a destination is an anchor.
+  private itemButtons(): HTMLElement[] {
     const panel = this.panel()?.nativeElement ?? this.document.createElement('div');
-    return [...panel.querySelectorAll<HTMLButtonElement>('.cordly-menu__item')];
+    return [...panel.querySelectorAll<HTMLElement>('.cordly-menu__item')];
   }
 
   private enabledIndices(): number[] {

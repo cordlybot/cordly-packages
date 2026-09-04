@@ -34,6 +34,23 @@ export class CordlyEmptyState {
   readonly heading = input.required<string>();
 
   /**
+   * Which heading level this is in the page it lands on.
+   *
+   * A shared component cannot guess. The default suits an empty state inside a
+   * section that already has its own heading, which is most of them — but a
+   * whole page can *be* an empty state, and Cordly has one: the not-found route
+   * is nothing but this component. Fixing the level at 3 forced that page to add
+   * a visually hidden `h1` saying the same words, which left two headings with
+   * identical text and a document outline that started at level 3.
+   *
+   * The sibling `cordly-error-state` has no equivalent, and that asymmetry is
+   * deliberate rather than an oversight: it is a `role="alert"` live region that
+   * replaces content which failed to load, so it is announced when it appears
+   * instead of taking a place in the document outline.
+   */
+  readonly headingLevel = input<1 | 2 | 3 | 4>(3);
+
+  /**
    * The explanation, when it is one sentence.
    *
    * The default slot takes anything richer. Both exist because the sibling

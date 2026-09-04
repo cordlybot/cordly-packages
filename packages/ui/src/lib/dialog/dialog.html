@@ -24,14 +24,16 @@
   <div class="cordly-dialog__panel">
     <div class="cordly-dialog__header">
       <h2 class="cordly-dialog__heading" [id]="headingId">{{ heading() }}</h2>
-      <button
-        type="button"
-        class="cordly-dialog__dismiss"
-        [attr.aria-label]="dismissLabel()"
-        (click)="close('dismiss')"
-      >
-        <span class="cordly-dialog__dismiss-mark" aria-hidden="true"></span>
-      </button>
+      @if (dismissLabel(); as label) {
+        <button
+          type="button"
+          class="cordly-dialog__dismiss"
+          [attr.aria-label]="label"
+          (click)="close('dismiss')"
+        >
+          <span class="cordly-dialog__dismiss-mark" aria-hidden="true"></span>
+        </button>
+      }
     </div>
 
     @if (description()) {

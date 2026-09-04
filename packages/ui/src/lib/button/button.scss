@@ -132,3 +132,24 @@
     opacity: 0.55;
   }
 }
+
+// The stretched treatment. `position: static` is the whole point: it hands the
+// pseudo-element's containing block back to the caller's card, which is what
+// makes `inset: 0` cover the card rather than the control.
+//
+// The touch-target padding this replaces is not lost in any meaningful sense —
+// a target the size of a card is well past the 44px minimum. The focus ring
+// stays on the control's own box, because the visible indicator belongs on the
+// thing the keyboard is actually on.
+:host([data-stretch]) {
+  position: static;
+
+  &::after {
+    inset: 0;
+    translate: none;
+    min-block-size: 0;
+    // Above a card's decorative layers, below anything the card deliberately
+    // raises above it — an overflow menu, a favourite toggle.
+    z-index: 1;
+  }
+}

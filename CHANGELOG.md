@@ -7,6 +7,59 @@ the packages are versioned independently — see `VERSIONING.md`.
 
 ## Unreleased
 
+### `@cordly/ui` 0.3.0
+
+Everything in this release came out of migrating a real application and then
+running its browser suite. All four defects passed every unit test: jsdom has no
+layout, so it cannot see a hit area, and it does not mind two controls sharing a
+name.
+
+**Added**
+
+- `CordlyMenuItem.href`. An entry with a destination now renders as an anchor
+  rather than a button, which is what gives it middle-click, "open in a new tab",
+  "copy link address", and the status bar preview. None of those survive a click
+  handler, and none of them are visible to a test that only asserts the handler
+  ran. A plain left-click is still reported through `selected` with its default
+  prevented, so an application keeps client-side routing; a modified click is
+  left entirely to the browser. Space works on both kinds of entry, which a
+  native anchor does not do on its own. A disabled entry stays a button, because
+  an anchor has no disabled state.
+- `CordlyButton.stretch`. Makes the control's hit area the card it sits in.
+  This has to live in the package: the package already owns `::after` on every
+  control to pad small targets up to 44px, so a consumer writing the usual
+  stretched-link `::after` silently replaces that padding, and the package's
+  `position: relative` silently resolves their `inset: 0` against the control
+  instead of the card — producing an overlay exactly one button wide. Both
+  failures look correct in a screenshot. In development the control refuses
+  `stretch` without a positioned ancestor, because a missing one stretches the
+  hit area to the whole viewport.
+- `CordlyEmptyState.headingLevel`. A shared component cannot guess where it
+  lands. The default still suits an empty state inside a section that has its own
+  heading; a page that _is_ an empty state can now own the `h1` instead of
+  adding a hidden one beside it.
+
+**Changed**
+
+- `CordlyDialog.dismissLabel` accepts `null`, meaning no ✕ button. Escape and
+  the backdrop still dismiss — `dismissible` decides that, and this input now
+  decides only whether there is a button.
+- `CordlyConfirmDialog` no longer renders a ✕. It was named with the caller's
+  `cancelLabel`, which put two identically named controls with identical effects
+  in the same `alertdialog` — ambiguous by ear, and indistinguishable to
+  anything selecting a control by name.
+- `CordlyCard` is a positioned containing block. A stretched action inside one
+  now covers the card without the consumer having to know the containing-block
+  rule and add `position: relative` themselves. `overflow: clip` already
+  established a clipping context, so nothing else about the card's painting
+  changes.
+
+### `@cordly/widgets` 0.3.0
+
+**Changed**
+
+- Peers `@cordly/ui@^0.3.0`.
+
 ### `@cordly/ui` 0.2.0
 
 **Added**

@@ -18,6 +18,17 @@ class WithAction {}
 
 @Component({
   imports: [CordlyEmptyState],
+  template: `
+    <cordly-empty-state heading="Page not found" [headingLevel]="1">
+      Check the address, or go back to your servers.
+      <a cordly-empty-state-action href="/guilds">Go to your servers</a>
+    </cordly-empty-state>
+  `,
+})
+class AsPageHeading {}
+
+@Component({
+  imports: [CordlyEmptyState],
   template: `<cordly-empty-state heading="No servers yet">Nothing to show.</cordly-empty-state>`,
 })
 class WithoutAction {}
@@ -65,6 +76,34 @@ describe('CordlyEmptyState', () => {
 
     expect(errors.messages.some((message) => message.includes('must offer a next action'))).toBe(
       true,
+    );
+  });
+});
+
+describe('CordlyEmptyState heading level', () => {
+  beforeEach(() => TestBed.resetTestingModule());
+
+  it('is a level 3 heading by default, for a section that already has its own', () => {
+    const fixture = TestBed.createComponent(WithAction);
+    fixture.detectChanges();
+
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('h3.cordly-empty-state__heading')?.textContent).toBe(
+      'No servers yet',
+    );
+  });
+
+  it('can be the page heading, so a whole page made of one needs no second h1', () => {
+    // The not-found route is nothing but an empty state. Fixed at level 3 it
+    // forced the page to add a visually hidden h1 with the same words, which
+    // gave screen reader users two identical headings.
+    const fixture = TestBed.createComponent(AsPageHeading);
+    fixture.detectChanges();
+
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelectorAll('h3')).toHaveLength(0);
+    expect(root.querySelector('h1.cordly-empty-state__heading')?.textContent).toBe(
+      'Page not found',
     );
   });
 });

@@ -72,3 +72,19 @@
   line-height: var(--cordly-line-height-normal);
   color: var(--cordly-color-text-muted);
 }
+
+// No `position: relative` here on purpose: `cordly-card` is already a
+// containing block, which is what lets the stretched action inside it cover the
+// card without this fixture knowing anything about containing blocks.
+.fixture-featured {
+  gap: var(--cordly-space-2xs);
+  align-items: flex-start;
+  padding: var(--cordly-space-md);
+  margin-block-start: var(--cordly-space-md);
+}
+
+.fixture-featured-detail {
+  margin: 0 0 var(--cordly-space-xs);
+  color: var(--cordly-color-text-muted);
+  font-size: var(--cordly-font-size-sm);
+}

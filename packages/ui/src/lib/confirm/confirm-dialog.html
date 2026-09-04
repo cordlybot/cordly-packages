@@ -3,7 +3,7 @@
   [open]="open()"
   [heading]="request().heading"
   [description]="request().body ?? null"
-  [dismissLabel]="request().cancelLabel"
+  [dismissLabel]="null"
   [dismissible]="true"
   (closed)="handleClosed($event)"
 >

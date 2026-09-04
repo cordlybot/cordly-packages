@@ -2,7 +2,26 @@
   <ng-content select="[cordly-empty-state-art]" />
 </div>
 
-<h3 class="cordly-empty-state__heading">{{ heading() }}</h3>
+<!--
+  A real heading element per level rather than one element with role="heading"
+  and aria-level. Both map to the same thing in the accessibility tree, and the
+  native element is also what reader modes, text extraction, and a document
+  outline read — so the branch is worth the repetition.
+-->
+@switch (headingLevel()) {
+  @case (1) {
+    <h1 class="cordly-empty-state__heading">{{ heading() }}</h1>
+  }
+  @case (2) {
+    <h2 class="cordly-empty-state__heading">{{ heading() }}</h2>
+  }
+  @case (4) {
+    <h4 class="cordly-empty-state__heading">{{ heading() }}</h4>
+  }
+  @default {
+    <h3 class="cordly-empty-state__heading">{{ heading() }}</h3>
+  }
+}
 
 @if (body()) {
   <p class="cordly-empty-state__body">{{ body() }}</p>

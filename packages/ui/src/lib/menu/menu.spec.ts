@@ -23,6 +23,29 @@ class Host {
   readonly chosen = signal<string | null>(null);
 }
 
+@Component({
+  imports: [CordlyMenu],
+  // A distinct host attribute, because Angular derives a component id from the
+  // selector and template shape: two anonymous test hosts around the same
+  // component otherwise collide and warn (NG0912).
+  host: { 'data-menu-host': 'links' },
+  template: `
+    <cordly-menu [items]="items()" triggerLabel="Account menu" (selected)="chosen.push($event)">
+      Ada
+    </cordly-menu>
+  `,
+})
+class LinkHost {
+  readonly items = signal<readonly CordlyMenuItem[]>([
+    { id: 'account', label: 'Account', href: '/account' },
+    // A destination and a disabled flag together: the destination loses,
+    // because an anchor has no disabled state.
+    { id: 'billing', label: 'Billing', href: '/billing', disabled: true },
+    { id: 'sign-out', label: 'Sign out', tone: 'danger' },
+  ]);
+  readonly chosen: CordlyMenuItem[] = [];
+}
+
 const flush = () =>
   new Promise<void>((resolve) => {
     queueMicrotask(resolve);
@@ -175,5 +198,82 @@ describe('CordlyMenu', () => {
     fixture.detectChanges();
 
     expect(panel()).toBeNull();
+  });
+});
+
+describe('CordlyMenu destinations', () => {
+  beforeEach(() => TestBed.resetTestingModule());
+
+  function renderWithLink() {
+    const fixture = TestBed.createComponent(LinkHost);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    (root.querySelector('.cordly-menu__trigger') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    return { fixture, host: fixture.componentInstance, root };
+  }
+
+  it('renders an entry with a destination as a real link', () => {
+    // The whole point: middle-click, "open in a new tab", and "copy link
+    // address" belong to the anchor and cannot be recovered from a click
+    // handler.
+    const { root } = renderWithLink();
+    const entry = root.querySelector('a.cordly-menu__item') as HTMLAnchorElement;
+
+    expect(entry.getAttribute('href')).toBe('/account');
+    expect(entry.getAttribute('role')).toBe('menuitem');
+  });
+
+  it('reports a plain click instead of letting the browser navigate', () => {
+    const { fixture, host, root } = renderWithLink();
+    const entry = root.querySelector('a.cordly-menu__item') as HTMLAnchorElement;
+
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 });
+    entry.dispatchEvent(event);
+    fixture.detectChanges();
+
+    expect(event.defaultPrevented).toBe(true);
+    expect(host.chosen.map((item) => item.id)).toEqual(['account']);
+  });
+
+  it('leaves a modified click to the browser', () => {
+    // Ctrl-click is "open in a new tab". Preventing it here would put the
+    // destination in the current tab, which is the opposite of what was asked.
+    const { fixture, host, root } = renderWithLink();
+    const entry = root.querySelector('a.cordly-menu__item') as HTMLAnchorElement;
+
+    const event = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      button: 0,
+      ctrlKey: true,
+    });
+    // jsdom logs "Not implemented: navigation to another Document" here, and
+    // that log is the point: the anchor was left to navigate on its own.
+    entry.dispatchEvent(event);
+    fixture.detectChanges();
+
+    expect(event.defaultPrevented).toBe(false);
+    expect(host.chosen).toEqual([]);
+  });
+
+  it('answers Space on a link entry, which a native anchor does not', () => {
+    const { fixture, host, root } = renderWithLink();
+    const entry = root.querySelector('a.cordly-menu__item') as HTMLAnchorElement;
+
+    entry.dispatchEvent(
+      new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true }),
+    );
+    fixture.detectChanges();
+
+    expect(host.chosen.map((item) => item.id)).toEqual(['account']);
+  });
+
+  it('keeps a disabled entry a button, because an anchor cannot be disabled', () => {
+    const { root } = renderWithLink();
+
+    const disabled = root.querySelector('[data-index="1"]') as HTMLElement;
+    expect(disabled.tagName).toBe('BUTTON');
+    expect((disabled as HTMLButtonElement).disabled).toBe(true);
   });
 });

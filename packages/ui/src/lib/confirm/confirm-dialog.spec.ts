@@ -113,6 +113,35 @@ describe('CordlyConfirmDialog', () => {
     expect(host.answers).toEqual([false]);
   });
 
+  it('offers exactly one control named by the cancel label', () => {
+    // The dialog used to take cancelLabel as its ✕ button's accessible name as
+    // well, which put two identically named controls in one alertdialog: the
+    // same words, the same effect, and no way to tell them apart by ear.
+    const { root } = render();
+
+    const named = [...root.querySelectorAll('button')].filter(
+      (button) =>
+        button.getAttribute('aria-label') === 'Stay signed in' ||
+        button.textContent?.trim() === 'Stay signed in',
+    );
+
+    expect(named).toHaveLength(1);
+    expect(root.querySelector('.cordly-dialog__dismiss')).toBeNull();
+  });
+
+  it('still answers no to Escape, with no ✕ left to press', () => {
+    // Removing the button removed a control, not a way out. Escape fires
+    // `cancel` and the browser then closes the dialog, which is what the
+    // prototype stub's `close` stands in for here.
+    const { fixture, host, surface } = render();
+
+    surface.dispatchEvent(new Event('cancel', { cancelable: true }));
+    surface.close();
+    fixture.detectChanges();
+
+    expect(host.answers).toEqual([false]);
+  });
+
   it('answers exactly once, however many times it is closed', () => {
     const { fixture, host, actions, surface } = render();
 

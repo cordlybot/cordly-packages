@@ -128,16 +128,18 @@ test('the menu answers arrow keys, wraps, and returns focus on Escape', async ({
   await page.keyboard.press('ArrowDown');
 
   await expect(page.getByRole('menu')).toBeVisible();
-  await expect(page.getByRole('menuitem', { name: 'Settings' })).toBeFocused();
+  // The first entry is a link and the second is a button; arrow keys have to
+  // move between them without noticing the difference.
+  await expect(page.getByRole('menuitem', { name: 'Profile' })).toBeFocused();
 
   await page.keyboard.press('ArrowDown');
-  await expect(page.getByRole('menuitem', { name: /Appearance/ })).toBeFocused();
+  await expect(page.getByRole('menuitem', { name: 'Settings' })).toBeFocused();
 
   await page.keyboard.press('End');
   await expect(page.getByRole('menuitem', { name: 'Sign out' })).toBeFocused();
 
   await page.keyboard.press('ArrowDown');
-  await expect(page.getByRole('menuitem', { name: 'Settings' })).toBeFocused();
+  await expect(page.getByRole('menuitem', { name: 'Profile' })).toBeFocused();
 
   await page.keyboard.press('Escape');
   await expect(page.getByRole('menu')).toBeHidden();
@@ -253,4 +255,69 @@ test('loading preserves the layout rather than collapsing it', async ({ page }) 
   expect(before).not.toBeNull();
   expect(during).not.toBeNull();
   expect(during?.width).toBeCloseTo(before?.width ?? 0, 0);
+});
+
+test('a stretched action makes the whole card the target', async ({ page }) => {
+  // The gate that was missing. A consumer writing this pattern by hand gets a
+  // "stretched" overlay the exact size of the button, because this package owns
+  // `::after` on every control and makes it positioned — so `inset: 0` resolves
+  // against the control instead of the card. Nothing about that is visible: the
+  // card looks identical and every jsdom test passes.
+  const card = page.locator('.fixture-featured');
+  await card.scrollIntoViewIfNeeded();
+
+  const hit = await card.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    // The card's top-left quadrant — over the heading, nowhere near the button.
+    const target = document.elementFromPoint(box.x + box.width * 0.25, box.y + box.height * 0.25);
+    return target instanceof Element ? (target.closest('a')?.getAttribute('href') ?? null) : null;
+  });
+
+  expect(hit).toBe('#weekend-jam');
+});
+
+test('a stretched action keeps exactly one focusable control on the card', async ({ page }) => {
+  // The other half of the pattern. A clickable card built from a background
+  // handler plus a link plus a title link is three overlapping targets and an
+  // announcement nobody can parse.
+  const card = page.locator('.fixture-featured');
+
+  await expect(card.locator('a, button')).toHaveCount(1);
+});
+
+test('a menu entry with a destination is a real link', async ({ page }) => {
+  // Middle-click, "open in a new tab", and "copy link address" belong to the
+  // anchor. A button that navigates on click has none of them, and no unit test
+  // notices because the click handler still works.
+  await page.getByRole('button', { name: 'Account menu' }).click();
+
+  const profile = page.getByRole('menuitem', { name: 'Profile' });
+  await expect(profile).toHaveAttribute('href', '/profile');
+  expect(await profile.evaluate((element) => element.tagName)).toBe('A');
+
+  // The entries that only act stay buttons.
+  expect(
+    await page.getByRole('menuitem', { name: 'Settings' }).evaluate((element) => element.tagName),
+  ).toBe('BUTTON');
+});
+
+test('a plain click on a menu link is handled rather than followed', async ({ page }) => {
+  // An application routes it. Letting the anchor navigate would reload the whole
+  // page, which is the cost of using a link at all.
+  await page.getByRole('button', { name: 'Account menu' }).click();
+  await page.getByRole('menuitem', { name: 'Profile' }).click();
+
+  await expect(page.getByRole('status').getByText('Profile chosen.')).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe('/');
+});
+
+test('a menu link answers Space, which a native anchor does not', async ({ page }) => {
+  // Half a menu responding to Space is worse than none of it: the other half
+  // scrolls the page behind the open menu.
+  await page.getByRole('button', { name: 'Account menu' }).click();
+  await expect(page.getByRole('menuitem', { name: 'Profile' })).toBeFocused();
+
+  await page.keyboard.press('Space');
+
+  await expect(page.getByRole('status').getByText('Profile chosen.')).toBeVisible();
 });

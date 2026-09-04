@@ -27,33 +27,69 @@
       @if (item.separatorBefore && index > 0) {
         <hr class="cordly-menu__separator" role="separator" />
       }
-      <button
-        type="button"
-        class="cordly-menu__item"
-        role="menuitem"
-        [attr.data-tone]="item.tone ?? 'neutral'"
-        [attr.data-index]="index"
-        [attr.aria-current]="item.current ? 'true' : null"
-        [disabled]="item.disabled ?? false"
-        [tabIndex]="index === activeIndex() ? 0 : -1"
-        (click)="choose(item)"
-      >
-        @if (itemContent(); as template) {
-          <ng-container
-            [ngTemplateOutlet]="template.template"
-            [ngTemplateOutletContext]="{
-              $implicit: item,
-              index: index,
-              active: index === activeIndex(),
-            }"
-          />
-        } @else {
-          <span class="cordly-menu__item-label">{{ item.label }}</span>
-          @if (item.detail) {
-            <span class="cordly-menu__item-detail">{{ item.detail }}</span>
+      <!--
+        An entry with a destination is an anchor, so the browser keeps
+        middle-click, "open in a new tab", and "copy link address". Everything
+        else is a button. Both carry role="menuitem", so the menu pattern and
+        its roving tabindex are identical either way.
+      -->
+      @if (linkFor(item); as destination) {
+        <a
+          class="cordly-menu__item"
+          role="menuitem"
+          [attr.href]="destination"
+          [attr.data-tone]="item.tone ?? 'neutral'"
+          [attr.data-index]="index"
+          [attr.aria-current]="item.current ? 'true' : null"
+          [tabIndex]="index === activeIndex() ? 0 : -1"
+          (click)="chooseFromLink($event, item)"
+          (keydown.space)="chooseFromLinkKey($event, item)"
+        >
+          @if (itemContent(); as template) {
+            <ng-container
+              [ngTemplateOutlet]="template.template"
+              [ngTemplateOutletContext]="{
+                $implicit: item,
+                index: index,
+                active: index === activeIndex(),
+              }"
+            />
+          } @else {
+            <span class="cordly-menu__item-label">{{ item.label }}</span>
+            @if (item.detail) {
+              <span class="cordly-menu__item-detail">{{ item.detail }}</span>
+            }
           }
-        }
-      </button>
+        </a>
+      } @else {
+        <button
+          type="button"
+          class="cordly-menu__item"
+          role="menuitem"
+          [attr.data-tone]="item.tone ?? 'neutral'"
+          [attr.data-index]="index"
+          [attr.aria-current]="item.current ? 'true' : null"
+          [disabled]="item.disabled ?? false"
+          [tabIndex]="index === activeIndex() ? 0 : -1"
+          (click)="choose(item)"
+        >
+          @if (itemContent(); as template) {
+            <ng-container
+              [ngTemplateOutlet]="template.template"
+              [ngTemplateOutletContext]="{
+                $implicit: item,
+                index: index,
+                active: index === activeIndex(),
+              }"
+            />
+          } @else {
+            <span class="cordly-menu__item-label">{{ item.label }}</span>
+            @if (item.detail) {
+              <span class="cordly-menu__item-detail">{{ item.detail }}</span>
+            }
+          }
+        </button>
+      }
     }
   </div>
 }

@@ -66,6 +66,22 @@
           actionLabel="Unavailable"
         />
       </div>
+
+      <!--
+        The richer chooser shape: a card the application composes itself, with a
+        single stretched action so the whole card is one target and the page
+        still has one focusable control per card. Cordly's own server grid is
+        built this way, and what the browser gate measures is what is actually
+        under the pointer in the middle of the card.
+      -->
+      <cordly-card class="fixture-featured">
+        <h3 class="fixture-heading">Weekend Jam</h3>
+        <p class="fixture-featured-detail">92 members</p>
+        <a cordlyButton stretch size="sm" href="#weekend-jam">
+          Open
+          <span cordlyVisuallyHidden>Weekend Jam</span>
+        </a>
+      </cordly-card>
     </section>
 
     <section class="fixture-section" aria-labelledby="modules-heading">
