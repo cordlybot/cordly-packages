@@ -1,0 +1,30 @@
+<cordly-dialog
+  alert
+  [open]="open()"
+  [heading]="request().heading"
+  [description]="request().body ?? null"
+  [dismissLabel]="request().cancelLabel"
+  [dismissible]="true"
+  (closed)="handleClosed($event)"
+>
+  <button
+    cordly-dialog-actions
+    cordlyButton
+    type="button"
+    variant="neutral"
+    (click)="settle(false)"
+  >
+    {{ request().cancelLabel }}
+  </button>
+
+  <button
+    #confirm
+    cordly-dialog-actions
+    cordlyButton
+    type="button"
+    [variant]="request().tone === 'danger' ? 'danger' : 'primary'"
+    (click)="settle(true)"
+  >
+    {{ request().confirmLabel }}
+  </button>
+</cordly-dialog>

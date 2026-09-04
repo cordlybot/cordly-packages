@@ -94,6 +94,47 @@ type CordlyCardDensity = 'comfortable' | 'compact';
 type CordlyCardElevation = 'flat' | 'raised';
 ```
 
+## class CordlyConfirm
+
+```ts
+declare class CordlyConfirm {
+ private readonly applicationRef;
+ private readonly injector;
+ private readonly document;
+ private readonly isBrowser;
+ ask(request: CordlyConfirmRequest): Promise<boolean>;
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyConfirm, never>;
+ static ɵprov: _angular_core.ɵɵInjectableDeclaration<CordlyConfirm>;
+}
+```
+
+## class CordlyConfirmDialog
+
+```ts
+declare class CordlyConfirmDialog {
+ readonly request: _angular_core.InputSignal<CordlyConfirmRequest>;
+ readonly answered: _angular_core.OutputEmitterRef<boolean>;
+ protected readonly open: _angular_core.WritableSignal<boolean>;
+ private settled;
+ protected settle(answer: boolean): void;
+ protected handleClosed(reason: CordlyDialogCloseReason): void;
+ static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyConfirmDialog, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyConfirmDialog, "cordly-confirm-dialog", never, { "request": { "alias": "request"; "required": true; "isSignal": true; }; }, { "answered": "answered"; }, never, never, true, never>;
+}
+```
+
+## interface CordlyConfirmRequest
+
+```ts
+interface CordlyConfirmRequest {
+ readonly heading: string;
+ readonly confirmLabel: string;
+ readonly cancelLabel: string;
+ readonly body?: string;
+ readonly tone?: 'default' | 'danger';
+}
+```
+
 ## class CordlyDialog
 
 ```ts
@@ -104,6 +145,7 @@ declare class CordlyDialog {
  readonly placement: _angular_core.InputSignal<CordlyDialogPlacement>;
  readonly dismissLabel: _angular_core.InputSignal<string>;
  readonly dismissible: _angular_core.InputSignalWithTransform<boolean, unknown>;
+ readonly alert: _angular_core.InputSignalWithTransform<boolean, unknown>;
  readonly closed: _angular_core.OutputEmitterRef<CordlyDialogCloseReason>;
  private readonly surface;
  private readonly isBrowser;
@@ -117,7 +159,7 @@ declare class CordlyDialog {
  protected handleBackdropClick(event: MouseEvent): void;
  protected handleNativeClose(): void;
  static ɵfac: _angular_core.ɵɵFactoryDeclaration<CordlyDialog, never>;
- static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyDialog, "cordly-dialog", never, { "open": { "alias": "open"; "required": false; "isSignal": true; }; "heading": { "alias": "heading"; "required": true; "isSignal": true; }; "description": { "alias": "description"; "required": false; "isSignal": true; }; "placement": { "alias": "placement"; "required": false; "isSignal": true; }; "dismissLabel": { "alias": "dismissLabel"; "required": true; "isSignal": true; }; "dismissible": { "alias": "dismissible"; "required": false; "isSignal": true; }; }, { "closed": "closed"; }, never, ["*", "[cordly-dialog-actions]"], true, never>;
+ static ɵcmp: _angular_core.ɵɵComponentDeclaration<CordlyDialog, "cordly-dialog", never, { "open": { "alias": "open"; "required": false; "isSignal": true; }; "heading": { "alias": "heading"; "required": true; "isSignal": true; }; "description": { "alias": "description"; "required": false; "isSignal": true; }; "placement": { "alias": "placement"; "required": false; "isSignal": true; }; "dismissLabel": { "alias": "dismissLabel"; "required": true; "isSignal": true; }; "dismissible": { "alias": "dismissible"; "required": false; "isSignal": true; }; "alert": { "alias": "alert"; "required": false; "isSignal": true; }; }, { "closed": "closed"; }, never, ["*", "[cordly-dialog-actions]"], true, never>;
 }
 ```
 

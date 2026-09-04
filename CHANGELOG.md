@@ -23,6 +23,14 @@ the packages are versioned independently — see `VERSIONING.md`.
   the technical remainder in a separate `detail` input so a stack trace cannot
   land where the plain-language explanation belongs.
 
+**Fixed**
+
+- A dialog's title bar was a `<header>` and its actions a `<footer>`. A
+  `<header>` whose nearest sectioning ancestor is the body maps to the `banner`
+  landmark, and `<dialog>` is not sectioning content — so every page containing
+  a dialog had two banners and two contentinfos. Both are plain elements now.
+  Found by a consumer's landmark test, not by review.
+
 **Changed**
 
 - `CordlyTone` gains `accent`. Four of the tones are status and answer "how is
@@ -40,6 +48,13 @@ the packages are versioned independently — see `VERSIONING.md`.
 - `CordlySkeleton` with `shape="block"` now fills the box the caller gave it.
   Holding the right space is the whole advantage of a skeleton over a spinner,
   and a component that picks its own height throws it away.
+- `CordlyConfirm` and `CordlyConfirmDialog` — ask before something hard to undo.
+  Imperative on purpose: a confirmation belongs to the action rather than the
+  page, because the same sign-out runs from a header menu and an account page,
+  and making each own a dialog and a boolean is how one of them forgets to ask.
+  Every label is required; a generic "OK" does the most damage exactly here.
+- `CordlyDialog` gains `alert`, setting `role="alertdialog"` so a question is
+  announced immediately rather than waiting to be read to.
 - `CordlyMenuItemContent` renders each item from a caller template while the
   menu keeps the roles, the roving tab stop, the arrow keys, Escape, and focus
   return. Added because the string API lost information that mattered: a

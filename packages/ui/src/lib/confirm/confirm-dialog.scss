@@ -1,0 +1,9 @@
+@use 'layout';
+
+// The dialog owns its own layout; this host is only a mounting point, so it must
+// not introduce a box of its own.
+:host {
+  @include layout.box;
+
+  display: contents;
+}

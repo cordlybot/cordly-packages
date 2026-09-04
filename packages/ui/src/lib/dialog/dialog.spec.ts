@@ -150,6 +150,29 @@ describe('CordlyDialog', () => {
     expect(close).not.toHaveBeenCalled();
   });
 
+  it('gives its title bar no landmark role', () => {
+    // A <header> whose nearest sectioning ancestor is the body maps to `banner`,
+    // and <dialog> is not sectioning content — so the obvious markup gives a
+    // page two banners. A dialog's title bar is not the page's header.
+    const { fixture, host, root } = render();
+
+    host.open.set(true);
+    fixture.detectChanges();
+
+    expect(root.querySelectorAll('header')).toHaveLength(0);
+    expect(root.querySelectorAll('footer')).toHaveLength(0);
+    expect(root.querySelector('.cordly-dialog__header')).not.toBeNull();
+  });
+
+  it('is a plain dialog unless it is told it interrupts', () => {
+    const { fixture, host, surface } = render();
+
+    host.open.set(true);
+    fixture.detectChanges();
+
+    expect(surface.getAttribute('role')).toBeNull();
+  });
+
   it('refuses Escape and the backdrop when it holds a draft', () => {
     // Losing typed input to a stray click outside is exactly the edit the UX
     // plan says must never be lost.

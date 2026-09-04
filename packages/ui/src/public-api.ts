@@ -48,6 +48,10 @@ export { CordlyToastRegion } from './lib/toast/toast-region';
 export { CordlyToasts } from './lib/toast/toasts';
 export type { CordlyToast, CordlyToastRequest } from './lib/toast/toasts';
 
+export { CordlyConfirm } from './lib/confirm/confirm';
+export { CordlyConfirmDialog } from './lib/confirm/confirm-dialog';
+export type { CordlyConfirmRequest } from './lib/confirm/confirm-dialog';
+
 export { CordlyDialog } from './lib/dialog/dialog';
 export type { CordlyDialogCloseReason, CordlyDialogPlacement } from './lib/dialog/dialog';
 

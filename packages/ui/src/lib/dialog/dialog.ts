@@ -36,6 +36,12 @@ export type CordlyDialogCloseReason = 'dismiss' | 'action';
  * restoration to the trigger, a labelled heading, backdrop-click dismissal that
  * distinguishes the backdrop from the panel, and a close reason.
  *
+ * The title bar is a `<div>` rather than a `<header>`, deliberately. A `<header>`
+ * whose nearest sectioning ancestor is the body maps to the `banner` landmark,
+ * and `<dialog>` is not sectioning content — so a dialog built the obvious way
+ * gives a page two banners and two contentinfos. A dialog's title bar is not the
+ * page's header.
+ *
  * ```html
  * <cordly-dialog
  *   [open]="confirming()"
@@ -75,6 +81,17 @@ export class CordlyDialog {
    * be lost. A dialog that refuses to dismiss must offer a visible cancel.
    */
   readonly dismissible = input(true, { transform: booleanAttribute });
+
+  /**
+   * This dialog is an alert that requires a response.
+   *
+   * Sets `role="alertdialog"`, which tells assistive technology to announce the
+   * dialog's description immediately rather than waiting to be read to. Reserved
+   * for a genuine interruption — a confirmation before something hard to undo —
+   * because a page where every dialog interrupts has no way to signal that one
+   * of them matters more.
+   */
+  readonly alert = input(false, { transform: booleanAttribute });
 
   readonly closed = output<CordlyDialogCloseReason>();
 
