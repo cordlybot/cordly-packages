@@ -159,6 +159,21 @@ export class CordlyMenu {
   }
 
   protected handleTriggerKeydown(event: KeyboardEvent): void {
+    // Escape closes from the trigger too, not only from inside the panel.
+    //
+    // Opening the menu moves focus to the first entry, but that happens after
+    // the panel renders — so between the click and that render, focus is still
+    // on the trigger and Escape had nowhere to be handled. Somebody who opens a
+    // menu and immediately changes their mind is exactly the person pressing
+    // Escape that early, and they were left with a menu that would not close.
+    // The menu-button pattern puts Escape on the button in any case.
+    if (event.key === 'Escape') {
+      if (!this.expanded()) return;
+      event.preventDefault();
+      this.closeAndRestore();
+      return;
+    }
+
     if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
     event.preventDefault();
     this.expanded.set(true);

@@ -321,3 +321,16 @@ test('a menu link answers Space, which a native anchor does not', async ({ page 
 
   await expect(page.getByRole('status').getByText('Profile chosen.')).toBeVisible();
 });
+
+test('the menu closes on Escape pressed before focus reaches the panel', async ({ page }) => {
+  // Opening moves focus to the first entry once the panel renders, and until
+  // then focus is on the trigger. A menu whose Escape handler lives only on the
+  // panel does nothing in that window, which is exactly when somebody who
+  // opened it by mistake presses the key.
+  const trigger = page.getByRole('button', { name: 'Account menu' });
+  await trigger.click();
+  await page.keyboard.press('Escape');
+
+  await expect(page.getByRole('menu')).toBeHidden();
+  await expect(trigger).toBeFocused();
+});

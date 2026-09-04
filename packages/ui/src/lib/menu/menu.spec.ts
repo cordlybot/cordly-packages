@@ -201,6 +201,47 @@ describe('CordlyMenu', () => {
   });
 });
 
+describe('CordlyMenu escape from the trigger', () => {
+  beforeEach(() => TestBed.resetTestingModule());
+
+  it('closes when Escape arrives before focus has reached the panel', () => {
+    // Opening moves focus to the first entry only once the panel has rendered.
+    // Somebody who opens a menu and immediately changes their mind presses
+    // Escape inside that window, with focus still on the trigger — and the menu
+    // used to stay open, because the only Escape handler was on the panel.
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+    const trigger = root.querySelector('.cordly-menu__trigger') as HTMLButtonElement;
+
+    trigger.click();
+    fixture.detectChanges();
+    expect(root.querySelector('[role="menu"]')).not.toBeNull();
+
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    fixture.detectChanges();
+
+    expect(root.querySelector('[role="menu"]')).toBeNull();
+    expect(document.activeElement === trigger || document.activeElement === document.body).toBe(
+      true,
+    );
+  });
+
+  it('leaves Escape alone when the menu is already closed', () => {
+    // A closed menu must not swallow a key the page may be listening for.
+    const fixture = TestBed.createComponent(Host);
+    fixture.detectChanges();
+    const trigger = (fixture.nativeElement as HTMLElement).querySelector(
+      '.cordly-menu__trigger',
+    ) as HTMLButtonElement;
+
+    const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+    trigger.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(false);
+  });
+});
+
 describe('CordlyMenu destinations', () => {
   beforeEach(() => TestBed.resetTestingModule());
 

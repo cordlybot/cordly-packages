@@ -39,6 +39,16 @@ name.
   heading; a page that _is_ an empty state can now own the `h1` instead of
   adding a hidden one beside it.
 
+**Fixed**
+
+- A menu opened by pointer would not close on Escape if the key arrived before
+  the panel had rendered. Opening moves focus to the first entry once that
+  render happens, and until then focus is still on the trigger — where nothing
+  handled Escape, because the only handler was on the panel. That window is
+  exactly when somebody who opened a menu by mistake presses the key. Escape now
+  closes from the trigger as well, which is what the menu-button pattern asks
+  for in any case.
+
 **Changed**
 
 - `CordlyDialog.dismissLabel` accepts `null`, meaning no ✕ button. Escape and
