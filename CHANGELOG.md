@@ -78,6 +78,18 @@ name.
 
 **Added**
 
+- `@cordly/ui/testing`, a secondary entry point, exporting `installDialogShim()`.
+  jsdom implements `<dialog>` structurally and stops there — no `showModal`, no
+  `close` — because what they do is rendering and input. These components build
+  on the real element, which is what buys the focus trap, `inert`, and Escape
+  from the platform, so every consumer hits this the first time a page under
+  test contains a dialog. Three copies of the shim had already been written
+  inside this repository and one consumer, and they had drifted: two of them
+  dispatched `close` on an already-closed dialog, which turns a double close
+  into two `closed` events and a test that passes for the wrong reason. The
+  shipped one is idempotent, returns a handle that restores what it replaced,
+  and does nothing where a real implementation exists — so one setup file serves
+  a jsdom runner and a browser runner.
 - `CordlyMenuItem.href`. An entry with a destination now renders as an anchor
   rather than a button, which is what gives it middle-click, "open in a new tab",
   "copy link address", and the status bar preview. None of those survive a click
@@ -96,6 +108,12 @@ name.
   failures look correct in a screenshot. In development the control refuses
   `stretch` without a positioned ancestor, because a missing one stretches the
   hit area to the whole viewport.
+- `CordlyEmptyState` now says _which_ mistake was made when it has no action.
+  Projecting the action without the `cordly-empty-state-action` attribute puts
+  it in the body slot, where it renders in the wrong place and still fails the
+  check — and "project one" is unhelpful advice to somebody looking straight at
+  the one they projected. Five of seven usages in the first consumer were one of
+  these two mistakes.
 - `CordlyEmptyState.headingLevel`. A shared component cannot guess where it
   lands. The default still suits an empty state inside a section that has its own
   heading; a page that _is_ an empty state can now own the `h1` instead of

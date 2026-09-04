@@ -1,4 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+// The testing entry point, compiled here for the same reason as everything
+// else: a secondary entry point can build correctly and still be unreachable
+// from an installed package if its `exports` map is wrong, and the first report
+// of that is a consumer whose import fails.
+import { installDialogShim, type DialogShim } from '@cordly/ui/testing';
 import { FormsModule } from '@angular/forms';
 import {
   CordlyBadge,
@@ -225,4 +230,11 @@ export class CompatApp {
 
   /** Referenced so the type aliases above are not elided as unused. */
   readonly typeProbe: [EveryUiType, EveryWidgetType] | null = null;
+
+  /**
+   * Not called — this harness compiles rather than runs. Naming the value and
+   * its type is what makes the import a real one that ahead-of-time compilation
+   * has to resolve.
+   */
+  readonly dialogShimProbe: (() => DialogShim) | null = installDialogShim;
 }

@@ -97,9 +97,15 @@ export default tseslint.config(
                 'Shared packages hold no application state. State belongs to the application that owns the domain it describes.',
             },
             {
-              group: ['../../../*', '../../../../*'],
+              // Four levels up from a component file is `packages/`, which is
+              // another package and is the thing this forbids. Three levels is
+              // the package's own root, where its secondary entry points live —
+              // `testing/` is a sibling of `src/` because that is where
+              // ng-packagr looks for one, and it is the same published package.
+              // Blocking that was blocking a package from reaching itself.
+              group: ['../../../../*', '../../../../../*'],
               message:
-                'A package must not reach outside its own source tree. Depend on a published package instead.',
+                'A package must not reach into another package. Depend on the published package instead.',
             },
           ],
         },

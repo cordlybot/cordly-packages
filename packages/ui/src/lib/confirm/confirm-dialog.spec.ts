@@ -1,7 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
+import { installDialogShim } from '../../../testing/src/public-api';
 import { at } from '../../testing/dom';
 import { CordlyConfirmDialog, type CordlyConfirmRequest } from './confirm-dialog';
 
@@ -21,30 +22,15 @@ class Host {
 }
 
 /**
- * jsdom implements `<dialog>` structurally but not the top layer, so `showModal`
- * is absent. Patched on the prototype rather than per element, because this
- * dialog opens during its first render — there is no moment when the element
- * exists and is not yet open.
- *
- * What is under test is the component's contract. The real focus trap, the
- * backdrop, and `inert` belong to the browser and are proved in the browser
- * fixture.
+ * The shim this package ships for exactly this, rather than a fourth private
+ * copy. What is under test is the component's contract; the real focus trap,
+ * the backdrop, and `inert` belong to the browser and are proved in a browser.
  */
-function stubDialogPrototype(): void {
-  const prototype = HTMLDialogElement.prototype as unknown as Record<string, unknown>;
-  prototype['showModal'] = vi.fn(function (this: HTMLDialogElement) {
-    this.setAttribute('open', '');
-  });
-  prototype['close'] = vi.fn(function (this: HTMLDialogElement) {
-    this.removeAttribute('open');
-    this.dispatchEvent(new Event('close'));
-  });
-}
 
 describe('CordlyConfirmDialog', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
-    stubDialogPrototype();
+    installDialogShim();
   });
 
   function render() {

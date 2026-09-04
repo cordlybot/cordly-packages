@@ -27,6 +27,13 @@ const write = process.argv.includes('--write');
 const packages = [
   { name: '@cordly/ui', entry: 'dist/ui/types/cordly-ui.d.ts', report: 'api/ui.api.md' },
   {
+    // A secondary entry point is as much of a promise as the primary one, and
+    // a smaller surface is easier to change without noticing.
+    name: '@cordly/ui/testing',
+    entry: 'dist/ui/types/cordly-ui-testing.d.ts',
+    report: 'api/ui-testing.api.md',
+  },
+  {
     name: '@cordly/widgets',
     entry: 'dist/widgets/types/cordly-widgets.d.ts',
     report: 'api/widgets.api.md',

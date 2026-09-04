@@ -2,6 +2,7 @@ import { Component, signal, viewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { installDialogShim } from '../../../testing/src/public-api';
 import { CordlyDialog, type CordlyDialogCloseReason } from './dialog';
 
 @Component({
@@ -29,35 +30,37 @@ class Host {
 }
 
 /**
- * jsdom implements `<dialog>` structurally but not the top layer, so
- * `showModal` is stubbed to record the call and set `open`. What is under test
- * here is the component's contract — which method it calls, what it labels, and
- * where focus goes — while the real focus trap, the backdrop, and `inert` are
- * the browser's and are proved in the browser fixture instead.
+ * The shipped shim supplies the behaviour; the spies only record.
+ *
+ * Written the other way round at first — a private stub that both implemented
+ * and recorded — and the implementation drifted from the one every consumer
+ * gets: it dispatched `close` even on an already-closed dialog, so a double
+ * close looked like two closes and this suite would not have noticed.
+ *
+ * What is under test is the component's contract: which method it calls, what it
+ * labels, where focus goes. The real focus trap, the backdrop, and `inert` are
+ * the browser's and are proved in the browser fixture.
  */
-function stubDialogElement(element: HTMLDialogElement) {
-  const showModal = vi.fn(() => {
-    element.setAttribute('open', '');
-  });
-  const close = vi.fn(() => {
-    element.removeAttribute('open');
-    element.dispatchEvent(new Event('close'));
-  });
-  Object.defineProperty(element, 'showModal', { value: showModal, configurable: true });
-  Object.defineProperty(element, 'close', { value: close, configurable: true });
-  return { showModal, close };
+function spyOnDialog() {
+  installDialogShim();
+  return {
+    showModal: vi.spyOn(HTMLDialogElement.prototype, 'showModal'),
+    close: vi.spyOn(HTMLDialogElement.prototype, 'close'),
+  };
 }
 
 describe('CordlyDialog', () => {
-  beforeEach(() => TestBed.resetTestingModule());
+  beforeEach(() => {
+    TestBed.resetTestingModule();
+    vi.restoreAllMocks();
+  });
 
   function render() {
     const fixture = TestBed.createComponent(Host);
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
     const surface = root.querySelector('dialog') as HTMLDialogElement;
-    const stubs = stubDialogElement(surface);
-    return { fixture, host: fixture.componentInstance, root, surface, ...stubs };
+    return { fixture, host: fixture.componentInstance, root, surface, ...spyOnDialog() };
   }
 
   it('opens as a modal rather than as an ordinary open dialog', () => {

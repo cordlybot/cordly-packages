@@ -66,12 +66,24 @@ export class CordlyEmptyState {
     if (!isDevMode()) return;
 
     afterNextRender(() => {
-      const actions = this.host.nativeElement.querySelector('.cordly-empty-state__actions');
-      if (!actions || actions.childElementCount === 0) {
-        throw new Error(
-          'cordly-empty-state: an empty state must offer a next action. Project one with the cordly-empty-state-action attribute.',
-        );
-      }
+      const host = this.host.nativeElement;
+      const actions = host.querySelector('.cordly-empty-state__actions');
+      if (actions && actions.childElementCount > 0) return;
+
+      // Two different mistakes with the same symptom, and telling them apart is
+      // most of the value. Projecting the action without the attribute is the
+      // common one: it lands in the body slot, so it renders in the wrong place
+      // *and* fails this check, and "project one" is unhelpful advice to
+      // somebody looking straight at the one they projected.
+      const misplaced = host.querySelector(
+        '.cordly-empty-state__body button, .cordly-empty-state__body a',
+      );
+
+      throw new Error(
+        misplaced
+          ? 'cordly-empty-state: the action is in the body slot rather than the action slot, so it renders with the explanation instead of below it. Add the cordly-empty-state-action attribute to it.'
+          : 'cordly-empty-state: an empty state must offer a next action. Project one with the cordly-empty-state-action attribute.',
+      );
     });
   }
 }

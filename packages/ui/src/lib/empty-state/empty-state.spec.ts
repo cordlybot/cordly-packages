@@ -107,3 +107,33 @@ describe('CordlyEmptyState heading level', () => {
     );
   });
 });
+
+describe('CordlyEmptyState misplaced action', () => {
+  beforeEach(() => TestBed.resetTestingModule());
+
+  it('says the action is in the wrong slot rather than that there is none', async () => {
+    // The common mistake, and the one where the generic message is least
+    // helpful: somebody projected exactly the action the error asks for, and is
+    // told to project one. It also renders in the wrong place, so this is a
+    // layout bug reported as a contract one.
+    @Component({
+      imports: [CordlyEmptyState],
+      template: `
+        <cordly-empty-state heading="No servers yet">
+          Add Cordly to a server you manage.
+          <button type="button">Refresh</button>
+        </cordly-empty-state>
+      `,
+    })
+    class MisplacedAction {}
+
+    const errors = withErrorCollector();
+    const fixture = TestBed.createComponent(MisplacedAction);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(errors.messages).toContainEqual(
+      expect.stringContaining('body slot rather than the action slot'),
+    );
+  });
+});

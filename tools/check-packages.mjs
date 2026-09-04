@@ -64,6 +64,11 @@ const expectations = [
     mustContain: [
       'package/types/cordly-ui.d.ts',
       'package/fesm2022/cordly-ui.mjs',
+      // The testing entry point is part of what consumers install, not a
+      // by-product of the build. Listed so that losing it is a failure here
+      // rather than a broken import in somebody else's repository.
+      'package/types/cordly-ui-testing.d.ts',
+      'package/fesm2022/cordly-ui-testing.mjs',
       'package/README.md',
       'package/LICENSE',
     ],
