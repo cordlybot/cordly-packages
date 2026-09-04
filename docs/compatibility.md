@@ -51,7 +51,8 @@ including every type-only export. A type alias that disappears is a breaking
 change consumers feel and no runtime test sees.
 
 **`fixtures/browser`** installs the same tarballs at the version the panel pins
-and runs the accessibility, keyboard, focus, contrast, zoom, and reduced-motion
+and runs the accessibility, keyboard, focus, contrast, zoom, reduced-motion,
+forced-colours, and right-to-left
 gates in a real browser.
 
 **`fixtures/ssr`** installs the same tarballs and renders on a server with

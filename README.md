@@ -73,17 +73,17 @@ Every target runs in one image pinned by digest, and CI runs the same commands.
 
 ## What is proved, and where
 
-| Gate                 | What it answers                                                                                                                |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `make tokens`        | Generated artefacts match their source; every contrast pair meets WCAG 2.2 AA in **both** themes; no colour falls outside sRGB |
-| `make files`         | Every component is `.ts` + `.html` + `.scss` + `.spec.ts`; no inline template survives                                         |
-| `make lint`          | Nothing in a package imports a router, an HTTP client, or a store; templates pass the accessibility rules                      |
-| `make test`          | 100+ unit tests, zoneless, on the same change-detection model both consumers use                                               |
-| `make api`           | The public API matches a committed, human-readable report                                                                      |
-| `make package-check` | Tarball contents, `exports`, peer ranges, `sideEffects`, and size ceilings                                                     |
-| `make compat`        | Every public export compiles ahead of time at the **floor** of the declared peer range                                         |
-| `make e2e`           | Real-browser accessibility, keyboard, focus, contrast, 200% zoom, touch targets, reduced motion, SSR rendering, and hydration  |
-| `make hygiene`       | No credential, absolute local path, personal data, or third-party product name                                                 |
+| Gate                 | What it answers                                                                                                                                              |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `make tokens`        | Generated artefacts match their source; every contrast pair meets WCAG 2.2 AA in **both** themes; no colour falls outside sRGB                               |
+| `make files`         | Every component is `.ts` + `.html` + `.scss` + `.spec.ts`; no inline template survives                                                                       |
+| `make lint`          | Nothing in a package imports a router, an HTTP client, or a store; templates pass the accessibility rules                                                    |
+| `make test`          | 100+ unit tests, zoneless, on the same change-detection model both consumers use                                                                             |
+| `make api`           | The public API matches a committed, human-readable report                                                                                                    |
+| `make package-check` | Tarball contents, `exports`, peer ranges, `sideEffects`, and size ceilings                                                                                   |
+| `make compat`        | Every public export compiles ahead of time at the **floor** of the declared peer range                                                                       |
+| `make e2e`           | Real-browser accessibility, keyboard, focus, contrast, 200% zoom, touch targets, reduced motion, forced colours, right-to-left, SSR rendering, and hydration |
+| `make hygiene`       | No credential, absolute local path, personal data, or third-party product name                                                                               |
 
 The split between the unit tests and the browser gates is deliberate. jsdom has
 no layout, no painted focus ring, no `<dialog>` top layer and no forced-colours
