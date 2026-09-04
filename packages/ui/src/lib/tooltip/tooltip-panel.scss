@@ -1,4 +1,5 @@
 @use 'layout';
+@use 'direction';
 // Supplementary text, anchored to the control that owns it.
 //
 // The tooltip never carries the control's name — that is `aria-label`'s job and
@@ -11,6 +12,10 @@
   position: absolute;
   z-index: var(--cordly-layer-overlay);
   inset-block-end: calc(100% + var(--cordly-space-2xs));
+  // Centred on the trigger: the inset is logical, the shift that centres it is
+  // not. In a right-to-left page the inset measures from the other edge, so an
+  // unflipped shift moves the panel a full width off-centre rather than half of
+  // one back.
   inset-inline-start: 50%;
   translate: -50% 0;
   max-inline-size: 18rem;
@@ -26,4 +31,8 @@
   line-height: var(--cordly-line-height-normal);
   // The bubble must never eat a pointer event aimed at the control beneath it.
   pointer-events: none;
+}
+
+@include direction.rtl-host {
+  translate: 50% 0;
 }

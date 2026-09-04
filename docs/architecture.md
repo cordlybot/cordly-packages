@@ -86,6 +86,9 @@ mobile behaviour, and the platform's screen-reader semantics for free.
   themselves — a chevron, a close cross, a status shape — are CSS geometry.
 - **The tokens carry no chart palette.** No Cordly surface renders a chart yet,
   and inventing five colours nothing uses is how a token set starts drifting.
+- **No component is translated or mirrored in its content.** Direction is
+  handled (see below); language is not, and is not meant to be — every string is
+  the caller's.
 
 ## Forced colours
 
@@ -113,6 +116,27 @@ scan. It turns it on with `page.emulateMedia` rather than Playwright's
 context-level `forcedColors` option: that option is accepted and silently does
 nothing in this Chromium — `matchMedia` stays false — so a suite trusting it runs
 against an ordinary page and passes without testing anything.
+
+## Writing direction
+
+Every size, inset, border, and padding here is logical — `inline-size`,
+`inset-inline-start`, `border-inline-end` — which is a claim that a component
+mirrors itself and no application has to restyle it. `translate` has no logical
+form, so each place using one is a hole in that claim, and every one of them was
+a real hole: a switch whose thumb travelled out of its own track, a drawer that
+sat open when it should have been off-screen, and two elements centred by a
+logical inset plus a physical half-width shift, which in a mirrored page puts
+them a full width off-centre rather than half a width back.
+
+`styles/_direction.scss` holds the flip, and there are four uses of it. If a new
+one appears, that is the moment to ask whether the value has to be physical at
+all. `e2e/rtl.spec.ts` runs the fixture with `dir="rtl"` on the document, which
+is how an application does it, and `e2e/mobile.spec.ts` covers the drawer, which
+only exists below the medium breakpoint.
+
+The one thing deliberately not mirrored is the skeleton's shimmer, which sweeps
+the same way in both directions. It carries no meaning and a second set of
+keyframes to reverse a sheen is not worth the file.
 
 ## Why the build is shaped the way it is
 

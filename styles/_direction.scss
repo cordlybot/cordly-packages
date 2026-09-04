@@ -1,0 +1,29 @@
+// Physical transforms in a package written in logical properties.
+//
+// Every size, inset, border, and padding here is logical — `inline-size`,
+// `inset-inline-start`, `border-inline-end` — which is a claim that these
+// components work in either writing direction. `translate` has no logical form,
+// so each of the handful of places that uses one is a hole in that claim, and
+// every one of them was: a switch whose thumb travelled out of its own track, a
+// drawer that sat open when it should have been off-screen, and two things
+// centred by `inset-inline-start: 50%` and a physical half-width shift that
+// pushed them a full width off-centre.
+//
+// `:host-context` rather than `:dir(rtl)`. `:dir()` is the modern answer and is
+// still the newest thing this package would depend on by some margin, and
+// `:host-context` is what Angular's emulated encapsulation compiles correctly
+// without asking the browser for anything.
+
+// For a rule on an element inside the component.
+@mixin rtl {
+  :host-context([dir='rtl']) & {
+    @content;
+  }
+}
+
+// For a rule on the component's own host element.
+@mixin rtl-host {
+  :host-context([dir='rtl']) {
+    @content;
+  }
+}

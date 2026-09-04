@@ -83,6 +83,18 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4400' },
     },
     {
+      // The same fixture with the document flipped.
+      //
+      // Every size, inset, border, and padding in these packages is written
+      // logically, which is a claim that they work in either direction. The
+      // handful of `translate` values are the exceptions — `translate` has no
+      // logical form — and each one was a hole in that claim until something
+      // measured it.
+      name: 'rtl',
+      testMatch: /rtl.spec.ts/,
+      use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4400' },
+    },
+    {
       name: 'ssr',
       testMatch: /ssr\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:4401' },

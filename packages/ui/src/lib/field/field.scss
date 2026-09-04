@@ -1,4 +1,5 @@
 @use 'control';
+@use 'direction';
 @use 'motion';
 @use 'layout';
 
@@ -78,8 +79,13 @@
     inset-inline-start: 50%;
     inset-block: 0.12em 0.28em;
     inline-size: 1.5px;
+    // Same logical inset, same physical shift, same flip. See tooltip-panel.
     translate: -50% 0;
     background-color: currentcolor;
+
+    @include direction.rtl {
+      translate: 50% 0;
+    }
   }
 }
 

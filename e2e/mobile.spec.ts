@@ -123,3 +123,20 @@ test('the drawer keeps an edge when its shadow is taken away', async ({ page }) 
   expect(edge.width).not.toBe('0px');
   expect(edge.colour).not.toBe(background);
 });
+
+test('the drawer starts off-screen when the page is mirrored', async ({ page }) => {
+  // `translate: -100% 0` puts the drawer off the inline-start edge, and the
+  // inline-start edge is the right-hand one in a mirrored page — where that
+  // same shift slides it into view instead. A drawer that is open before
+  // anybody opens it covers the page it is meant to navigate.
+  await page.goto('/');
+  await page.evaluate(() => {
+    document.documentElement.setAttribute('dir', 'rtl');
+  });
+
+  const navigation = page.getByRole('navigation', { name: 'Server sections' });
+  await expect(navigation).not.toBeInViewport();
+
+  await page.getByRole('button', { name: 'Show server sections' }).click();
+  await expect(navigation).toBeInViewport();
+});

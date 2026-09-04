@@ -42,6 +42,20 @@ the packages are versioned independently — see `VERSIONING.md`.
   context-level option, which is accepted and silently does nothing — a suite
   trusting it runs against an ordinary page and passes without testing anything.
 
+- **Right-to-left was claimed by every stylesheet and broken by four rules.**
+  Every size, inset, border, and padding here is logical, which is a claim that a
+  component mirrors itself and no application has to restyle it. `translate` has
+  no logical form, and each place using one was a hole in that claim:
+
+  - A switch's thumb travelled physically right, so mirrored it left its own
+    track.
+  - A tooltip and a field's error mark were centred by a logical inset plus a
+    physical half-width shift, which mirrored puts them a full width off-centre
+    rather than half a width back.
+
+  `e2e/rtl.spec.ts` runs the fixture with `dir="rtl"` on the document, which is
+  how an application does it, with an axe scan and an overflow check.
+
 ### `@cordly/widgets` 0.4.0
 
 **Fixed**

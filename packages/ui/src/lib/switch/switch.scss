@@ -1,4 +1,5 @@
 @use 'focus';
+@use 'direction';
 @use 'forced-colors';
 @use 'motion';
 @use 'layout';
@@ -67,8 +68,14 @@
   }
 
   .cordly-switch__thumb {
+    // The one physical value in this file, so it is the one thing that has to
+    // be told which way "on" is. Everything else is logical and mirrors itself.
     translate: 1.25rem 0;
     background-color: var(--cordly-color-on-accent);
+
+    @include direction.rtl {
+      translate: -1.25rem 0;
+    }
   }
 }
 
