@@ -34,6 +34,27 @@ const PACKAGES = [
 
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?$/;
 
+/**
+ * Pre-1.0 versions are not published to npm.
+ *
+ * The API is still moving — migrating one real consumer changed six of them in
+ * an afternoon — and a version on a public registry is permanent in a way a
+ * pre-1.0 API should not be. npm allows unpublishing for 72 hours, and doing so
+ * breaks every lockfile that already resolved the version, so "we can take it
+ * back" is not true in the way it sounds.
+ *
+ * Until 1.0 a release is a git tag plus a GitHub release with the packed
+ * tarballs attached. Consumers vendor those artifacts and record their digests,
+ * which gives the property that actually matters — a production build resolving
+ * nothing outside its own repository — without claiming a stability the packages
+ * have not earned.
+ *
+ * `CORDLY_PUBLISH_PRERELEASE=1` overrides it, for the deliberate case rather
+ * than the accidental one.
+ */
+const isPrerelease = (version) => version.startsWith('0.');
+const prereleasePublishAllowed = () => process.env['CORDLY_PUBLISH_PRERELEASE'] === '1';
+
 const manifestPath = (pkg) => join(root, pkg.dir, 'package.json');
 const readManifest = (pkg) => JSON.parse(readFileSync(manifestPath(pkg), 'utf8'));
 
@@ -91,9 +112,11 @@ function status() {
         ? 'registry unreachable'
         : published.has(manifest.version)
           ? 'already published'
-          : published.size === 0
-            ? 'never published'
-            : `unpublished (registry has ${[...published].pop()})`;
+          : isPrerelease(manifest.version) && !prereleasePublishAllowed()
+            ? 'pre-1.0 — a release artifact consumers vendor, deliberately not on npm'
+            : published.size === 0
+              ? 'never published'
+              : `unpublished (registry has ${[...published].pop()})`;
     process.stdout.write(`release: ${manifest.name}@${manifest.version} — ${state}\n`);
   }
 }
@@ -163,6 +186,10 @@ function check() {
       process.stdout.write(
         `release: ${where}@${manifest.version} is already published; a release run would skip it\n`,
       );
+    } else if (isPrerelease(manifest.version) && !prereleasePublishAllowed()) {
+      process.stdout.write(
+        `release: ${where}@${manifest.version} is pre-1.0; it ships as a release artifact, not to npm\n`,
+      );
     } else {
       process.stdout.write(`release: ${where}@${manifest.version} is ready to publish\n`);
     }
@@ -193,6 +220,15 @@ function publish() {
       continue;
     }
 
+    if (isPrerelease(manifest.version) && !prereleasePublishAllowed()) {
+      process.stdout.write(
+        `release: ${manifest.name}@${manifest.version} is pre-1.0 — not publishing to npm. ` +
+          'It ships as a GitHub release artifact and consumers vendor it. ' +
+          'Set CORDLY_PUBLISH_PRERELEASE=1 to override.\n',
+      );
+      continue;
+    }
+
     const target = join(root, pkg.dist);
     const args = ['publish', '--access', 'public', '--provenance'];
     if (dryRun) args.push('--dry-run');
@@ -208,7 +244,13 @@ function publish() {
   }
 
   if (!publishedAny) {
-    process.stdout.write('release: nothing to publish; every version is already on the registry\n');
+    // Deliberately says why rather than "nothing to do". The two reasons a
+    // release publishes nothing — already there, or held back below 1.0 — mean
+    // very different things, and a summary that blurs them is how a release that
+    // should have shipped looks like one that did.
+    process.stdout.write(
+      'release: nothing published. Every version is either already on the registry or held back below 1.0; the lines above say which.\n',
+    );
   }
 }
 

@@ -122,25 +122,16 @@ jobs:
       # between the tarball and this run.
       - run: npm run build
 
-      # Publishing needs a credential the repository owner supplies once. Until
-      # it exists the tag still produces a verified GitHub release; what it does
-      # not do is reach the registry, and the release notes say so out loud.
-      # Skipping quietly would be the worse failure — a version that looks
-      # released and is not installable.
-      - name: Is there a registry credential?
-        id: credential
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -n "$NPM_TOKEN" ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "::warning title=Not published::NPM_TOKEN is not set, so nothing was published to npm. Everything else in this release was verified. Add the secret and re-run this workflow to publish."
-          fi
-
-      - name: Publish anything not already on the registry
-        if: steps.credential.outputs.present == 'true'
+      # `release.mjs publish` decides, not this workflow. It refuses any 0.x
+      # version — pre-1.0 releases are GitHub artifacts that consumers vendor —
+      # and it skips anything already on the registry. Both refusals are printed,
+      # so a run that publishes nothing says which reason applied rather than
+      # looking like a run that did nothing.
+      #
+      # A missing NPM_TOKEN is therefore not an error before 1.0. It becomes one
+      # the first time a 1.x tag is pushed, which is the right moment to notice.
+      - name: Publish anything eligible and not already on the registry
+        id: publish
         run: node tools/release.mjs publish ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '--dry-run' || '' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -156,9 +147,16 @@ jobs:
           files: artifacts/*.tgz
           generate_release_notes: true
           body: |
-            ${{ steps.credential.outputs.present == 'true'
-                && 'Published to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements). Verify with `npm audit signatures`.'
-                || '**Not published to npm.** This tag was fully verified — the gate, the packed tarballs, and both fixture consumers — but no registry credential was configured, so the packages are available here as attached tarballs only. Re-run this workflow once `NPM_TOKEN` is set to publish them.' }}
+            **Pre-1.0: these packages are not on npm.** The tarballs attached
+            below are the release. Consumers vendor them and record their
+            digests — see
+            [docs/release.md](https://github.com/cordlybot/cordly-packages/blob/main/docs/release.md)
+            for how, and for what changes at 1.0.
+
+            Everything here was verified by this run: the full gate, the packed
+            artefacts, both fixture consumers, the compatibility harness at the
+            floor of the peer range, and the browser, mobile, and
+            server-rendering accessibility gates.
 
             See [CHANGELOG.md](https://github.com/cordlybot/cordly-packages/blob/main/CHANGELOG.md)
             for what changed in each package, and

@@ -1,17 +1,57 @@
 # Releasing
 
-## Where these publish
+## Where these go
 
-The public npm registry, under the `@cordly` scope, from a public repository.
+**Before 1.0: nowhere but a GitHub release.** Each tag attaches the packed
+tarballs to its release, and consumers vendor them.
 
-That is a deliberate pair. A design system that anyone evaluating Cordly can read
-is worth more than one kept internal, and the packages hold nothing that needs
-hiding: no credentials, no API shapes, no product logic — only visual values and
-accessible controls. What is internal stays internal because it lives in the
-applications, which is the boundary these packages exist to keep.
+The reason is that a published version is permanent in a way a pre-1.0 API should
+not be. npm allows unpublishing for 72 hours, and doing so breaks every lockfile
+that already resolved the version — so "we can take it back" is not true in the
+way it sounds. Migrating one real application changed six of these APIs in an
+afternoon; that is exactly the phase where a permanent record of every
+intermediate shape helps nobody.
 
-Every version is published **with provenance**, from a tagged CI run. Nothing is
-published from a laptop, and `npm audit signatures` proves it.
+Vendoring gives up nothing that matters. The property the publication boundary
+exists for is that **a production build resolves nothing outside its own
+repository** — no sibling checkout, no registry fetch, no network — and a
+committed tarball with a recorded digest has that property just as fully as a
+registry version does. What it does not give is discoverability, and pre-1.0
+there is nothing to discover yet.
+
+`node tools/release.mjs publish` refuses any `0.x` version and says why.
+`CORDLY_PUBLISH_PRERELEASE=1` overrides it, for the deliberate case rather than
+the accidental one.
+
+**From 1.0: the public npm registry**, under the `@cordly` scope, published with
+provenance from a tagged CI run. A design system anyone evaluating Cordly can
+read is worth more than one kept internal, and these packages hold nothing that
+needs hiding — no credentials, no API shapes, no product logic. What is internal
+stays internal because it lives in the applications, which is the boundary the
+packages exist to keep.
+
+## Consuming a release today
+
+The consumer copies the tarballs in and records their digests. `cordly-panel`
+does this in `tools/packages-sync.mjs`, which is worth reading before writing a
+second one:
+
+```bash
+# in the consumer, with cordly-packages checked out beside it
+npm run packages:sync     # copy artifacts/*.tgz into vendor/, record digests
+npm install               # resolve them
+npm run packages:check    # part of the verify gate: the tarball matches the lock
+```
+
+`package.json` then depends on `file:vendor/cordly-ui.tgz` rather than a version
+range. At 1.0 those three lines become pinned versions and `vendor/` is deleted.
+
+One sharp edge worth knowing about, because it costs an hour the first time: npm
+records an integrity hash for a `file:` tarball, and replacing the file leaves
+the lock describing bytes that no longer exist. npm then either refuses with
+EINTEGRITY or — worse — decides the lock still matches `node_modules` and
+silently keeps the old package installed. `packages:sync` clears those entries
+itself for exactly that reason.
 
 ## What a release is
 

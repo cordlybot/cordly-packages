@@ -1,18 +1,20 @@
 # cordly-packages
 
 [![packages](https://github.com/cordlybot/cordly-packages/actions/workflows/packages.yml/badge.svg)](https://github.com/cordlybot/cordly-packages/actions/workflows/packages.yml)
-[![@cordly/tokens](https://img.shields.io/npm/v/@cordly/tokens?label=%40cordly%2Ftokens)](https://www.npmjs.com/package/@cordly/tokens)
-[![@cordly/ui](https://img.shields.io/npm/v/@cordly/ui?label=%40cordly%2Fui)](https://www.npmjs.com/package/@cordly/ui)
-[![@cordly/widgets](https://img.shields.io/npm/v/@cordly/widgets?label=%40cordly%2Fwidgets)](https://www.npmjs.com/package/@cordly/widgets)
+[![release](https://img.shields.io/github/v/release/cordlybot/cordly-packages?label=release)](https://github.com/cordlybot/cordly-packages/releases)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 The shared frontend foundations for Cordly's web surfaces: design tokens,
 accessible Angular primitives, and domain-neutral composed widgets, published as
 three independently versioned packages.
 
-```bash
-npm install @cordly/tokens @cordly/ui @cordly/widgets
-```
+> **Pre-1.0: not on npm yet.** Each release attaches the packed tarballs to its
+> [GitHub release](https://github.com/cordlybot/cordly-packages/releases), and
+> consumers vendor them. The API is still moving — migrating one real application
+> changed six of them in an afternoon — and a version on a public registry is
+> permanent in a way a pre-1.0 API should not be. See
+> [`docs/release.md`](docs/release.md) for how to consume a release today, and
+> what changes at 1.0.
 
 ```css
 /* one import, at your style entry point */
@@ -23,9 +25,9 @@ npm install @cordly/tokens @cordly/ui @cordly/widgets
 <button cordlyButton variant="primary" (click)="apply()">Apply 3 changes</button>
 ```
 
-Angular 22 on TypeScript 6. Every version is published from a tagged CI run with
-[npm provenance](https://docs.npmjs.com/generating-provenance-statements) —
-`npm audit signatures` proves which commit and which workflow produced it.
+Angular 22 on TypeScript 6. Every release is built and verified by a tagged CI
+run; from 1.0 the same run publishes to npm with
+[provenance](https://docs.npmjs.com/generating-provenance-statements).
 
 | Package                               | What it owns                                                                                                                                     |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |

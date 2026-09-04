@@ -67,13 +67,21 @@ with extra steps.
 
 ## Pre-1.0
 
-All three packages are `0.1.0`. Until `1.0.0`, a breaking change bumps the
-**minor** — the standard pre-1.0 convention — and consumers should pin with `~`
-rather than `^`.
+Until `1.0.0`, a breaking change bumps the **minor** — the standard pre-1.0
+convention.
 
-`1.0.0` is cut when the first real consumer slice has been migrated and the
-abstractions have survived contact with it. Stabilising an API that has one
-fixture behind it would be committing to guesses.
+Pre-1.0 versions are also **not published to npm**. A release is a git tag and a
+GitHub release with the packed tarballs attached; consumers vendor them and
+record their digests. A published version is permanent in a way a moving API
+should not be, and `npm unpublish` breaks every lockfile that already resolved
+the version, so it is not the escape hatch it sounds like. `docs/release.md` has
+the mechanics.
+
+`1.0.0` is cut when the abstractions have survived real use. `cordly-panel` has
+now retired its own UI kit onto these packages, which is the first half of that
+evidence and which moved six APIs in the process. The second half is
+`cordly-www`, and then a period where migrating something does _not_ change the
+packages. Stabilising before that would be committing to guesses.
 
 ## Changelog
 

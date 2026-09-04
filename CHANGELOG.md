@@ -76,8 +76,10 @@ the packages are versioned independently — see `VERSIONING.md`.
 
 ## 0.1.0 — 2026-09-03
 
-The first cut of Cordly's shared frontend foundations, published to the public
-npm registry under the `@cordly` scope with provenance.
+The first cut of Cordly's shared frontend foundations.
+
+Not on npm: pre-1.0 releases ship as GitHub release artifacts that consumers
+vendor. See `docs/release.md`.
 
 ### `@cordly/tokens` 0.1.0
 
